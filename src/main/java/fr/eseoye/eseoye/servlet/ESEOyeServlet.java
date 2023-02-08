@@ -1,12 +1,18 @@
-package fr.eseoye.eseoye;
+package fr.eseoye.eseoye.servlet;
+
+import fr.eseoye.eseoye.action.Action;
 
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 
 @WebServlet(name = "eseo-oye", value = "/ese-oye")
 public class ESEOyeServlet extends HttpServlet {
+
+    private Map<String, Action> actionMap = new HashMap<>();
 
     /**
      * Function executed when a server is instanced
