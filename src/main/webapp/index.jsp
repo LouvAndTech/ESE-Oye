@@ -4,10 +4,8 @@
 <head>
     <title>JSP - Hello World</title>
 </head>
-<body>
-<h1><%= "Hello World!" %>
-</h1>
-<br/>
-<a href="hello-servlet">Hello Servlet</a>
-</body>
+    <body>
+        <h1>Welcome on ESE-Oye</h1>
+        <h3>The best site to sell you cam.</h3>
+    </body>
 </html>

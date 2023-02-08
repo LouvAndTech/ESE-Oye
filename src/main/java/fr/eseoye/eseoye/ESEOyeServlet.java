@@ -1,27 +1,71 @@
 package fr.eseoye.eseoye;
 
 import java.io.*;
+import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 
 @WebServlet(name = "eseo-oye", value = "/ese-oye")
 public class ESEOyeServlet extends HttpServlet {
-    private String message;
 
-    public void init() {
-        message = "Hello World!";
+    /**
+     * Function executed when a server is instanced
+     */
+    @Override
+    public void init(){
+        System.out.println("INIT");
     }
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/html");
-
-        // Hello
-        PrintWriter out = response.getWriter();
-        out.println("<html><body>");
-        out.println("<h1>" + message + "</h1>");
-        out.println("</body></html>");
+    /** Function executed when a client execute a Get request
+     *
+     * @param request   an {@link HttpServletRequest} object that
+     *                  contains the request the client has made
+     *                  of the servlet
+     *
+     * @param response  an {@link HttpServletResponse} object that
+     *                  contains the response the servlet sends
+     *                  to the client
+     *
+     * @throws ServletException an {@link ServletException}
+     * @throws IOException      an {@link IOException}
+     */
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        processRequest(request,response);
     }
 
-    public void destroy() {
+
+    /** Function executed when a client execute a Post request
+     *
+     * @param request   an {@link HttpServletRequest} object that
+     *                  contains the request the client has made
+     *                  of the servlet
+     * @param response  an {@link HttpServletResponse} object that
+     *                  contains the response the servlet sends
+     *                  to the client
+     *
+     * @throws ServletException an {@link ServletException}
+     * @throws IOException      an {@link IOException}
+     */
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        processRequest(request,response);
     }
+
+    /** Function that Handle all the traffic and redirections for the website
+     *
+     * @param request   an {@link HttpServletRequest} object that
+     *                  contains the request the client has made
+     *                  of the servlet
+     * @param response  an {@link HttpServletResponse} object that
+     *                  contains the response the servlet sends
+     *                  to the client
+     *
+     * @throws ServletException an {@link ServletException}
+     * @throws IOException      an {@link IOException}
+     */
+    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/index.jsp").forward(request,response);
+    }
+
 }
