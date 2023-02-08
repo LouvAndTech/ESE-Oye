@@ -26,6 +26,10 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+
+    implementation group: 'javax.servlet', name: 'jstl', version: '1.2'
+    implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '3.0.8'
+    implementation group: 'org.mindrot', name: 'jbcrypt', version: '0.4'
 }
 
 test {
