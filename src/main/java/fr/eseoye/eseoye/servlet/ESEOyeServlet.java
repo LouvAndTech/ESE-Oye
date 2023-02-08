@@ -37,7 +37,7 @@ public class ESEOyeServlet extends HttpServlet {
      */
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        processRequest(request,response);
+        processRequest(request,response,true);
     }
 
 
@@ -55,7 +55,7 @@ public class ESEOyeServlet extends HttpServlet {
      */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        processRequest(request,response);
+        processRequest(request,response,false);
     }
 
     /** Function that Handle all the traffic and redirections for the website
@@ -70,7 +70,8 @@ public class ESEOyeServlet extends HttpServlet {
      * @throws ServletException an {@link ServletException}
      * @throws IOException      an {@link IOException}
      */
-    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void processRequest(HttpServletRequest request, HttpServletResponse response, boolean firstLoad) throws ServletException, IOException {
+        //Action.get("").execute(request,response,firstLoad);
         request.getRequestDispatcher("/index.jsp").forward(request,response);
     }
 
