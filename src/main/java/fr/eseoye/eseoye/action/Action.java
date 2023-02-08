@@ -19,7 +19,7 @@ public interface Action {
      * @throws ServletException an {@link ServletException}
      * @throws IOException      an {@link IOException}
      */
-    String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
+    void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
 
     /** Execute the script link to a particular action.
      *
@@ -31,11 +31,12 @@ public interface Action {
      *                  contains the response the servlet sends
      *                  to the client
      *
-     * @param firstLoad boolean to know it's the first load of the page
+     * @param target    a string to define the view to forward
      *
      * @throws ServletException an {@link ServletException}
      * @throws IOException      an {@link IOException}
      */
-    String execute(HttpServletRequest request, HttpServletResponse response,boolean firstLoad) throws ServletException, IOException;
-
+    default void forward(HttpServletRequest request, HttpServletResponse response, String target) throws ServletException, IOException {
+        request.getRequestDispatcher(target).forward(request,response);
+    }
 }

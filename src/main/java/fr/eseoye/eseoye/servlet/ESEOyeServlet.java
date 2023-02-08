@@ -1,6 +1,7 @@
 package fr.eseoye.eseoye.servlet;
 
 import fr.eseoye.eseoye.action.Action;
+import fr.eseoye.eseoye.action.Index;
 
 import java.io.*;
 import java.util.HashMap;
@@ -19,6 +20,7 @@ public class ESEOyeServlet extends HttpServlet {
      */
     @Override
     public void init(){
+        actionMap.put("index", new Index());
         System.out.println("INIT");
     }
 
@@ -37,7 +39,11 @@ public class ESEOyeServlet extends HttpServlet {
      */
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        processRequest(request,response,true);
+        String id = request.getParameter("id");
+        if(id == null) {
+            id="index";
+        }
+        actionMap.get(id).forward(request,response,"/"+id+".jsp");
     }
 
 
@@ -55,7 +61,7 @@ public class ESEOyeServlet extends HttpServlet {
      */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        processRequest(request,response,false);
+        processRequest(request,response);
     }
 
     /** Function that Handle all the traffic and redirections for the website
@@ -70,9 +76,12 @@ public class ESEOyeServlet extends HttpServlet {
      * @throws ServletException an {@link ServletException}
      * @throws IOException      an {@link IOException}
      */
-    private void processRequest(HttpServletRequest request, HttpServletResponse response, boolean firstLoad) throws ServletException, IOException {
-        //Action.get("").execute(request,response,firstLoad);
-        request.getRequestDispatcher("/index.jsp").forward(request,response);
+    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String id = request.getParameter("id");
+        if(id == null) {
+            id="index";
+        }
+        actionMap.get(id).execute(request,response);
     }
 
 }
