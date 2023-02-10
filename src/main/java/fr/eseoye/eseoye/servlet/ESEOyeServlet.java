@@ -20,7 +20,7 @@ public class ESEOyeServlet extends HttpServlet {
      */
     @Override
     public void init(){
-        actionMap.put("index", new Index());
+        actionMap.put("Index", new Index());
         System.out.println("INIT");
     }
 
@@ -41,7 +41,7 @@ public class ESEOyeServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String id = request.getParameter("id");
         if(id == null || !actionMap.containsKey(id)) {
-            id="index";
+            id="Index";
         }
         actionMap.get(id).forward(request,response,"/jsp/"+id+".jsp");
     }
@@ -63,7 +63,7 @@ public class ESEOyeServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String id = request.getParameter("id");
         if(id == null || !actionMap.containsKey(id)) {
-            id="index";
+            id="Index";
         }
         actionMap.get(id).execute(request,response);
     }
