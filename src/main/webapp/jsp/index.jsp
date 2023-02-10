@@ -3,6 +3,8 @@
 <html>
 <head>
     <title>JSP - Hello World</title>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/index.css" />
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/index.js" defer></script>
 </head>
     <body>
         <h1>Welcome on ESE-Oye</h1>

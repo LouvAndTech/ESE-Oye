@@ -10,7 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 
-@WebServlet(name = "eseo-oye", value = "/ese-oye")
+@WebServlet(name = "ese-oye", value = "/ese-oye")
 public class ESEOyeServlet extends HttpServlet {
 
     private Map<String, Action> actionMap = new HashMap<>();
@@ -40,10 +40,10 @@ public class ESEOyeServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String id = request.getParameter("id");
-        if(id == null) {
+        if(id == null || !actionMap.containsKey(id)) {
             id="index";
         }
-        actionMap.get(id).forward(request,response,"/"+id+".jsp");
+        actionMap.get(id).forward(request,response,"/jsp/"+id+".jsp");
     }
 
 
@@ -61,27 +61,10 @@ public class ESEOyeServlet extends HttpServlet {
      */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        processRequest(request,response);
-    }
-
-    /** Function that Handle all the traffic and redirections for the website
-     *
-     * @param request   an {@link HttpServletRequest} object that
-     *                  contains the request the client has made
-     *                  of the servlet
-     * @param response  an {@link HttpServletResponse} object that
-     *                  contains the response the servlet sends
-     *                  to the client
-     *
-     * @throws ServletException an {@link ServletException}
-     * @throws IOException      an {@link IOException}
-     */
-    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("id");
-        if(id == null) {
+        if(id == null || !actionMap.containsKey(id)) {
             id="index";
         }
         actionMap.get(id).execute(request,response);
     }
-
 }

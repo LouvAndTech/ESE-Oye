@@ -1,0 +1,24 @@
+*{
+  margin: 15px;
+  padding: 15px;
+  background-color: aquamarine;
+  font-family: Roboto, sans-serif;
+}
+
+body{
+  color : aquamarine;
+
+  h1{
+    color: blueviolet;
+  }
+
+  h3{
+    color: blue;
+    transition: .5s;
+    width: fit-content;
+
+    &:hover{
+      font-size: 0.5em;
+    }
+  }
+}
