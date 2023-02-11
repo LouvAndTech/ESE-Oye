@@ -1,8 +1,12 @@
 package fr.eseoye.eseoye.servlet;
 
+//Actions
 import fr.eseoye.eseoye.action.Action;
 import fr.eseoye.eseoye.action.Index;
+import fr.eseoye.eseoye.action.ListPost;
+import fr.eseoye.eseoye.action.OnePost;
 
+//Libraries
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +25,8 @@ public class ESEOyeServlet extends HttpServlet {
     @Override
     public void init(){
         actionMap.put("Index", new Index());
+        actionMap.put("ListPosts", new ListPost());
+        actionMap.put("OnePost", new OnePost());
         System.out.println("INIT");
     }
 
@@ -40,6 +46,7 @@ public class ESEOyeServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String id = request.getParameter("id");
+        System.out.println("doGet : "+id);
         if(id == null || !actionMap.containsKey(id)) {
             id="Index";
         }
@@ -62,6 +69,7 @@ public class ESEOyeServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String id = request.getParameter("id");
+        System.out.println("doPost : "+id);
         if(id == null || !actionMap.containsKey(id)) {
             id="Index";
         }

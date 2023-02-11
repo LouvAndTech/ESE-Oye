@@ -9,7 +9,7 @@ public class Index implements Action{
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/Index.jsp").forward(request,response);
+        request.getRequestDispatcher("/jsp/Index.jsp").forward(request,response);
     }
 
 
