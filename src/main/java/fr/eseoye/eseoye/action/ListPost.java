@@ -13,6 +13,19 @@ import java.util.List;
 
 public class ListPost implements Action{
 
+    /**
+     * Handle the next and previous button
+     * @param request   an {@link HttpServletRequest} object that
+     *                  contains the request the client has made
+     *                  of the servlet
+     *
+     * @param response  an {@link HttpServletResponse} object that
+     *                  contains the response the servlet sends
+     *                  to the client
+     *
+     * @throws ServletException an {@link ServletException}
+     * @throws IOException      an {@link IOException}
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //if the user click on the next button
@@ -32,6 +45,19 @@ public class ListPost implements Action{
         }
     }
 
+    /**
+     * Load the first 10 posts from the database before forwarding to the page
+     * @param request   an {@link HttpServletRequest} object that
+     *                  contains the request the client has made
+     *                  of the servlet
+     *
+     * @param response  an {@link HttpServletResponse} object that
+     *                  contains the response the servlet sends
+     *                  to the client
+     *
+     * @throws ServletException an {@link ServletException}
+     * @throws IOException      an {@link IOException}
+     */
     @Override
     public void forward(HttpServletRequest request, HttpServletResponse response, String target) throws ServletException, IOException {
         request.setAttribute("posts", fetchPost(10, 1   ));
@@ -39,6 +65,13 @@ public class ListPost implements Action{
         request.getRequestDispatcher("/jsp/ListPosts.jsp").forward(request, response);
     }
 
+
+    /**
+     * [WIP] Fetch the posts from the database
+     * @param nbPost    the number of post to fetch
+     * @param page      the page number
+     * @return          a list of {@link Post}
+     */
     private List<Post> fetchPost(int nbPost, int page ){
         //todo : Fetch the post from the database
         List <Post> posts = new ArrayList<>();

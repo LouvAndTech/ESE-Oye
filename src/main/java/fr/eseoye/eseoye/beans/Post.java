@@ -2,6 +2,9 @@ package fr.eseoye.eseoye.beans;
 
 import java.sql.Date;
 
+/**
+ * Used to store a simplified version of a post
+ */
 public class Post {
     protected int id;
     protected String title;
