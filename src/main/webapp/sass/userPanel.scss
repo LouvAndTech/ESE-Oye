@@ -1,0 +1,45 @@
+@use "variables" as v;
+
+
+#mainContent{
+  display: flex;
+
+  nav{
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    background-color: v.$secondcolor;
+    min-height: 100vh;
+    padding: 0 1.2em;
+    font-size: 1.5em;
+
+    hr{
+      width: 100%;
+      opacity: 50%;
+    }
+
+    a{
+      color: v.$textcolor;
+      text-decoration: none;
+      padding: .5em;
+      padding-left: 1em;
+      border-radius: 100px;
+      line-height: 2em;
+
+      &:hover, &.active{
+        background-color: v.$backcolor;
+      }
+      span{
+        transform: translate(0, 30%);
+      }
+    }
+    .deco_btn{
+      margin-top: auto;
+      margin-bottom: 1.5em;
+    }
+  }
+
+  section{
+    flex: 1;
+  }
+}

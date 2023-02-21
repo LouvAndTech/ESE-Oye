@@ -1,10 +1,7 @@
 package fr.eseoye.eseoye.servlet;
 
 //Actions
-import fr.eseoye.eseoye.action.Action;
-import fr.eseoye.eseoye.action.Index;
-import fr.eseoye.eseoye.action.ListPost;
-import fr.eseoye.eseoye.action.OnePost;
+import fr.eseoye.eseoye.action.*;
 
 //Libraries
 import java.io.*;
@@ -27,6 +24,7 @@ public class ESEOyeServlet extends HttpServlet {
         actionMap.put("Index", new Index());
         actionMap.put("ListPosts", new ListPost());
         actionMap.put("OnePost", new OnePost());
+        actionMap.put("UserPanel", new UserPanel());
         System.out.println("INIT");
     }
 
