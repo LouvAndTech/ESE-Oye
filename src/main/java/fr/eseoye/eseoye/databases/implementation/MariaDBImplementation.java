@@ -8,18 +8,25 @@ import java.sql.Statement;
 import java.util.List;
 
 import fr.eseoye.eseoye.databases.DAOFactory;
+import fr.eseoye.eseoye.databases.DatabaseType;
 
 public class MariaDBImplementation extends DatabaseImplementation {
 
 	private DAOFactory factory;
 	
 	public MariaDBImplementation(DAOFactory factory) {
-		this.factory = factory; 
+		this.factory = factory;
+		try {
+			Class.forName("org.mariadb.jdbc.Driver");
+		}catch(ClassNotFoundException e) {
+			//TODO better handling of errors
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
 	public void insertValues(String table, List<String> fields, List<String> values) throws SQLException {
-		Connection connection = factory.getConnection(table); 
+		Connection connection = factory.getConnection(DatabaseType.MARIADB, table); 
 		PreparedStatement preparedStatement = connection
 				.prepareStatement("INSERT INTO "+table+"("+convertListToDatabaseFields(fields)+") VALUES("+this.generateRequestEmptyValues(values.size())+");");
 			for(int i = 0; i < values.size(); i++) preparedStatement.setString(i, values.get(i));
@@ -29,7 +36,7 @@ public class MariaDBImplementation extends DatabaseImplementation {
 	@Override
 	public void insertValues(String table, String sqlRequest, List<String> values) throws SQLException {
 		//TODO check sqlRequest size and values size ?
-		Connection connection = factory.getConnection(table); 
+		Connection connection = factory.getConnection(DatabaseType.MARIADB, table); 
 		PreparedStatement preparedStatement = connection
 				.prepareStatement(sqlRequest);
 			for(int i = 0; i < values.size(); i++) preparedStatement.setString(i, values.get(i));
@@ -51,14 +58,14 @@ public class MariaDBImplementation extends DatabaseImplementation {
 	
 	@Override
 	public ResultSet getValues(String table, List<String> values) throws SQLException {
-		Connection connexion = factory.getConnection(table); 
+		Connection connexion = factory.getConnection(DatabaseType.MARIADB, table); 
 		Statement statement = connexion.createStatement();
 		return statement.executeQuery("SELECT "+convertListToDatabaseFields(values)+" FROM "+table+";");
 	}
 
 	@Override
 	public ResultSet getValues(String table, String sqlRequest) throws SQLException {
-		Connection connexion = factory.getConnection(table); 
+		Connection connexion = factory.getConnection(DatabaseType.MARIADB, table); 
 		Statement statement = connexion.createStatement();
 		return statement.executeQuery(sqlRequest);
 	}

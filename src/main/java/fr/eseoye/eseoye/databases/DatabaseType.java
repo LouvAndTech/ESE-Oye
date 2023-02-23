@@ -2,6 +2,7 @@ package fr.eseoye.eseoye.databases;
 
 public enum DatabaseType {
 	
+	//TODO Add connection information
 	MARIADB("","","");
 	
 	private String urlBase, username, pass;
