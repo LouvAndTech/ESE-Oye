@@ -47,15 +47,17 @@ public class MariaDBImplementation extends DatabaseImplementation {
 	}
 
 	@Override
-	public void updateValues(String table, String fields, List<String> values) {
-		// TODO create method (easy)
-		
+	public void updateValues(String table, int id, List<String> fields, List<String> values) throws SQLException {
+		Connection connection = factory.getConnection(getDBType(), this.dbName); 
+		PreparedStatement preparedStatement = connection
+				.prepareStatement("UPDATE "+table+" SET "+convertArgumentsToUpdateFields(fields, values)+" WHERE id = "+id);
+			for(int i = 0; i < values.size(); i++) preparedStatement.setString(i, values.get(i));
+		preparedStatement.executeUpdate();
 	}
 
 	@Override
-	public void updateValues(String sqlRequest, List<String> values) {
-		// TODO create method (easy)
-	
+	public void updateValues(String sqlRequest, List<String> values) throws SQLException {
+		insertValues(sqlRequest, values);
 	}
 	
 	@Override
@@ -73,9 +75,10 @@ public class MariaDBImplementation extends DatabaseImplementation {
 	}
 
 	@Override
-	public int getValuesCount(String table, String values) {
-		//TODO create method (easy)
-		return 0;
+	public int getValuesCount(String table, String columnName) throws SQLException {
+		final Connection connection = factory.getConnection(getDBType(), dbName);
+		Statement statement = connection.createStatement();
+		return statement.executeQuery("SELECT COUNT("+columnName+") FROM "+table).getInt(0);
 	}
 	
 	@Override

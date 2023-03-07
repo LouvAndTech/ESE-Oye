@@ -12,7 +12,7 @@ public abstract class DatabaseImplementation {
 	
 	public abstract void insertValues(String sqlRequest, List<String> values) throws SQLException;
 	
-	public abstract void updateValues(String table, String fields, List<String> values) throws SQLException;
+	public abstract void updateValues(String table, int id, List<String> fields, List<String> values) throws SQLException;
 	
 	public abstract void updateValues(String sqlRequest, List<String> values) throws SQLException;
 	
@@ -32,6 +32,14 @@ public abstract class DatabaseImplementation {
 	protected String convertListToDatabaseFields(List<String> values) {
 		final StringBuilder sb = new StringBuilder();
 		values.forEach(v -> sb.append(v+", "));
+		sb.setLength(sb.length()-2);
+		return sb.toString();
+	}
+	
+	protected String convertArgumentsToUpdateFields(List<String> keys, List<String> values) {
+		if(keys.size() != values.size()) return null;
+		final StringBuilder sb = new StringBuilder();
+		for(int i = 0; i < keys.size(); i++) sb.append(keys.get(i)+"="+values.get(i)+", ");
 		sb.setLength(sb.length()-2);
 		return sb.toString();
 	}
