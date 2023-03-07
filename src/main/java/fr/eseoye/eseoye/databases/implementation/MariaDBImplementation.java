@@ -26,7 +26,7 @@ public class MariaDBImplementation extends DatabaseImplementation {
 	
 	@Override
 	public void insertValues(String table, List<String> fields, List<String> values) throws SQLException {
-		Connection connection = factory.getConnection(DatabaseType.MARIADB, table); 
+		Connection connection = factory.getConnection(getDBType(), table); 
 		PreparedStatement preparedStatement = connection
 				.prepareStatement("INSERT INTO "+table+"("+convertListToDatabaseFields(fields)+") VALUES("+this.generateRequestEmptyValues(values.size())+");");
 			for(int i = 0; i < values.size(); i++) preparedStatement.setString(i, values.get(i));
@@ -36,7 +36,7 @@ public class MariaDBImplementation extends DatabaseImplementation {
 	@Override
 	public void insertValues(String table, String sqlRequest, List<String> values) throws SQLException {
 		//TODO check sqlRequest size and values size ?
-		Connection connection = factory.getConnection(DatabaseType.MARIADB, table); 
+		Connection connection = factory.getConnection(getDBType(), table); 
 		PreparedStatement preparedStatement = connection
 				.prepareStatement(sqlRequest);
 			for(int i = 0; i < values.size(); i++) preparedStatement.setString(i, values.get(i));
@@ -58,14 +58,14 @@ public class MariaDBImplementation extends DatabaseImplementation {
 	
 	@Override
 	public ResultSet getValues(String table, List<String> values) throws SQLException {
-		Connection connexion = factory.getConnection(DatabaseType.MARIADB, table); 
+		Connection connexion = factory.getConnection(getDBType(), table); 
 		Statement statement = connexion.createStatement();
 		return statement.executeQuery("SELECT "+convertListToDatabaseFields(values)+" FROM "+table+";");
 	}
 
 	@Override
 	public ResultSet getValues(String table, String sqlRequest) throws SQLException {
-		Connection connexion = factory.getConnection(DatabaseType.MARIADB, table); 
+		Connection connexion = factory.getConnection(getDBType(), table); 
 		Statement statement = connexion.createStatement();
 		return statement.executeQuery(sqlRequest);
 	}
@@ -80,6 +80,11 @@ public class MariaDBImplementation extends DatabaseImplementation {
 	public ResultSet join(String tableA, String tableB, String valueA, String valueB, JoinType type) {
 		// TODO create method (easay)
 		return null;
+	}
+
+	@Override
+	public DatabaseType getDBType() {
+		return DatabaseType.MARIADB;
 	}
 
 }

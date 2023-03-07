@@ -1,4 +1,4 @@
-package fr.eseoye.eseoye.databases.dao;
+package fr.eseoye.eseoye.databases.tables;
 
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -7,11 +7,11 @@ import java.util.Arrays;
 
 import fr.eseoye.eseoye.databases.implementation.DatabaseImplementation;
 
-public class UserDAO implements IDAO {
-
+public class UserTable implements ITable {
+	
 	private DatabaseImplementation dbImplementation;
 	
-	public UserDAO(DatabaseImplementation dbImplementation) {
+	public UserTable(DatabaseImplementation dbImplementation) {
 		this.dbImplementation = dbImplementation;
 	}
 	

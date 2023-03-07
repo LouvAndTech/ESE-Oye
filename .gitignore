@@ -44,3 +44,4 @@ bin/
 ### CSS file generated from SASS ###
 css
 
+/bdd-cmd.sql

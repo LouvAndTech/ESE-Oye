@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import fr.eseoye.eseoye.databases.DatabaseType;
+
 public abstract class DatabaseImplementation {
 	
 	public abstract void insertValues(String table, List<String> fields, List<String> values) throws SQLException;
@@ -41,4 +43,6 @@ public abstract class DatabaseImplementation {
 		LEFT,
 		FULL;
 	}
+	
+	public abstract DatabaseType getDBType();
 }

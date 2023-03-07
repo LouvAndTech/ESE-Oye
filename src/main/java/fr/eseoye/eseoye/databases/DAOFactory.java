@@ -4,8 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import fr.eseoye.eseoye.databases.dao.UserDAO;
 import fr.eseoye.eseoye.databases.implementation.MariaDBImplementation;
+import fr.eseoye.eseoye.databases.tables.UserTable;
 
 public class DAOFactory {
 
@@ -28,10 +28,10 @@ public class DAOFactory {
 		return DriverManager.getConnection(dbType.getBaseUrl()+SEPARATOR+table, dbType.getUsername(), dbType.getPass());
 	}
 	
-	public UserDAO getUserDAO(DatabaseType type) {
+	public UserTable getUserTable(DatabaseType type) {
 		switch (type) {
 		case MARIADB:
-			return new UserDAO(new MariaDBImplementation(this));
+			return new UserTable(new MariaDBImplementation(this));
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + type);
 		}
