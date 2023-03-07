@@ -1,0 +1,40 @@
+.posts{
+  background-color: antiquewhite;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+
+  .post{
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+
+    cursor: pointer;
+
+    .header{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+    .subtitle{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      .author{
+        font-size: 0.8em;
+        color: #999;
+      }
+      .date{
+          font-size: 0.8em;
+          color: rgba(153, 153, 153, 0.44);
+      }
+    }
+
+  }
+}
