@@ -30,12 +30,21 @@ public class ListPost implements Action{
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //if the user click on the next button
         try{
-            //Get the page number, and put it back in the request
+            //Get the page number from the request and increment it
             int page = Integer.parseInt(request.getParameter("postPage"));
             if(page < 1) page = 1; //make sure it's not negative
+            //Get the 10 posts corresponding from the database
+            List<Post> posts = fetchPost(10, page);
+            //If there is no more post to display, we decrement the page number and get the right list of posts
+            if(posts.size() == 0){
+                page--;
+                posts = fetchPost(10, page);
+            }
+            System.out.println("Page : " + page);
+            //Set the page number to the request
             request.setAttribute("postPage", page);
-            //Get the 10 posts corresponding from the database and forward to the ListPosts.jsp
-            request.setAttribute("posts", fetchPost(10, page));
+            //Forward to the ListPosts.jsp
+            request.setAttribute("posts", posts);
             request.getRequestDispatcher("/jsp/ListPosts.jsp").forward(request, response);
         }catch (Exception e){
             //If the parse fail, we forward to the ListPosts.jsp with the first 10 posts
@@ -75,10 +84,17 @@ public class ListPost implements Action{
     private List<Post> fetchPost(int nbPost, int page ){
         //todo : Fetch the post from the database
         List <Post> posts = new ArrayList<>();
-        posts.add(new Post(4, "Lit", "Pen", 100, new Date(2023, 2, 18)));
-        posts.add(new Post(3, "Commode", "Le", 256, new Date(2021, 10, 28)));
-        posts.add(new Post(2, "Table", "Marie",3, new Date(2021, 5, 3)));
-        posts.add(new Post(1, "Chair", "Jean",1672, new Date(2020, 12, 12)));
+        if (page == 1) {
+            posts.add(new Post(5, "Horloge", "Louise", 25, new Date(2021, 5, 3)));
+            posts.add(new Post(6, "Tableau Moche", "George", 9753789, new Date(2023, 2, 18)));
+            posts.add(new Post(7, "Appart T2", "Maurice", 150000, new Date(2021, 10, 28)));
+            posts.add(new Post(8, "Télé", "Béatrice", 253, new Date(2021, 5, 3)));
+        }else if(page == 2){
+            posts.add(new Post(4, "Lit", "Pen", 100, new Date(2023, 2, 18)));
+            posts.add(new Post(3, "Commode", "Le", 256, new Date(2021, 10, 28)));
+            posts.add(new Post(2, "Table", "Marie",3, new Date(2021, 5, 3)));
+            posts.add(new Post(1, "Chair", "Jean",1672, new Date(2020, 12, 12)));
+        }
         return posts;
     }
 }
