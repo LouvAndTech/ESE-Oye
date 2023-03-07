@@ -24,14 +24,14 @@ public class DAOFactory {
 		return instance;
 	}
 	
-	public Connection getConnection(DatabaseType dbType, String table) throws SQLException {
-		return DriverManager.getConnection(dbType.getBaseUrl()+SEPARATOR+table, dbType.getUsername(), dbType.getPass());
+	public Connection getConnection(DatabaseType dbType, String dbName) throws SQLException {
+		return DriverManager.getConnection(dbType.getBaseUrl()+SEPARATOR+dbName, dbType.getUsername(), dbType.getPass());
 	}
 	
-	public UserTable getUserTable(DatabaseType type) {
+	public UserTable getUserTable(DatabaseType type, String databaseName) {
 		switch (type) {
 		case MARIADB:
-			return new UserTable(new MariaDBImplementation(this));
+			return new UserTable(new MariaDBImplementation(this, databaseName));
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + type);
 		}

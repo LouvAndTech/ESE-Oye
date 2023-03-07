@@ -13,9 +13,11 @@ import fr.eseoye.eseoye.databases.DatabaseType;
 public class MariaDBImplementation extends DatabaseImplementation {
 
 	private DAOFactory factory;
+	private String dbName;
 	
-	public MariaDBImplementation(DAOFactory factory) {
+	public MariaDBImplementation(DAOFactory factory, String databaseName) {
 		this.factory = factory;
+		this.dbName = databaseName;
 		try {
 			Class.forName("org.mariadb.jdbc.Driver");
 		}catch(ClassNotFoundException e) {
@@ -26,7 +28,7 @@ public class MariaDBImplementation extends DatabaseImplementation {
 	
 	@Override
 	public void insertValues(String table, List<String> fields, List<String> values) throws SQLException {
-		Connection connection = factory.getConnection(getDBType(), table); 
+		Connection connection = factory.getConnection(getDBType(), this.dbName); 
 		PreparedStatement preparedStatement = connection
 				.prepareStatement("INSERT INTO "+table+"("+convertListToDatabaseFields(fields)+") VALUES("+this.generateRequestEmptyValues(values.size())+");");
 			for(int i = 0; i < values.size(); i++) preparedStatement.setString(i, values.get(i));
@@ -34,9 +36,9 @@ public class MariaDBImplementation extends DatabaseImplementation {
 	}
 	
 	@Override
-	public void insertValues(String table, String sqlRequest, List<String> values) throws SQLException {
+	public void insertValues(String sqlRequest, List<String> values) throws SQLException {
 		//TODO check sqlRequest size and values size ?
-		Connection connection = factory.getConnection(getDBType(), table); 
+		Connection connection = factory.getConnection(getDBType(), this.dbName); 
 		PreparedStatement preparedStatement = connection
 				.prepareStatement(sqlRequest);
 			for(int i = 0; i < values.size(); i++) preparedStatement.setString(i, values.get(i));
@@ -64,8 +66,8 @@ public class MariaDBImplementation extends DatabaseImplementation {
 	}
 
 	@Override
-	public ResultSet getValues(String table, String sqlRequest) throws SQLException {
-		Connection connexion = factory.getConnection(getDBType(), table); 
+	public ResultSet getValues(String sqlRequest) throws SQLException {
+		Connection connexion = factory.getConnection(getDBType(), this.dbName); 
 		Statement statement = connexion.createStatement();
 		return statement.executeQuery(sqlRequest);
 	}
@@ -75,13 +77,7 @@ public class MariaDBImplementation extends DatabaseImplementation {
 		//TODO create method (easy)
 		return 0;
 	}
-
-	@Override
-	public ResultSet join(String tableA, String tableB, String valueA, String valueB, JoinType type) {
-		// TODO create method (easay)
-		return null;
-	}
-
+	
 	@Override
 	public DatabaseType getDBType() {
 		return DatabaseType.MARIADB;
