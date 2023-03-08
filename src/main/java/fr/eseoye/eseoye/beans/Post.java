@@ -8,19 +8,20 @@ import java.sql.Date;
 public class Post {
     protected String id;
     protected String title;
-    protected String author;
+    protected User author;
     protected int price;
     protected Date date;
 
-    public Post(String id, String title,String author, int price, Date date){
+    public Post(String id, String title, User author, int price, Date date){
         this.id = id;
         this.title = title;
         this.author = author;
         this.price = price;
         this.date = date;
     }
-    public Post( String title,String author, int price, Date date){
-        this.id = null;
+    
+    public Post(String title, User author, int price, Date date){
+        this.id = null; //TODO Generate new hash for the post
         this.title = title;
         this.author = author;
         this.price = price;
@@ -35,7 +36,7 @@ public class Post {
         return title;
     }
 
-    public String getAuthor() {
+    public User getAuthor() {
         return author;
     }
 
