@@ -12,6 +12,7 @@
 <head>
     <title>ESE-Oye</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/ListPosts.css"/>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css"/>
     <script type="module" src="${pageContext.request.contextPath}/js/request.js"></script>
 </head>
     <body>
@@ -30,8 +31,8 @@
             </c:forEach>
         </div>
         <div class="buttonContainer">
-            <button onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${postPage-1}')">previous</button>
-            <button onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${postPage+1}')">next</button>
+            <button class="btn fill" onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${postPage-1}')">previous</button>
+            <button class="btn fill" onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${postPage+1}')">next</button>
         </div>
     </body>
 </html>

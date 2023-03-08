@@ -10,6 +10,7 @@
 <head>
     <title>ESE-Oye</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/OnePost.css"/>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css"/>
 </head>
     <body>
         <div class="container">

@@ -1,9 +1,11 @@
+@use 'variables' as *;
+
 .container{
   display: flex;
   flex-direction: column;
   margin: 10px auto;
   padding: 15px;
-  background-color: antiquewhite;
+  background-color: $secondcolor;
   border-radius: 10px;
 
   .header{
@@ -11,7 +13,7 @@
     display: flex;
     flex-direction: column;
     margin: 10px;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: $maincolor;
     border-radius: 10px;
 
     *{
