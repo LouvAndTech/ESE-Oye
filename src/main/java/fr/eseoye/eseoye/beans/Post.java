@@ -9,10 +9,10 @@ public class Post {
     protected String id;
     protected String title;
     protected User author;
-    protected int price;
+    protected float price;
     protected Date date;
 
-    public Post(String id, String title, User author, int price, Date date){
+    public Post(String id, String title, User author, float price, Date date){
         this.id = id;
         this.title = title;
         this.author = author;
@@ -20,7 +20,7 @@ public class Post {
         this.date = date;
     }
     
-    public Post(String title, User author, int price, Date date){
+    public Post(String title, User author, float price, Date date){
         this.id = null; //TODO Generate new hash for the post
         this.title = title;
         this.author = author;
@@ -40,7 +40,7 @@ public class Post {
         return author;
     }
 
-    public int getPrice() {
+    public float getPrice() {
         return price;
     }
 

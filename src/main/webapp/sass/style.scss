@@ -22,29 +22,25 @@ body{
   &:hover:not(:disabled){
     transform: scale(1.2);
   }
-}
-
-.fill{
-  border: 0;
-  color: $textcolor;
-  background-color: $maincolor;
 
   &:disabled{
+    cursor: default;
     border: 1px solid $disabledBorder;
     background-color: transparent;
     color: $disabledColor;
   }
 }
 
+.fill{
+  color: $textcolor;
+  background-color: $maincolor;
+  border: 1px solid $maincolor;
+}
+
 .unfill{
   color: $maincolor;
   background-color: transparent;
-  border: 1px solid $maincolor;
-
-  &:disabled{
-    border: 1px solid $disabledBorder;
-    color: $disabledColor;
-  }
+  border: 1px solid $maincolor
 }
 
 .textBox{
@@ -178,4 +174,19 @@ body{
       }
     }
   }
+}
+
+.custom_select{
+  color: $maincolor;
+  background-color: $backcolor;
+  border: 1px solid $maincolor;
+  border-radius: .7em;
+  padding: 10px 20px;
+  font-size: 1.2em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 5px;
+  box-shadow: 0px 4px 1px 0px rgba(0, 0, 0, .6);
+  outline: transparent;
 }
