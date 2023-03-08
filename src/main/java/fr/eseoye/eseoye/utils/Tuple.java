@@ -5,6 +5,11 @@ public class Tuple<A,B> {
 	private A valueA;
 	private B valueB;
 	
+	public Tuple() {
+		this.valueA = null;
+		this.valueB = null;
+	}
+	
 	public Tuple(A a, B b) {
 		this.valueA = a;
 		this.valueB = b;
