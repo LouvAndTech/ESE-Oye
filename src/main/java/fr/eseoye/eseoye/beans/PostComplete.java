@@ -8,7 +8,7 @@ import java.sql.Date;
 public class PostComplete extends Post{
     private String content;
 
-    public PostComplete(int id, String title, String author, float price, Date date, String content) {
+    public PostComplete(String id, String title, String author, float price, Date date, String content) {
         super(id, title, author, price, date);
         this.content = content;
     }
