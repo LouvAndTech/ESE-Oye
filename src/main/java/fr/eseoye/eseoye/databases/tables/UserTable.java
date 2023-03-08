@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.Arrays;
 
 import fr.eseoye.eseoye.databases.implementation.DatabaseImplementation;
+import fr.eseoye.eseoye.utils.Ternary;
 import fr.eseoye.eseoye.utils.Tuple;
 
 public class UserTable implements ITable {
@@ -115,6 +116,15 @@ public class UserTable implements ITable {
 			//TODO Handle exception correctly
 		}
 		return null;
+	}
+	
+	public Ternary isMailAlreadyUsed(String mail) {
+		try {
+			return (dbImplementation.getValuesCount(getTableName(), mail, "mail = \'"+mail+"\'") != 0 ? Ternary.TRUE : Ternary.FALSE);
+		} catch (SQLException e) {
+			//TODO Handle exception correctly
+		}
+		return Ternary.UNDEFINED;
 	}
 	
 	@Override

@@ -23,6 +23,8 @@ public abstract class DatabaseImplementation {
 	public abstract ResultSet getValues(String sqlRequest) throws SQLException;
 	
 	public abstract int getValuesCount(String table, String values) throws SQLException;
+
+	public abstract int getValuesCount(String table, String values, String condition) throws SQLException;
 	
 	protected String generateRequestEmptyValues(int valuesListSize) {
 		final StringBuilder sb = new StringBuilder();

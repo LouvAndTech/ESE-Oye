@@ -89,6 +89,13 @@ public class MariaDBImplementation extends DatabaseImplementation {
 	}
 	
 	@Override
+	public int getValuesCount(String table, String columnName, String condition) throws SQLException {
+		final Connection connection = factory.getConnection(getDBType(), dbName);
+		Statement statement = connection.createStatement();
+		return statement.executeQuery("SELECT COUNT("+columnName+") FROM "+table+" WHERE "+condition+";").getInt(0);
+	}
+	
+	@Override
 	public DatabaseType getDBType() {
 		return DatabaseType.MARIADB;
 	}
