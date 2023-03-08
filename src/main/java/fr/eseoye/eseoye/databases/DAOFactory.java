@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import fr.eseoye.eseoye.databases.implementation.MariaDBImplementation;
+import fr.eseoye.eseoye.databases.tables.PostTable;
 import fr.eseoye.eseoye.databases.tables.UserTable;
 
 public class DAOFactory {
@@ -36,6 +37,16 @@ public class DAOFactory {
 			throw new IllegalArgumentException("Unexpected value: " + type);
 		}
 	}
+	
+	public PostTable getPostTable(DatabaseType type, String databaseName) {
+		switch (type) {
+		case MARIADB:
+			return new PostTable(new MariaDBImplementation(this, databaseName));
+		default:
+			throw new IllegalArgumentException("Unexpected value: " + type);
+		}
+	}
+
 
 }
 
