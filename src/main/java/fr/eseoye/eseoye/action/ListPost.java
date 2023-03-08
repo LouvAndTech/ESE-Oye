@@ -2,6 +2,8 @@ package fr.eseoye.eseoye.action;
 
 import fr.eseoye.eseoye.beans.Post;
 import fr.eseoye.eseoye.beans.PostComplete;
+import fr.eseoye.eseoye.databases.DAOFactory;
+import fr.eseoye.eseoye.databases.DatabaseType;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -82,19 +84,6 @@ public class ListPost implements Action{
      * @return          a list of {@link Post}
      */
     private List<Post> fetchPost(int nbPost, int page ){
-        //todo : Fetch the post from the database
-        List <Post> posts = new ArrayList<>();
-        if (page == 1) {
-            posts.add(new Post(5, "Horloge", "Louise", 25, new Date(2021, 5, 3)));
-            posts.add(new Post(6, "Tableau Moche", "George", 9753789, new Date(2023, 2, 18)));
-            posts.add(new Post(7, "Appart T2", "Maurice", 150000, new Date(2021, 10, 28)));
-            posts.add(new Post(8, "Télé", "Béatrice", 253, new Date(2021, 5, 3)));
-        }else if(page == 2){
-            posts.add(new Post(4, "Lit", "Pen", 100, new Date(2023, 2, 18)));
-            posts.add(new Post(3, "Commode", "Le", 256, new Date(2021, 10, 28)));
-            posts.add(new Post(2, "Table", "Marie",3, new Date(2021, 5, 3)));
-            posts.add(new Post(1, "Chair", "Jean",1672, new Date(2020, 12, 12)));
-        }
-        return posts;
+        return DAOFactory.getInstance().getPostTable(DatabaseType.MARIADB,"eseoye").fetchShortPost(nbPost,page-1);
     }
 }

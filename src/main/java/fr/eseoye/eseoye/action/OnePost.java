@@ -1,6 +1,8 @@
 package fr.eseoye.eseoye.action;
 
 import fr.eseoye.eseoye.beans.PostComplete;
+import fr.eseoye.eseoye.databases.DAOFactory;
+import fr.eseoye.eseoye.databases.DatabaseType;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -62,6 +64,8 @@ public class OnePost implements Action{
      */
     private PostComplete fetchPost(int postId){
         //todo : Fetch the post from the database
-        return new PostComplete(1, "Chair", "Jean",1672, new Date(2020, 12, 12), "Description");
+        PostComplete post = DAOFactory.getInstance().getPostTable(DatabaseType.MARIADB,"eseoye").fetchEntirePost(postId);
+        System.out.println("Post : " + post);
+        return post;
     }
 }
