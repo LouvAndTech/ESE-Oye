@@ -66,6 +66,13 @@ public class MariaDBImplementation extends DatabaseImplementation {
 		Statement statement = connexion.createStatement();
 		return statement.executeQuery("SELECT "+convertListToDatabaseFields(values)+" FROM "+table+";");
 	}
+	
+	@Override
+	public ResultSet getValuesWithCondition(String table, List<String> values, String condition) throws SQLException {
+		Connection connexion = factory.getConnection(getDBType(), table); 
+		Statement statement = connexion.createStatement();
+		return statement.executeQuery("SELECT "+convertListToDatabaseFields(values)+" FROM "+table+" WHERE "+condition+";");
+	}
 
 	@Override
 	public ResultSet getValues(String sqlRequest) throws SQLException {

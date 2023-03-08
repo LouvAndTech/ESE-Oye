@@ -18,6 +18,8 @@ public abstract class DatabaseImplementation {
 	
 	public abstract ResultSet getValues(String table, List<String> values) throws SQLException;
 	
+	public abstract ResultSet getValuesWithCondition(String table, List<String> values, String condition) throws SQLException;
+	
 	public abstract ResultSet getValues(String sqlRequest) throws SQLException;
 	
 	public abstract int getValuesCount(String table, String values) throws SQLException;
