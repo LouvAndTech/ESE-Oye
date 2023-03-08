@@ -47,10 +47,10 @@ public class MariaDBImplementation extends DatabaseImplementation {
 	}
 
 	@Override
-	public void updateValues(String table, int id, List<String> fields, List<String> values) throws SQLException {
+	public void updateValues(String table, List<String> fields, List<String> values, String condition) throws SQLException {
 		Connection connection = factory.getConnection(getDBType(), this.dbName); 
 		PreparedStatement preparedStatement = connection
-				.prepareStatement("UPDATE "+table+" SET "+convertArgumentsToUpdateFields(fields, values)+" WHERE id = "+id);
+				.prepareStatement("UPDATE "+table+" SET "+convertArgumentsToUpdateFields(fields, values)+" WHERE "+condition+";");
 			for(int i = 0; i < values.size(); i++) preparedStatement.setString(i, values.get(i));
 		preparedStatement.executeUpdate();
 	}
@@ -68,7 +68,7 @@ public class MariaDBImplementation extends DatabaseImplementation {
 	}
 	
 	@Override
-	public ResultSet getValuesWithCondition(String table, List<String> values, String condition) throws SQLException {
+	public ResultSet getValues(String table, List<String> values, String condition) throws SQLException {
 		Connection connexion = factory.getConnection(getDBType(), table); 
 		Statement statement = connexion.createStatement();
 		return statement.executeQuery("SELECT "+convertListToDatabaseFields(values)+" FROM "+table+" WHERE "+condition+";");
@@ -85,7 +85,7 @@ public class MariaDBImplementation extends DatabaseImplementation {
 	public int getValuesCount(String table, String columnName) throws SQLException {
 		final Connection connection = factory.getConnection(getDBType(), dbName);
 		Statement statement = connection.createStatement();
-		return statement.executeQuery("SELECT COUNT("+columnName+") FROM "+table).getInt(0);
+		return statement.executeQuery("SELECT COUNT("+columnName+") FROM "+table+";").getInt(0);
 	}
 	
 	@Override

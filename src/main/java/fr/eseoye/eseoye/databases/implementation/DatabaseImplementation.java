@@ -12,13 +12,13 @@ public abstract class DatabaseImplementation {
 	
 	public abstract void insertValues(String sqlRequest, List<String> values) throws SQLException;
 	
-	public abstract void updateValues(String table, int id, List<String> fields, List<String> values) throws SQLException;
+	public abstract void updateValues(String table, List<String> fields, List<String> values, String condition) throws SQLException;
 	
 	public abstract void updateValues(String sqlRequest, List<String> values) throws SQLException;
 	
 	public abstract ResultSet getValues(String table, List<String> values) throws SQLException;
 	
-	public abstract ResultSet getValuesWithCondition(String table, List<String> values, String condition) throws SQLException;
+	public abstract ResultSet getValues(String table, List<String> values, String condition) throws SQLException;
 	
 	public abstract ResultSet getValues(String sqlRequest) throws SQLException;
 	
