@@ -6,21 +6,28 @@ import java.sql.Date;
  * Used to store a simplified version of a post
  */
 public class Post {
-    protected int id;
+    protected String id;
     protected String title;
     protected String author;
     protected int price;
     protected Date date;
 
-    public Post(int id, String title,String author, int price, Date date){
+    public Post(String id, String title,String author, int price, Date date){
         this.id = id;
         this.title = title;
         this.author = author;
         this.price = price;
         this.date = date;
     }
+    public Post( String title,String author, int price, Date date){
+        this.id = null;
+        this.title = title;
+        this.author = author;
+        this.price = price;
+        this.date = date;
+    }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
