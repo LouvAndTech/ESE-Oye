@@ -3,7 +3,7 @@ package fr.eseoye.eseoye.databases;
 public enum DatabaseType {
 	
 	//TODO Add connection information
-	MARIADB("elouan-lerissel.fr:5555","root","JR*Efj#C^8Cs4AUbBjf#XK");
+	MARIADB("jdbc:mariadb://elouan-lerissel.fr:5555","root","JR*Efj#C^8Cs4AUbBjf#XK");
 	
 	private String urlBase, username, pass;
 	private DatabaseType(String url, String username, String pass) {
