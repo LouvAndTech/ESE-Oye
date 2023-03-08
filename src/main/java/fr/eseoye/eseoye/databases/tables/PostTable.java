@@ -7,6 +7,7 @@ import java.util.List;
 
 import fr.eseoye.eseoye.beans.Post;
 import fr.eseoye.eseoye.beans.PostComplete;
+import fr.eseoye.eseoye.beans.User;
 import fr.eseoye.eseoye.databases.implementation.DatabaseImplementation;
 
 public class PostTable implements ITable {
@@ -23,8 +24,10 @@ public class PostTable implements ITable {
 		final List<Post> post = new ArrayList<>();
 		try {
 			final ResultSet res = db.getValues("SELECT "+getTableName()+".secure_id, "+getTableName()+".title, "+userTableName+".name, "+getTableName()+".price, "+getTableName()+".date FROM "+getTableName()+" INNER JOIN "+userTableName+" ON "+getTableName()+".user = "+userTableName+".id LIMIT "+postNumber+" OFFSET "+(pageNumber*postNumber)+";");
-			while(res.next()) 
-				post.add(new Post(res.getString("secure_id"), res.getString("title"), res.getString("name"), res.getInt("price"), res.getDate("date")));
+			while(res.next()) {
+				final User u = new User(null, res.getString("name"), null, null, null, null, null, null);
+				post.add(new Post(res.getString("secure_id"), res.getString("title"), u, res.getInt("price"), res.getDate("date")));
+			}
 		} catch (SQLException e) {
 			//TODO Handle exception
 			return null;
@@ -36,8 +39,10 @@ public class PostTable implements ITable {
 		PostComplete pc = null;
 		try {
 			final ResultSet res = db.getValues("SELECT "+getTableName()+".secure_id, "+getTableName()+".title, "+userTableName+".name, "+getTableName()+".price, "+getTableName()+".date, "+getTableName()+".content FROM "+getTableName()+" INNER JOIN "+userTableName+" ON "+getTableName()+".user = "+userTableName+".id WHERE "+getTableName()+".secure_id = "+postID);
-			if(res.next())
-				pc = new PostComplete(res.getString("secure_id"), res.getString("title"), res.getString("name"), res.getFloat("price"), res.getDate("date"), res.getString("content"));
+			if(res.next()) {
+				final User u = new User(null, res.getString("name"), null, null, null, null, null, null);
+				pc = new PostComplete(res.getString("secure_id"), res.getString("title"), u, res.getFloat("price"), res.getDate("date"), res.getString("content"));
+			}
 		} catch (SQLException e) {
 			//TODO Handle exception
 			return null;
