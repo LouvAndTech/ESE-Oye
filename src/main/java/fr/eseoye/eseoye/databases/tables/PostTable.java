@@ -36,7 +36,8 @@ public class PostTable implements ITable {
 		PostComplete pc = null;
 		try {
 			final ResultSet res = db.getValues("SELECT "+getTableName()+".id, "+getTableName()+".title, "+userTableName+".name, "+getTableName()+".price, "+getTableName()+".date, "+getTableName()+".content FROM "+getTableName()+" INNER JOIN "+userTableName+" ON "+getTableName()+".user = "+userTableName+".id WHERE "+getTableName()+".id = "+postID);
-			pc = new PostComplete(res.getInt("id"), res.getString("title"), res.getString("name"), res.getFloat("price"), res.getDate("date"), res.getString("content"));
+			if(res.next())
+				pc = new PostComplete(res.getInt("id"), res.getString("title"), res.getString("name"), res.getFloat("price"), res.getDate("date"), res.getString("content"));
 		} catch (SQLException e) {
 			//TODO Handle exception
 			return null;
