@@ -7,11 +7,9 @@ import java.sql.Date;
  */
 public class Post {
     protected String id;
-    protected String title;
-    
+    protected String title;    
     protected User author;
     protected float price;
-    
     protected Date date;
 
     public Post(String id, String title, User author, float price, Date date){

@@ -14,7 +14,7 @@ public class PostComplete extends Post {
     }
 
     public PostComplete(String title, User author, float price, Date date, String content) {
-        super(title, author, price, date);
+        super(title, author,price, date);
         this.content = content;
     }
 
