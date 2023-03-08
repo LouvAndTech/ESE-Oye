@@ -22,7 +22,7 @@ public class PostTable implements ITable {
 	public List<Post> fetchShortPost(int postNumber, int pageNumber) {
 		final List<Post> post = new ArrayList<>();
 		try {
-			final ResultSet res = db.getValues("SELECT "+getTableName()+".id, "+getTableName()+".title, "+userTableName+".name, "+getTableName()+".price, "+getTableName()+".date FROM "+getTableName()+" INNER JOIN "+userTableName+" ON "+getTableName()+".id = "+userTableName+".id LIMIT "+postNumber+" OFFSET "+(pageNumber*postNumber)+";");
+			final ResultSet res = db.getValues("SELECT "+getTableName()+".id, "+getTableName()+".title, "+userTableName+".name, "+getTableName()+".price, "+getTableName()+".date FROM "+getTableName()+" INNER JOIN "+userTableName+" ON "+getTableName()+".user = "+userTableName+".id LIMIT "+postNumber+" OFFSET "+(pageNumber*postNumber)+";");
 			while(res.next()) 
 				post.add(new Post(res.getInt("id"), res.getString("title"), res.getString("name"), res.getInt("price"), res.getDate("date")));
 		} catch (SQLException e) {
@@ -35,7 +35,7 @@ public class PostTable implements ITable {
 	public PostComplete fetchEntirePost(int postID) {
 		PostComplete pc = null;
 		try {
-			final ResultSet res = db.getValues("SELECT "+getTableName()+".id, "+getTableName()+".title, "+userTableName+".name, "+getTableName()+".price, "+getTableName()+".date, "+getTableName()+".content FROM "+getTableName()+" INNER JOIN "+userTableName+" ON "+getTableName()+".id = "+userTableName+".id WHERE "+getTableName()+".id = "+postID);
+			final ResultSet res = db.getValues("SELECT "+getTableName()+".id, "+getTableName()+".title, "+userTableName+".name, "+getTableName()+".price, "+getTableName()+".date, "+getTableName()+".content FROM "+getTableName()+" INNER JOIN "+userTableName+" ON "+getTableName()+".user = "+userTableName+".id WHERE "+getTableName()+".id = "+postID);
 			pc = new PostComplete(res.getInt("id"), res.getString("title"), res.getString("name"), res.getFloat("price"), res.getDate("date"), res.getString("content"));
 		} catch (SQLException e) {
 			//TODO Handle exception
