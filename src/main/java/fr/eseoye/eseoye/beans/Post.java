@@ -9,10 +9,10 @@ public class Post {
     protected int id;
     protected String title;
     protected String author;
-    protected int price;
+    protected float price;
     protected Date date;
 
-    public Post(int id, String title,String author, int price, Date date){
+    public Post(int id, String title,String author, float price, Date date){
         this.id = id;
         this.title = title;
         this.author = author;
@@ -32,7 +32,7 @@ public class Post {
         return author;
     }
 
-    public int getPrice() {
+    public float getPrice() {
         return price;
     }
 
