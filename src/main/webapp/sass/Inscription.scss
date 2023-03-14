@@ -1,0 +1,30 @@
+@use "variables" as *;
+
+div{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  border: #393E46;
+
+}
+
+.title{
+  width: 100%;
+  border-bottom-color: #666666;
+
+ h1{
+
+
+ }
+}
+.container{
+  align-items: center;
+  justify-content: center;
+  border: 2px solid grey;
+  width: 40%;
+  height: 50%;
+  margin: auto;
+  border-radius: 30px;
+  box-shadow: 2px 2px 100px 6px #00adb5;
+}
