@@ -11,6 +11,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 
+@MultipartConfig(fileSizeThreshold = 1024 * 1024,
+        maxFileSize = 1024 * 1024 * 5,
+        maxRequestSize = 1024 * 1024 * 5 * 5)
 @WebServlet(name = "ese-oye", value = "/ese-oye")
 public class ESEOyeServlet extends HttpServlet {
 
@@ -25,6 +28,7 @@ public class ESEOyeServlet extends HttpServlet {
         actionMap.put("ListPosts", new ListPost());
         actionMap.put("OnePost", new OnePost());
         actionMap.put("UserPanel", new UserPanel());
+        actionMap.put("AddAnnonce", new AddAnnonce());
         System.out.println("INIT");
     }
 

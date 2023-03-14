@@ -62,6 +62,6 @@ public class OnePost implements Action{
      */
     private PostComplete fetchPost(int postId){
         //todo : Fetch the post from the database
-        return new PostComplete(1, "Chair", "Jean",1672, new Date(2020, 12, 12), "Description");
+        return new PostComplete("1", "Chair", "Jean",1672, new Date(2020, 12, 12), "Description");
     }
 }

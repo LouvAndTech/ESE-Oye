@@ -1,0 +1,32 @@
+@use 'variables' as *;
+
+.container{
+  margin: 2em;
+  padding: 1em;
+  background-color: $secondcolor;
+  border-radius: 1em;
+
+  .form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    div{
+      width: fit-content;
+
+      #image_drop {
+        width: 300px;
+        height: 169px;
+        border: 1px solid black;
+        background-position: center;
+        background-size: cover;
+        box-sizing: border-box;
+      }
+    }
+    .horz{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+}

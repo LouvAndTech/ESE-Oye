@@ -75,10 +75,10 @@ public class ListPost implements Action{
     private List<Post> fetchPost(int nbPost, int page ){
         //todo : Fetch the post from the database
         List <Post> posts = new ArrayList<>();
-        posts.add(new Post(4, "Lit", "Pen", 100, new Date(2023, 2, 18)));
-        posts.add(new Post(3, "Commode", "Le", 256, new Date(2021, 10, 28)));
-        posts.add(new Post(2, "Table", "Marie",3, new Date(2021, 5, 3)));
-        posts.add(new Post(1, "Chair", "Jean",1672, new Date(2020, 12, 12)));
+        //posts.add(new Post(4, "Lit", "Pen", 100, new Date(2023, 2, 18)));
+        //posts.add(new Post(3, "Commode", "Le", 256, new Date(2021, 10, 28)));
+        //posts.add(new Post(2, "Table", "Marie",3, new Date(2021, 5, 3)));
+        //posts.add(new Post(1, "Chair", "Jean",1672, new Date(2020, 12, 12)));
         return posts;
     }
 }
