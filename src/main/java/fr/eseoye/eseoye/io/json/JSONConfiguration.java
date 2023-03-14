@@ -10,7 +10,7 @@ import fr.eseoye.eseoye.utils.Tuple;
 public class JSONConfiguration extends JSONFile {
 
 	public JSONConfiguration(String path) {
-		super(path, "parameter.json");
+		super(path, "config.json");
 	}
 
 	public String getDatabaseURL() {

@@ -15,7 +15,7 @@ public class IOHandler {
 	private final JSONConfiguration configuration;
 
 	private IOHandler() {
-		this.pathToSaveable = Path.of("datas");
+		this.pathToSaveable = Path.of("data");
 		if(!Files.exists(pathToSaveable)) {
 			try {
 				Files.createDirectories(pathToSaveable);
