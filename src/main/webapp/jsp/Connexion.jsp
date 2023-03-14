@@ -17,22 +17,18 @@
   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/Connexion.css" />
 </head>
 
-<div class="title">
-  <h1>Connexion</h1>
-</div>
 <div class="container">
   <form method="post" action="ese-oye">
+    <h1>Connection</h1>
     <label class="textBox">
       <input type="text" name="mail" placeholder=" " required>
-      <span class="text">Mail</span>
+      <span class="textBox_placeholder">Mail</span>
     </label>
     <br/>
     <label class="textBox">
       <input type="password" name="password" placeholder=" " required>
-      <span class="text">Mot de passe</span>
-
-
-
+      <span class="textBox_placeholder">Mot de passe</span>
+    </label>
   </form>
 
 </div>

@@ -19,3 +19,8 @@ function btchange(){
         buttonElement.disabled = true;
     }
 }
+
+function isNumericInput(input) {
+    // Check if input consists only of digits
+    return /^[0-9]+$/.test(input);
+}

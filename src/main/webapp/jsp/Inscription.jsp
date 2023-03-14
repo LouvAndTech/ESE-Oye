@@ -30,33 +30,38 @@
     </label>
     <br/>
     <label class="textBox">
-      <input type="text" name="name" placeholder=" " required>
+      <input type="text" name="surname" placeholder=" " required>
       <span class="textBox_placeholder">nom</span>
     </label>
     <br/>
     <label class="textBox">
-      <input type="tel" name="name" placeholder=" " required>
+      <input type="tel" name="phone" placeholder=" " required>
       <span class="textBox_placeholder">numéro de téléphone</span>
     </label>
     <br/>
     <label class="textBox">
-      <input type="email" name="name" placeholder=" " required>
+      <input type="email" name="mail" placeholder=" " required>
       <span class="textBox_placeholder">mail</span>
+      <br/>
+      <input name="error" placeholder=" ">
     </label>
     <br/>
 
     <label class="textBox">
-      <input type="date" name="name" placeholder=" " required max="08/03/2005" id="mybday" onclick="btchange()">
+      <input type="date" name="bday" placeholder=" " required max="08/03/2005" id="mybday" onclick="btchange()">
       <span class="textBox_placeholder">date de naissance</span>
     </label>
     <br/>
     <label class="textBox">
-      <input type="password" name="name" placeholder=" " required >
+      <input type="password" name="password" placeholder=" " required >
       <span class="textBox_placeholder">mot de passe</span>
     </label>
     <br/>
     <input type="submit" class="btn fill" value="Valider" id="myButton">
   </form>
+  <a href="webapp/jsp/Connexion.jsp" class="btn fill">déjà inscrit ?</a>
+
+
 </div>
 <script src="${pageContext.request.contextPath}/js/Check_Button.js"></script>
 
