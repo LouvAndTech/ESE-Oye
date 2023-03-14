@@ -1,12 +1,14 @@
 package fr.eseoye.eseoye.action;
 
-import fr.eseoye.eseoye.beans.PostComplete;
+import java.io.IOException;
+import java.sql.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.sql.Date;
+
+import fr.eseoye.eseoye.beans.PostComplete;
+import fr.eseoye.eseoye.beans.User;
 
 public class OnePost implements Action{
 
@@ -62,6 +64,6 @@ public class OnePost implements Action{
      */
     private PostComplete fetchPost(int postId){
         //todo : Fetch the post from the database
-        return new PostComplete("1", "Chair", "Jean",1672, new Date(2020, 12, 12), "Description");
+        return new PostComplete("1", "Chair", new User(null, "Jean","Vend", "lol", new Date(2002,2,24), "0606060606", "j@j.j", "TierMonde"),1672, new Date(2020, 12, 12), "Description");
     }
 }
