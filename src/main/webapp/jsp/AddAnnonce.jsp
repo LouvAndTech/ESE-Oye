@@ -48,9 +48,11 @@
 
             </div>
             <div>
-                <p>Déposez vos image</p>
-                <input type="file" id="image_drop" name="image_drop"/>
-                <br/><input id="btImage" name="btImage" type='submit' value='Envoyer' style="display:none"/><br/>
+                <p>Déposez vos images</p>
+                <input type="file" multiple="multiple" id="image_drop" name="image_drop"/>
+                <div id="image_show">
+                </div>
+                <p id="errorMessageimage" style="display: none">loading</p>
                 <script src="${pageContext.request.contextPath}/js/draganddrop.js" type="text/javascript"></script>
             </div>
             <input type="submit" class="btn fill" value="Enregistrer">
