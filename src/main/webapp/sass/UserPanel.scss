@@ -1,0 +1,48 @@
+
+nav{
+    display: flex;
+    width: fit-content;
+    flex-direction: column;
+    padding: 0 1em;
+
+    a{
+        margin: 0;
+        line-height: 2em;
+        padding: 0.5em;
+        border-radius: 5px;
+
+
+        &.deco_btn{
+            margin-top: auto;
+        }
+
+        span{
+            transform: translate(0, 30%);
+        }
+    }
+}
+
+section{
+    flex: 1;
+
+    form{
+        div{
+            width: fit-content;
+        }
+    }
+}
+
+.hrVertical{
+    margin: auto 1em;
+    height: 90%;
+    min-height: auto;
+}
+
+.centerBtn{
+    width: auto;
+    text-align: center;
+
+    .btn{
+        padding: 1em 2em;
+    }
+}

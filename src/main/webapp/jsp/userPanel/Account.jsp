@@ -6,19 +6,12 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
 <div class="container">
     <h1>Information Personnel</h1>
     <form action="" method="post">
         <div>
-            <label class="textBox">
-                <input type="text" name="name" placeholder="" value="" required>
-                <span class="textBox_placeholder">Nom</span>
-            </label>
-            <label class="textBox">
-                <input type="text" name="surname" placeholder="" value="" required>
-                <span class="textBox_placeholder">Prenom</span>
-            </label>
+            <input type="text" name="name" placeholder="Nom" value="Jean" required>
+            <input type="text" name="surname" placeholder="Prénom" value="Eude" required>
         </div>
         <input type="submit" class="btn fill" value="Enregistrer" disabled>
     </form>
@@ -26,10 +19,7 @@
     <h1>Email</h1>
     <form action="" method="post">
         <div>
-            <label class="textBox">
-                <input type="email" name="mail" placeholder="" value="" required>
-                <span class="textBox_placeholder">Email</span>
-            </label>
+            <input type="email" name="mail" placeholder="Email" value="" required>
         </div>
         <input type="submit" class="btn fill" value="Enregistrer" disabled>
     </form>
@@ -37,10 +27,7 @@
     <h1>Numéro de téléphone</h1>
     <form action="" method="post">
         <div>
-            <label class="textBox">
-                <input type="tel" name="phone" maxlength="14" placeholder="" value="" required>
-                <span class="textBox_placeholder">## ## ## ## ##</span>
-            </label>
+            <input type="tel" name="phone" maxlength="14" placeholder="Téléphone" value="1" required>
         </div>
         <input type="submit" class="btn fill" value="Enregistrer" disabled>
     </form>
@@ -48,10 +35,7 @@
     <h1>Date de naissance</h1>
     <form action="" method="post">
         <div>
-            <label class="textBox">
-                <input type="date" name="birth" placeholder="" value="" required>
-                <span class="textBox_placeholder">Date de naissance</span>
-            </label>
+            <input type="date" name="birth" placeholder="" value="" required>
         </div>
         <input type="submit" class="btn fill" value="Enregistrer" disabled>
     </form>
@@ -59,12 +43,14 @@
     <h1>Mot de passe</h1>
     <form action="" method="post">
         <div>
-            <label class="textBox">
-                <input type="password" name="password" placeholder="" value="" required>
-                <span class="textBox_placeholder">Password</span>
-            </label>
+            <input type="password" name="password" placeholder="Mot de passe" value="" required>
             <p class="passSecu">Votre mot de passe est trop faible</p>
         </div>
         <input type="submit" class="btn fill" value="Enregistrer" disabled>
+    </form>
+    <hr>
+    <h1>Supresion</h1>
+    <form action="" method="post">
+        <input type="submit" class="btn fill" value="Suprimer le compte">
     </form>
 </div>

@@ -1,8 +1,13 @@
-$backcolor : #222831;
-$textcolor : #EEEEEE;
-$maincolor : #00ADB5;
-$secondcolor : #393E46;
-$disabledBorder : #999999;
-$disabledColor : #666666;
-$successColor : #00FF00;
-$dangerColor : #FF0000;
+:root{
+    --maincolor: red;
+    --backcolor: #111;
+    --textcolor: #ccc;
+    --iluminated: #7898cc;
+    --border: #444;
+
+    --disabled: grey;
+    --disabledText: darkgrey;
+    
+    --ligthcolor: #ccc;
+    --lightback: #333;
+}

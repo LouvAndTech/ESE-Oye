@@ -7,11 +7,12 @@ textboxs.forEach(textbox => {
     listText.push(textbox.value);
     textbox.addEventListener('keyup', (e) => {
         var id = textboxs.indexOf(textbox);
+        nid = id > 0 ? id-1 : id;
         if(textbox.type != "password"){
-            nid = id > 0 ? id-1 : id;
             btns[nid].disabled = listText[id] == textbox.value || !textbox.value ? 1 : 0;
         }else{
             //password Security
+            btns[nid].disabled = 1;
             passSecu.classList.remove("passSecu_low");
             passSecu.classList.remove("passSecu_high");
             if(textbox.value.length >= 8){
@@ -20,6 +21,7 @@ textboxs.forEach(textbox => {
                         if(textbox.value.match(/[0-9]/g)){
                             passSecu.classList.add("passSecu_high");
                             passSecu.innerHTML = "Le mdp est securiser";
+                            btns[nid].disabled = 0;
                         }else{
                             passSecu.classList.add("passSecu_low");
                             passSecu.innerHTML = "Le mdp doit contenir des chiffres";
@@ -47,3 +49,14 @@ textboxs.forEach(textbox => {
     }
 });
 
+//textarea
+var textareas = document.querySelectorAll(".textAreaCont");
+
+textareas.forEach(textarea => {
+    textarea.addEventListener('keyup', (e) => {
+        if(textarea.children[0].value.length > 2000){
+            textarea.children[0].value = textarea.children[0].value.slice(0, 2000);
+        }
+        textarea.children[1].innerHTML = textarea.children[0].value.length+"/2000";
+    })
+});
