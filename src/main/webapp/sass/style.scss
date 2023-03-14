@@ -32,15 +32,36 @@ body{
 }
 
 .fill{
+<<<<<<< HEAD
+  border: 0;
+  color: $textcolor;
+  background-color: $maincolor;
+
+  &:disabled{
+    border: 1px solid $disabledBorder;
+    background-color: transparent;
+    color: $disabledColor;
+  }
+=======
   color: $textcolor;
   background-color: $maincolor;
   border: 1px solid $maincolor;
+>>>>>>> refs/remotes/origin/main
 }
 
 .unfill{
   color: $maincolor;
   background-color: transparent;
+<<<<<<< HEAD
+  border: 1px solid $maincolor;
+
+  &:disabled{
+    border: 1px solid $disabledBorder;
+    color: $disabledColor;
+  }
+=======
   border: 1px solid $maincolor
+>>>>>>> refs/remotes/origin/main
 }
 
 .textBox{
