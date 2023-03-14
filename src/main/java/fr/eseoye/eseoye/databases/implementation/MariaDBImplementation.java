@@ -7,15 +7,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import fr.eseoye.eseoye.databases.DAOFactory;
+import fr.eseoye.eseoye.databases.DatabaseFactory;
 import fr.eseoye.eseoye.databases.DatabaseType;
 
 public class MariaDBImplementation extends DatabaseImplementation {
 
-	private DAOFactory factory;
+	private DatabaseFactory factory;
 	private String dbName;
 	
-	public MariaDBImplementation(DAOFactory factory, String databaseName) {
+	public MariaDBImplementation(DatabaseFactory factory, String databaseName) {
 		this.factory = factory;
 		this.dbName = databaseName;
 		try {
