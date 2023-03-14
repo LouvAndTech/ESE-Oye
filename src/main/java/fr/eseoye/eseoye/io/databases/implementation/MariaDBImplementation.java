@@ -1,4 +1,4 @@
-package fr.eseoye.eseoye.databases.implementation;
+package fr.eseoye.eseoye.io.databases.implementation;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import fr.eseoye.eseoye.databases.DatabaseFactory;
-import fr.eseoye.eseoye.databases.DatabaseType;
+import fr.eseoye.eseoye.io.DatabaseFactory;
+import fr.eseoye.eseoye.io.databases.DatabaseType;
 
 public class MariaDBImplementation extends DatabaseImplementation {
 

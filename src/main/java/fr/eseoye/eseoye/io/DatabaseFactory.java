@@ -1,12 +1,13 @@
-package fr.eseoye.eseoye.databases;
+package fr.eseoye.eseoye.io;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import fr.eseoye.eseoye.databases.implementation.MariaDBImplementation;
-import fr.eseoye.eseoye.databases.tables.PostTable;
-import fr.eseoye.eseoye.databases.tables.UserTable;
+import fr.eseoye.eseoye.io.databases.DatabaseType;
+import fr.eseoye.eseoye.io.databases.implementation.MariaDBImplementation;
+import fr.eseoye.eseoye.io.databases.tables.PostTable;
+import fr.eseoye.eseoye.io.databases.tables.UserTable;
 
 public class DatabaseFactory {
 
