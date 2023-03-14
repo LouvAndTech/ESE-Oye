@@ -1,8 +1,9 @@
-package fr.eseoye.eseoye.io;
+package fr.eseoye.eseoye.io.json;
 
 import java.util.function.BooleanSupplier;
 
 import fr.eseoye.eseoye.exceptions.JSONAssertionException;
+import fr.eseoye.eseoye.io.objects.AssertionType;
 
 public class JSONAssertion {
 

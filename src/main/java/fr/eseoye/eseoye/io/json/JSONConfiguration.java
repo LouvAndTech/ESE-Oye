@@ -1,10 +1,9 @@
 package fr.eseoye.eseoye.io.json;
 
-import static fr.eseoye.eseoye.io.JSONAssertion.assertInstanceof;
+import static fr.eseoye.eseoye.io.json.JSONAssertion.assertInstanceof;
 
 import java.util.HashMap;
 
-import fr.eseoye.eseoye.io.JSONFile;
 import fr.eseoye.eseoye.utils.Tuple;
 
 public class JSONConfiguration extends JSONFile {

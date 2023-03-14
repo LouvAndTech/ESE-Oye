@@ -1,4 +1,4 @@
-package fr.eseoye.eseoye.io;
+package fr.eseoye.eseoye.io.json;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;

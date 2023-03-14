@@ -1,4 +1,4 @@
-package fr.eseoye.eseoye.io;
+package fr.eseoye.eseoye.io.objects;
 
 public enum AssertionType {
 

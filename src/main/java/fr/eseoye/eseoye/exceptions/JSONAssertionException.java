@@ -1,6 +1,6 @@
 package fr.eseoye.eseoye.exceptions;
 
-import fr.eseoye.eseoye.io.AssertionType;
+import fr.eseoye.eseoye.io.objects.AssertionType;
 
 public class JSONAssertionException extends RuntimeException {
 
