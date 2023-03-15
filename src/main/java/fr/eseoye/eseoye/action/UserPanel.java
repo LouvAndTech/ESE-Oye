@@ -60,7 +60,7 @@ public class UserPanel implements Action{
         request.getRequestDispatcher("/jsp/UserPanel.jsp").forward(request,response);
         */
         String id = request.getParameter("contentPage");
-        System.out.println("Forward : "+id);
+        //System.out.println("Forward : "+id);
         if(id == null || !actionMap.containsKey(id)) {
             id="Account";
         }

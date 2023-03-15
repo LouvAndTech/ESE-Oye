@@ -47,7 +47,7 @@ public class ESEOyeServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String id = request.getParameter("id");
-        //System.out.println("doGet : "+id);
+        System.out.println("doGet : "+id);
         if(id == null || !actionMap.containsKey(id)) {
             id="Index";
         }
@@ -70,7 +70,7 @@ public class ESEOyeServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String id = request.getParameter("id");
-        //System.out.println("doPost : "+id);
+        System.out.println("doPost : "+id);
         if(id == null || !actionMap.containsKey(id)) {
             id="Index";
         }
