@@ -1,32 +1,23 @@
-@use 'variables' as *;
+.addImg{
+  max-height: 21em;
 
-.container{
-  margin: 2em;
-  padding: 1em;
-  background-color: $secondcolor;
-  border-radius: 1em;
+  .imgList{
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    max-height: 19em;
+    overflow-y: scroll;
 
-  .form{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    div{
-      width: fit-content;
-
-      #image_drop {
-        width: 300px;
-        height: 169px;
-        border: 1px solid black;
-        background-position: center;
-        background-size: cover;
-        box-sizing: border-box;
-      }
+    img{
+        max-height: 17em;
+        width: auto;
+        margin-left: 0.5em;
     }
-    .horz{
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-    }
+  }
+
+  .warning{
+    display: none;
+    color: red;
+    font-size: 1.4em;
+    font-weight: bold;
   }
 }

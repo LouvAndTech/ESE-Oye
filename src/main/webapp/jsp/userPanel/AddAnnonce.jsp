@@ -1,5 +1,8 @@
 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Post.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/AddAnnonce.css">
 
 <div class="container">
     <form action="">
@@ -10,7 +13,11 @@
             </div>
             <div class="carrousel">
                 <div class="addImg">
-                    <input type="file" name="" id="">
+                    <input type="file" multiple="multiple" id="image_drop" name="image_drop"/>
+                    <div id="image_show" class="imgList">
+                    </div>
+                    <p class="warning" id="errorMessageimage">loading</p>
+                    <script src="${pageContext.request.contextPath}/js/draganddrop.js" type="text/javascript"></script>
                 </div>
             </div>
             <hr>
@@ -20,9 +27,9 @@
                     <p>Catégorie :</p>
                     <select name="categorie" id="">
                         <option value="">-- Select catégorie --</option>
-                        <option value="1">Ameublement</option>
-                        <option value="2">Voiture</option>
-                        <option value="3">Maison</option>
+                        <c:forEach var="c" items="${categories}">
+                            <option value="${c}">${c}</option>
+                        </c:forEach>
                     </select>
                 </div>
                 <hr class="hrVertical">
@@ -30,9 +37,9 @@
                     <p>Etat :</p>
                     <select name="categorie" id="">
                         <option value="">-- Select Etat --</option>
-                        <option value="1">Neuf</option>
-                        <option value="2">Ouvert mais pas utiliser</option>
-                        <option value="3">Vieux</option>
+                        <c:forEach var="c" items="${states}">
+                            <option value="${c}">${c}</option>
+                        </c:forEach>
                     </select>
                 </div>
             </div>

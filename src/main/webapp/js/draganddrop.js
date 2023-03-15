@@ -22,11 +22,13 @@ image_drop.addEventListener('change',(event) =>{
 function newImage(files){
     let uploaded_image = [];
     document.querySelector("#image_show").innerHTML="";
+    message.style.display = "none";
     let resp = heavyTest(files);
     if(!resp){
         document.getElementById('image_drop').files = files;
         for (let i=0;i<files.length;i++)
              readImage(files[i]);
+
     }else {
         if(resp==='noImage'){
             message.innerHTML = "Vous devez ajouter au moins une image"
@@ -44,7 +46,7 @@ readImage = (file) => {
     const reader = new FileReader();
     reader.addEventListener('load', (event) => {
         uploaded_image.push(event.target.result);
-        let img = new Image(200,100);
+        let img = new Image();
         img.src = `${uploaded_image[uploaded_image.length-1]}`;
         document.querySelector("#image_show").appendChild(img);
     });
