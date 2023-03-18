@@ -24,9 +24,7 @@ public class ESEOyeServlet extends HttpServlet {
         actionMap.put("Index", new Index());
         actionMap.put("ListPosts", new ListPost());
         actionMap.put("OnePost", new OnePost());
-        actionMap.put("UserPanel", new UserPanel());
-        actionMap.put("Inscription", new Inscription());
-        actionMap.put("Connexion", new Connexion());
+        actionMap.put("UserPanel", UserPanel.getInstance());
         System.out.println("INIT");
     }
 
@@ -46,7 +44,7 @@ public class ESEOyeServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String id = request.getParameter("id");
-        System.out.println("doGet : "+id);
+        //System.out.println("doGet : "+id);
         if(id == null || !actionMap.containsKey(id)) {
             id="Index";
         }
@@ -69,7 +67,7 @@ public class ESEOyeServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String id = request.getParameter("id");
-        System.out.println("doPost : "+id);
+        //System.out.println("doPost : "+id);
         if(id == null || !actionMap.containsKey(id)) {
             id="Index";
         }
