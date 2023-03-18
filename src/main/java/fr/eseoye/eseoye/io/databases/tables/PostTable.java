@@ -1,4 +1,4 @@
-package fr.eseoye.eseoye.databases.tables;
+package fr.eseoye.eseoye.io.databases.tables;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,7 +8,7 @@ import java.util.List;
 import fr.eseoye.eseoye.beans.Post;
 import fr.eseoye.eseoye.beans.PostComplete;
 import fr.eseoye.eseoye.beans.User;
-import fr.eseoye.eseoye.databases.implementation.DatabaseImplementation;
+import fr.eseoye.eseoye.io.databases.implementation.DatabaseImplementation;
 
 public class PostTable implements ITable {
 

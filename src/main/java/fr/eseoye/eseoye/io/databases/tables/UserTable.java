@@ -1,11 +1,11 @@
-package fr.eseoye.eseoye.databases.tables;
+package fr.eseoye.eseoye.io.databases.tables;
 
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 
-import fr.eseoye.eseoye.databases.implementation.DatabaseImplementation;
+import fr.eseoye.eseoye.io.databases.implementation.DatabaseImplementation;
 import fr.eseoye.eseoye.utils.Ternary;
 import fr.eseoye.eseoye.utils.Tuple;
 

@@ -1,4 +1,4 @@
-package fr.eseoye.eseoye.databases;
+package fr.eseoye.eseoye.io.databases;
 
 public enum DatabaseType {
 	

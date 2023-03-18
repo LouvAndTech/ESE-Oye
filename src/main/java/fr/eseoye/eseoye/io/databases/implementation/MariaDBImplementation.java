@@ -1,4 +1,4 @@
-package fr.eseoye.eseoye.databases.implementation;
+package fr.eseoye.eseoye.io.databases.implementation;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,15 +7,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import fr.eseoye.eseoye.databases.DAOFactory;
-import fr.eseoye.eseoye.databases.DatabaseType;
+import fr.eseoye.eseoye.io.DatabaseFactory;
+import fr.eseoye.eseoye.io.databases.DatabaseType;
 
 public class MariaDBImplementation extends DatabaseImplementation {
 
-	private DAOFactory factory;
+	private DatabaseFactory factory;
 	private String dbName;
 	
-	public MariaDBImplementation(DAOFactory factory, String databaseName) {
+	public MariaDBImplementation(DatabaseFactory factory, String databaseName) {
 		this.factory = factory;
 		this.dbName = databaseName;
 		try {

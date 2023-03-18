@@ -1,25 +1,26 @@
-package fr.eseoye.eseoye.databases;
+package fr.eseoye.eseoye.io;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import fr.eseoye.eseoye.databases.implementation.MariaDBImplementation;
-import fr.eseoye.eseoye.databases.tables.PostTable;
-import fr.eseoye.eseoye.databases.tables.UserTable;
+import fr.eseoye.eseoye.io.databases.DatabaseType;
+import fr.eseoye.eseoye.io.databases.implementation.MariaDBImplementation;
+import fr.eseoye.eseoye.io.databases.tables.PostTable;
+import fr.eseoye.eseoye.io.databases.tables.UserTable;
 
-public class DAOFactory {
+public class DatabaseFactory {
 
 	private static final String SEPARATOR = "/";
 	
-	private static volatile DAOFactory instance = null;
+	private static volatile DatabaseFactory instance = null;
 	
-	private DAOFactory() { }
+	private DatabaseFactory() { }
 	
-	public static DAOFactory getInstance() {
+	public static DatabaseFactory getInstance() {
 		if(instance == null) {
-			synchronized (DAOFactory.class) {
-				if(DAOFactory.instance == null) instance = new DAOFactory();
+			synchronized (DatabaseFactory.class) {
+				if(DatabaseFactory.instance == null) instance = new DatabaseFactory();
 			}
 		}
 		return instance;

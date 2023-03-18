@@ -1,10 +1,10 @@
-package fr.eseoye.eseoye.databases.implementation;
+package fr.eseoye.eseoye.io.databases.implementation;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import fr.eseoye.eseoye.databases.DatabaseType;
+import fr.eseoye.eseoye.io.databases.DatabaseType;
 
 public abstract class DatabaseImplementation {
 	
