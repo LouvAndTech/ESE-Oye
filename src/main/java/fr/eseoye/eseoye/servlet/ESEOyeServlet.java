@@ -1,26 +1,19 @@
 package fr.eseoye.eseoye.servlet;
 
 //Actions
-import java.io.IOException;
-import fr.eseoye.eseoye.action.Action;
-import fr.eseoye.eseoye.action.Index;
-import fr.eseoye.eseoye.action.ListPost;
-import fr.eseoye.eseoye.action.OnePost;
+import fr.eseoye.eseoye.action.*;
 
 //Libraries
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
 
-import fr.eseoye.eseoye.action.Action;
-import fr.eseoye.eseoye.action.Index;
-
+@MultipartConfig(fileSizeThreshold = 1024 * 1024,
+        maxFileSize = 1024 * 1024 * 5,
+        maxRequestSize = 1024 * 1024 * 5 * 5)
 @WebServlet(name = "ese-oye", value = "/ese-oye")
 public class ESEOyeServlet extends HttpServlet {
 
@@ -34,6 +27,7 @@ public class ESEOyeServlet extends HttpServlet {
         actionMap.put("Index", new Index());
         actionMap.put("ListPosts", new ListPost());
         actionMap.put("OnePost", new OnePost());
+        actionMap.put("UserPanel", UserPanel.getInstance());
         System.out.println("INIT");
     }
 

@@ -6,13 +6,13 @@ import java.sql.Date;
  * Used to store a simplified version of a post
  */
 public class Post {
-    protected int id;
+    protected String id;
     protected String title;
-    protected String author;
+    protected User author;
     protected float price;
     protected Date date;
 
-    public Post(int id, String title,String author, float price, Date date){
+    public Post(String id, String title, User author, float price, Date date){
         this.id = id;
         this.title = title;
         this.author = author;
@@ -20,7 +20,15 @@ public class Post {
         this.date = date;
     }
 
-    public int getId() {
+    public Post(String title, User author, float price, Date date){
+        this.id = null; //TODO Generate new hash for the post
+        this.title = title;
+        this.author = author;
+        this.price = price;
+        this.date = date;
+    }
+
+    public String getId() {
         return id;
     }
 
@@ -28,7 +36,7 @@ public class Post {
         return title;
     }
 
-    public String getAuthor() {
+    public User getAuthor() {
         return author;
     }
 
