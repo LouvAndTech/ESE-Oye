@@ -1,8 +1,8 @@
 package fr.eseoye.eseoye.action;
 
 import fr.eseoye.eseoye.beans.PostComplete;
-import fr.eseoye.eseoye.databases.DAOFactory;
-import fr.eseoye.eseoye.databases.DatabaseType;
+import fr.eseoye.eseoye.io.DatabaseFactory;
+import fr.eseoye.eseoye.io.databases.DatabaseType;
 import java.io.IOException;
 import java.sql.Date;
 

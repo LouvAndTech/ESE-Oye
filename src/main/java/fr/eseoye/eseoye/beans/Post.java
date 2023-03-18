@@ -19,7 +19,7 @@ public class Post {
         this.price = price;
         this.date = date;
     }
-
+    
     public Post(String title, User author, float price, Date date){
         this.id = null; //TODO Generate new hash for the post
         this.title = title;

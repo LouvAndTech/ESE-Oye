@@ -1,10 +1,10 @@
-package fr.eseoye.eseoye.databases.implementation;
+package fr.eseoye.eseoye.io.databases.implementation;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import fr.eseoye.eseoye.databases.DatabaseType;
+import fr.eseoye.eseoye.io.databases.DatabaseType;
 
 public abstract class DatabaseImplementation {
 	
@@ -12,15 +12,19 @@ public abstract class DatabaseImplementation {
 	
 	public abstract void insertValues(String sqlRequest, List<String> values) throws SQLException;
 	
-	public abstract void updateValues(String table, int id, List<String> fields, List<String> values) throws SQLException;
+	public abstract void updateValues(String table, List<String> fields, List<String> values, String condition) throws SQLException;
 	
 	public abstract void updateValues(String sqlRequest, List<String> values) throws SQLException;
 	
 	public abstract ResultSet getValues(String table, List<String> values) throws SQLException;
 	
+	public abstract ResultSet getValues(String table, List<String> values, String condition) throws SQLException;
+	
 	public abstract ResultSet getValues(String sqlRequest) throws SQLException;
 	
 	public abstract int getValuesCount(String table, String values) throws SQLException;
+
+	public abstract int getValuesCount(String table, String values, String condition) throws SQLException;
 	
 	protected String generateRequestEmptyValues(int valuesListSize) {
 		final StringBuilder sb = new StringBuilder();
