@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,13 +18,21 @@ public class AddPosts implements Action {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("AddPosts : execute (start)");
+        List<InputStream> images = request.getParts().stream().filter(part -> part.getName().equals("image_drop")).map(part -> {
+            try {
+                return part.getInputStream();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }).toList();
         try{
             //todo : List<String> imageUrl = SFTPFactory.getInstance().createNewConnection().uploadFile(request.getPart("image_drop").getInputStream());
             //todo : push the rest of the data to the server
             throw new Exception("Not implemented yet");
         }catch (Exception e){
             request.setAttribute("error", e.getMessage());
-            request.getRequestDispatcher("/jsp/UserPanel.jsp").forward(request,response);
+            forward(request, response, "/jsp/UserPanel.jsp");
             return;
         }
 
