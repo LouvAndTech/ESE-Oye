@@ -58,7 +58,11 @@
     <div class="buttonContainer">
         <button class="btn" onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${postPage-1}')"><span class="material-symbols-outlined">navigate_before</span></button>
         <c:forEach var="page" items="${nbPage}">
-            <button <c:if test="${postPage == page}">class="actual"</c:if>>${page}</button>
+            <button <c:choose>
+                    <c:when test="${postPage == page}">class="actual" style="cursor: default" </c:when>
+                    <c:otherwise>onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${page}')"</c:otherwise>
+                    </c:choose>
+            >${page}</button>
         </c:forEach>
         <button class="btn" onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${postPage+1}')"><span class="material-symbols-outlined">navigate_next</span></button>
     </div>
