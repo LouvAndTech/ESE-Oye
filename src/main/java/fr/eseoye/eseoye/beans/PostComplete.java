@@ -21,6 +21,4 @@ public class PostComplete extends Post {
     public String getContent() {
         return content;
     }
-
-
 }

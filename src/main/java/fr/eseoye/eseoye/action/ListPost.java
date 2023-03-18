@@ -2,8 +2,10 @@ package fr.eseoye.eseoye.action;
 
 import fr.eseoye.eseoye.beans.Post;
 import fr.eseoye.eseoye.beans.PostComplete;
+import fr.eseoye.eseoye.beans.User;
 import fr.eseoye.eseoye.io.DatabaseFactory;
 import fr.eseoye.eseoye.io.databases.DatabaseType;
+import fr.eseoye.eseoye.utils.Tuple;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListPost implements Action{
+
+    private static final int POST_PER_PAGE = 10;
 
     /**
      * Handle the next and previous button
@@ -32,28 +36,27 @@ public class ListPost implements Action{
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //if the user click on the next button
         try{
-            //Get the page number from the request and increment it
-            int page = Integer.parseInt(request.getParameter("postPage"));
-            if(page < 1) page = 1; //make sure it's not negative
-            //Get the 10 posts corresponding from the database
-            List<Post> posts = fetchPost(10, page);
-            //If there is no more post to display, we decrement the page number and get the right list of posts
-            if(posts.size() == 0){
-                page--;
-                posts = fetchPost(10, page);
+            if(request.getParameter("postPage") != null){
+                //Change page
+                int page = Integer.parseInt(request.getParameter("postPage"));
+                if(page < 1) page = 1; //make sure it's not negative
+                if(fetchPost(POST_PER_PAGE, page).getValueB() < page  && page > 1){
+                    page--;
+                }
+                fillRequest(request, POST_PER_PAGE, page);
+            }else if(request.getParameter("order") != null){
+                //Change order
+                throw new Exception("Not implemented yet");
+            }else {
+                //not supposed to happen, forward to the ListPosts.jsp
+                throw new Exception("Nothing to do");
             }
-            System.out.println("Page : " + page);
-            //Set the page number to the request
-            request.setAttribute("postPage", page);
-            //Forward to the ListPosts.jsp
-            request.setAttribute("posts", posts);
-            request.getRequestDispatcher("/jsp/ListPosts.jsp").forward(request, response);
         }catch (Exception e){
-            //If the parse fail, we forward to the ListPosts.jsp with the first 10 posts
-            //also append when there is no more post to display
-            System.out.println("Error : " + e.getMessage());
+            //If there is as errpr we forward to the ListPosts.jsp with the first 10 posts
             this.forward(request, response, "/jsp/ListPosts.jsp");
         }
+        //Forward to the ListPosts.jsp with the right posts and page number
+        request.getRequestDispatcher("/jsp/ListPosts.jsp").forward(request, response);
     }
 
     /**
@@ -71,11 +74,27 @@ public class ListPost implements Action{
      */
     @Override
     public void forward(HttpServletRequest request, HttpServletResponse response, String target) throws ServletException, IOException {
-        request.setAttribute("posts", fetchPost(10, 1   ));
-        request.setAttribute("postPage", 1);
+        try {
+            fillRequest(request, POST_PER_PAGE, 1);
+        } catch (Exception e) {
+
+        }
         request.getRequestDispatcher("/jsp/ListPosts.jsp").forward(request, response);
     }
 
+    /**
+     * Fill the request with the posts and the number of page
+     * @param request  an {@link HttpServletRequest} object
+     * @param nbPost   the number of post to fetch
+     * @param page     the page numbers
+     */
+    private void fillRequest (HttpServletRequest request,int nbPost, int page) throws Exception{
+        Tuple<List<Post>,Integer> fromDB = fetchPost(nbPost, page );
+        List<Integer> nbPage = handleNBpage(fromDB.getValueB(), page);
+        request.setAttribute("posts", fromDB.getValueA());
+        request.setAttribute("nbPage", nbPage);
+        request.setAttribute("postPage", page);
+    }
 
     /**
      * [WIP] Fetch the posts from the database
@@ -83,13 +102,52 @@ public class ListPost implements Action{
      * @param page      the page number
      * @return          a list of {@link Post}
      */
-    private List<Post> fetchPost(int nbPost, int page ){
+    private Tuple<List<Post>,Integer> fetchPost(int nbPost, int page ){
         //todo : Fetch the post from the database
         List <Post> posts = new ArrayList<>();
-        //posts.add(new Post(4, "Lit", "Pen", 100, new Date(2023, 2, 18)));
-        //posts.add(new Post(3, "Commode", "Le", 256, new Date(2021, 10, 28)));
-        //posts.add(new Post(2, "Table", "Marie",3, new Date(2021, 5, 3)));
-        //posts.add(new Post(1, "Chair", "Jean",1672, new Date(2020, 12, 12)));
-        return posts;
+        for(int i = 0; i < nbPost; i++){
+            User us = new User( String.valueOf(i),"Name "+i,"Surname "+i, "pass",new Date(System.currentTimeMillis()),"0987654321","mail@mail.mail","OK");
+            Post post = new Post(String.valueOf(i), "Title"+i, us, i+10, new Date(System.currentTimeMillis()));
+            posts.add(post);
+        }
+        int maxPageProv = 7;
+        if(page > maxPageProv) posts = new ArrayList<>();
+        return new Tuple<>(posts, maxPageProv);
+    }
+
+    /**
+     * Handle the display of the page number in the pagination
+     * @param nbPage   the number of page total
+     * @param page      the current page
+     * @return        a list of {@link Integer} containing the page number to display
+     */
+    private List<Integer> handleNBpage(int nbPage, int page){
+        if(nbPage > 5){
+            if(page <= 3){
+                return new ArrayList<Integer>(){{
+                    for (int i = 1; i <= 5; i++){
+                        add(i);
+                    }
+                }};
+            }else if(page >= nbPage - 2){
+                return new ArrayList<Integer>(){{
+                    for(int i = 4; i >= 0; i--){
+                        add(nbPage - i);
+                    }
+                }};
+            }else{
+                return new ArrayList<Integer>(){{
+                    for (int i = -2; i <= 2; i++){
+                        add(page + i);
+                    }
+                }};
+            }
+        }else {
+            List<Integer> list = new ArrayList<>();
+            for(int i = 1; i <= nbPage; i++){
+                list.add(i);
+            }
+            return list;
+        }
     }
 }
