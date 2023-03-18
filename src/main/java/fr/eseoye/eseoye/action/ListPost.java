@@ -1,5 +1,6 @@
 package fr.eseoye.eseoye.action;
 
+import fr.eseoye.eseoye.beans.Category;
 import fr.eseoye.eseoye.beans.Post;
 import fr.eseoye.eseoye.beans.PostComplete;
 import fr.eseoye.eseoye.beans.User;
@@ -107,7 +108,7 @@ public class ListPost implements Action{
         List <Post> posts = new ArrayList<>();
         for(int i = 0; i < nbPost; i++){
             User us = new User( String.valueOf(i),"Name "+i,"Surname "+i, "pass",new Date(System.currentTimeMillis()),"0987654321","mail@mail.mail","OK");
-            Post post = new Post(String.valueOf(i), "Title"+i, us, i+10, new Date(System.currentTimeMillis()));
+            Post post = new Post(String.valueOf(i), "Title"+i, us,i+10, new Date(System.currentTimeMillis()),new Category(i, "Cat"+i),"http://eseoye.elouan-lerissel.fr/blankImg.png");
             posts.add(post);
         }
         int maxPageProv = 7;

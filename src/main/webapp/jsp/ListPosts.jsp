@@ -34,16 +34,16 @@
         <c:forEach var="post" items="${posts}">
             <hr>
             <div class="post" onclick="window.Request.sendGet('ese-oye?id=OnePost&postId=${post.id}')">
-                <img src="${pageContext.request.contextPath}/img/blankImg.png" alt="">
+                <img src="${post.firstImage}" alt="">
                 <div class="content">
                     <div class="header">
                         <h2>${post.title}</h2>
-                        <h2>${post.price}</h2>
+                        <h2>${post.price}€</h2>
                     </div>
                     <div class="footer">
                         <div class="cat">
                             <p>Catégorie :</p>
-                            <p>[TODO]</p>
+                            <p>${post.category.name}</p>
                         </div>
                         <div class="subtitle">
                             <p class="author">${post.author.name} ${post.author.surname}</p>
@@ -68,5 +68,3 @@
 
 </body>
 </html>
-
-<!--onclick="location.href='ese-oye?id=ListPosts&postId=${post.id}'"-->

@@ -21,8 +21,8 @@
 <section>
     <div class="centerSectionElement">
         <div class="header">
-            <h2>Appareil à raclette</h2>
-            <h2>123.99€</h2>
+            <h2>${post.title}</h2>
+            <h2>${post.price}€</h2>
         </div>
         <div class="carrousel">
             <div class="backCarrousel">
@@ -32,42 +32,35 @@
                 <button class="btnLeft" onclick="turnLeft();"><span class="material-symbols-outlined">arrow_back_ios</span></button>
                 <div class="shortBtn"></div>
             </div>
-            <img src="${pageContext.request.contextPath}/img/blankImg.png" alt="">
-            <img src="${pageContext.request.contextPath}/img/blankImg.png" alt="">
-            <img src="${pageContext.request.contextPath}/img/blankImg.png" alt="">
-            <img src="${pageContext.request.contextPath}/img/blankImg.png" alt="">
-            <img src="${pageContext.request.contextPath}/img/blankImg.png" alt="">
+            <c:forEach var="image" items="${post.imageList}">
+                <img src="${image}" alt="">
+            </c:forEach>
         </div>
         <hr>
         <h2>Caractéristiques :</h2>
         <div class="carac">
             <div class="cat">
                 <p>Catégorie :</p>
-                <p>Cuisine</p>
+                <p>${post.category.name}</p>
             </div>
             <hr class="hrVertical">
             <div class="state">
                 <p>Etat :</p>
-                <p>A servie</p>
+                <p>A servie [TODO]</p>
             </div>
             <div class="date">
                 <p>Mise en ligne :</p>
-                <p>01/03/2023</p>
+                <p>${post.date}</p>
             </div>
         </div>
         <hr>
         <h2>Description :</h2>
-        <p>Un appareil à raclette est un petit appareil de cuisine conçu pour faire fondre du fromage et le servir avec des accompagnements tels que des pommes de terre, des cornichons, de la charcuterie, etc. Il se compose généralement d'une plaque chauffante qui permet de faire fondre le fromage et de le faire couler dans des poêlons individuels qui sont placés sous la plaque chauffante.</p>
-        <br>
-        <p>Les poêlons sont généralement disposés autour de la plaque chauffante et peuvent être retirés pour que les convives puissent servir le fromage fondu sur leurs aliments. La plaque chauffante est souvent dotée d'un contrôle de température pour régler la chaleur en fonction des préférences individuelles.</p>
-        <br>
-        <p>Les appareils à raclette peuvent être électriques ou fonctionner avec des bougies chauffe-plat. Ils peuvent varier en taille et en capacité, avec des modèles allant de deux à douze poêlons.</p>
-        <hr>
+        <p>${post.content}</p>
         <div class="user">
             <img class="imgPP" src="${pageContext.request.contextPath}/img/blankPP.png" alt="">
             <div class="info">
-                <p>Julien Guitter</p>
-                <p>5 annonces</p>
+                <p>${post.author.name} ${post.author.surname}</p>
+                <!--p>5 annonces</p-->
             </div>
             <a href="" class="aBtn">Voir le profile</a>
         </div>

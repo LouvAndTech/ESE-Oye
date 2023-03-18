@@ -26,7 +26,7 @@ public class PostTable implements ITable {
 			final ResultSet res = db.getValues("SELECT "+getTableName()+".secure_id, "+getTableName()+".title, "+userTableName+".name, "+getTableName()+".price, "+getTableName()+".date FROM "+getTableName()+" INNER JOIN "+userTableName+" ON "+getTableName()+".user = "+userTableName+".id LIMIT "+postNumber+" OFFSET "+(pageNumber*postNumber)+";");
 			while(res.next()) {
 				final User u = new User(null, res.getString("name"), null, null, null, null, null, null);
-				post.add(new Post(res.getString("secure_id"), res.getString("title"), u, res.getInt("price"), res.getDate("date")));
+				//post.add(new Post(res.getString("secure_id"), res.getString("title"), u, res.getInt("price"), res.getDate("date")));
 			}
 		} catch (SQLException e) {
 			//TODO Handle exception
@@ -41,7 +41,7 @@ public class PostTable implements ITable {
 			final ResultSet res = db.getValues("SELECT "+getTableName()+".secure_id, "+getTableName()+".title, "+userTableName+".name, "+getTableName()+".price, "+getTableName()+".date, "+getTableName()+".content FROM "+getTableName()+" INNER JOIN "+userTableName+" ON "+getTableName()+".user = "+userTableName+".id WHERE "+getTableName()+".secure_id = "+postID);
 			if(res.next()) {
 				final User u = new User(null, res.getString("name"), null, null, null, null, null, null);
-				pc = new PostComplete(res.getString("secure_id"), res.getString("title"), u, res.getFloat("price"), res.getDate("date"), res.getString("content"));
+				//pc = new PostComplete(res.getString("secure_id"), res.getString("title"), u, res.getFloat("price"), res.getDate("date"), res.getString("content"));
 			}
 		} catch (SQLException e) {
 			//TODO Handle exception
