@@ -6,6 +6,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/AddImage.css">
+
 <div class="container">
     <h1>Information Personnel</h1>
     <form action="" method="post">
@@ -14,6 +17,18 @@
             <input type="text" name="surname" placeholder="Prénom" value="Eude" required>
         </div>
         <input type="submit" class="btn fill" value="Enregistrer" disabled>
+    </form>
+    <hr>
+    <h1>Image de Profil</h1>
+    <form>
+        <div class="addImg" style="max-height: 23em">
+            <input type="file" id="image_drop" name="image_drop"/>
+            <div id="image_show" class="imgList">
+            </div>
+            <p class="warning" id="errorMessageimage">loading</p>
+            <script src="${pageContext.request.contextPath}/js/draganddrop.js" type="text/javascript"></script>
+            <input type="submit" class="btn fill" value="Enregistrer" disabled>
+        </div>
     </form>
     <hr>
     <h1>Email</h1>
