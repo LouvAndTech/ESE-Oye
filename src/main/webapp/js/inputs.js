@@ -72,16 +72,15 @@ selectContainers.forEach(selectContainer => {
         selectElem = selectContainer;
         if(optContainer.classList.contains("openSelect")){
             optContainer.classList.remove("openSelect");
-            console.log(optContainer);
             optContainer.style.height = 0;
         }else{
             optContainer.classList.add("openSelect");
-            console.log(optContainer.children.length);
             optContainer.style.height = 2.2*optContainer.children.length+"em";
         }
     });
     var ListOpt = selectContainer.querySelectorAll("select option");
-    for(var i=1; i<ListOpt.length; i++){
+    var allElement = selectContainer.querySelector("select").classList.contains("allElement");
+    for(var i=allElement?0:1; i<ListOpt.length; i++){
         optContainer.innerHTML += '<div class="cs_option_e" value="'+ListOpt[i].value+'"><p>'+ListOpt[i].innerHTML+'</p></div>';
     }
     selectContainer.querySelectorAll(".cs_option_e").forEach(e => {
