@@ -20,12 +20,17 @@
 <section>
     <div class="tri">
         <h2>Annonce << Toutes >> : Angers</h2>
-        <select name="tri" id="">
-            <option value="plusRecent">Tri: Plus récent</option>
-            <option value="moinRecent">Tri: Moins récent</option>
-            <option value="plusCher">Tri: Plus chère</option>
-            <option value="moinsCher">Tri: Moins chère</option>
-        </select>
+        <div class="custom_select">
+            <select name="" id="">
+                <option value="0">-- Select Option --</option>
+                <option value="1">Option 1</option>
+                <option value="2">Option 2</option>
+                <option value="3">Option 3</option>
+                <option value="4">Option 4</option>
+                <option value="5">Option 5</option>
+                <option value="6">Option 6</option>
+            </select>
+        </div>
 
     </div>
     <div class="posts centerSectionElement">
@@ -106,5 +111,6 @@
 
 <%@include file="theme/Footer.jsp" %>
 
+<script src="${pageContext.request.contextPath}/js/inputs.js"></script>
 </body>
 </html>

@@ -26,22 +26,32 @@
             <div class="carac">
                 <div class="cat">
                     <p>Catégorie :</p>
-                    <select name="categorie" id="">
-                        <option value="">-- Select catégorie --</option>
-                        <option value="1">Ameublement</option>
-                        <option value="2">Voiture</option>
-                        <option value="3">Maison</option>
-                    </select>
+                    <div class="custom_select">
+                        <select name="" id="">
+                            <option value="0">-- Select Option --</option>
+                            <option value="1">Option 1</option>
+                            <option value="2">Option 2</option>
+                            <option value="3">Option 3</option>
+                            <option value="4">Option 4</option>
+                            <option value="5">Option 5</option>
+                            <option value="6">Option 6</option>
+                        </select>
+                    </div>
                 </div>
                 <hr class="hrVertical">
                 <div class="state">
                     <p>Etat :</p>
-                    <select name="categorie" id="">
-                        <option value="">-- Select Etat --</option>
-                        <option value="1">Neuf</option>
-                        <option value="2">Ouvert mais pas utiliser</option>
-                        <option value="3">Vieux</option>
-                    </select>
+                    <div class="custom_select">
+                        <select name="" id="">
+                            <option value="0">-- Select Option --</option>
+                            <option value="1">Option 1</option>
+                            <option value="2">Option 2</option>
+                            <option value="3">Option 3</option>
+                            <option value="4">Option 4</option>
+                            <option value="5">Option 5</option>
+                            <option value="6">Option 6</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <hr>

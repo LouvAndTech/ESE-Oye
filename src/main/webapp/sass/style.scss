@@ -210,7 +210,7 @@ select{
 }
 
 section{
-    input:not([type="submit"]), .centerSectionElement > .textAreaCont textarea{
+    input:not([type="submit"]), .centerSectionElement > .textAreaCont textarea, .custom_select{
         background: var(--lightback);
         color: var(--textcolor);
         border: none;
@@ -236,6 +236,69 @@ section{
 
         .nbChar{
             text-align: right;
+        }
+    }
+
+    .custom_select select{
+        display: none;
+    }
+    .cs_select{
+        display: flex;
+    }
+
+    .custom_select{
+        height: fit-content;
+        width: fit-content;
+        min-width: 10em;
+        text-align: left;
+        padding: 0;
+        cursor: pointer;
+
+        p{
+            height: fit-content;
+            margin: auto;
+            margin-left: 0;
+            padding: .5em;
+            white-space: nowrap;
+        }
+
+        .cs_select{
+            width: 100%;
+            border-bottom: 1.5px solid var(--iluminated);
+
+            span{
+                height: fit-content;
+                margin: auto 0;
+            }
+        }
+
+        .cs_container{
+            width: 100%;
+            position: relative;
+        }
+
+        .cs_option{
+            overflow: hidden;
+            width: 100%;
+            position: absolute;
+            background-color: var(--lightback);
+            transition: all .5s;
+            height: 0;
+            border-bottom: 1.5px solid var(--iluminated);
+
+            .cs_option_e{
+                border-top: 1px solid var(--border);
+                width: 100%;
+                height: 2.15em;
+
+                &:hover{
+                    background-color: var(--border);
+                }
+            }
+
+            &.openSelect{
+                box-shadow: 0px 5px 10px black;
+            }
         }
     }
 }
