@@ -302,6 +302,14 @@ section{
             }
         }
     }
+
+    .alignItemsRight{
+        display: flex;
+        justify-content: flex-end;
+        a{
+            margin: 0;
+        }
+    }
 }
 
 .passSecu{

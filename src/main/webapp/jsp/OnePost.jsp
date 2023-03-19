@@ -20,6 +20,14 @@
 
 <section>
     <div class="centerSectionElement">
+        <c:choose>
+            <c:when test="${adminState}">
+                <div class="alignItemsRight">
+                    <a href=""><span class="material-symbols-outlined">edit</span></a>
+                    <a href="" class="passSecu_low"><span class="material-symbols-outlined">delete</span></a>
+                </div>
+            </c:when>
+        </c:choose>
         <div class="header">
             <h2>Appareil à raclette</h2>
             <h2>123.99€</h2>
