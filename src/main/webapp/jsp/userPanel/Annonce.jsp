@@ -14,6 +14,8 @@
 
 <section>
     <div class="list">
+        <br>
+        <h2>Toute vos annonces publiées.</h2>
         <div class="posts centerSectionElement">
             <c:forEach var="post" items="${posts}">
                 <hr>

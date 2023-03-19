@@ -4,6 +4,7 @@ import fr.eseoye.eseoye.beans.Category;
 import fr.eseoye.eseoye.beans.Post;
 import fr.eseoye.eseoye.beans.PostState;
 import fr.eseoye.eseoye.beans.User;
+import fr.eseoye.eseoye.io.objects.FetchPostFilter;
 import fr.eseoye.eseoye.utils.Tuple;
 
 import javax.servlet.ServletException;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class AbstractFetchPost {
@@ -25,30 +27,29 @@ public abstract class AbstractFetchPost {
      * @throws Exception an {@link Exception}
      */
     protected void handlePage(HttpServletRequest request, HttpServletResponse response, TypePost type) throws Exception {
-        //Check the Filters the user has selected
-        int idCategory = -1;
-        int idState = -1;
+        FetchPostFilter filters = null;
         if(type == TypePost.CLASSIC){
-            Tuple<Integer,Integer> filters = checkFilters(request.getParameter("cat"),request.getParameter("state"));
-            idCategory = filters.getValueA();
-            idState = filters.getValueB();
-            request.setAttribute("cat", idCategory);
-            request.setAttribute("state", idState);
+            //If it's a classic post we check the filters
+            filters = checkFilters(request);
+            request.setAttribute("cat",     filters.getCategoryID());
+            request.setAttribute("state",   filters.getStateID());
+            request.setAttribute("price",   filters.getMaxPrice());
+            request.setAttribute("order",   filters.getOrder());
         }
         if(request.getParameter("postPage") != null){
             //Change page
             int page = Integer.parseInt(request.getParameter("postPage"));
             if(page < 1) page = 1; //make sure it's not negative
-            if(fetchPost(POST_PER_PAGE, page, idCategory,idState,type).getValueB() < page  && page > 1){
+            if(fetchPost(POST_PER_PAGE, page,filters,type).getValueB() < page  && page > 1){
                 page--;
             }
-            fillRequest(request, POST_PER_PAGE, page , idCategory, idState, type);
+            fillRequest(request, POST_PER_PAGE, page , filters, type);
         }else if(request.getParameter("order") != null){
             //Change order
             throw new Exception("Not implemented yet");
         }else if(request.getParameter("cat") != null || request.getParameter("state") != null) {
             //Change category
-            fillRequest(request, POST_PER_PAGE, 1, idCategory, idState, type);
+            fillRequest(request, POST_PER_PAGE, 1, filters, type);
         }else {
             //not supposed to happen, forward to the ListPosts.jsp
             throw new Exception("Nothing to do");
@@ -60,24 +61,38 @@ public abstract class AbstractFetchPost {
      * @param request  an {@link HttpServletRequest} object
      * @param nbPost   the number of post to fetch
      * @param page     the page numbers
-     * @param idCategory the id of the category
-     * @param idState the id of the state
+     * @param filters  a {@link FetchPostFilter} object
      */
-    protected void fillRequest (HttpServletRequest request,int nbPost, int page, int idCategory, int idState, TypePost type) throws Exception{
-        Tuple<List<Post>,Integer> fromDB = fetchPost(nbPost, page , idCategory, idState, type);
+    protected void fillRequest (HttpServletRequest request,int nbPost, int page, FetchPostFilter filters, TypePost type) throws Exception{
+        Tuple<List<Post>,Integer> fromDB = fetchPost(nbPost, page , filters, type);
         List<Integer> nbPage = handleNBpage(fromDB.getValueB(), page);
         request.setAttribute("posts", fromDB.getValueA());
         request.setAttribute("nbPage", nbPage);
         request.setAttribute("categories", fetchCategories());
         request.setAttribute("states", fetchStates());
+        AddOrders(request);
         request.setAttribute("postPage", page);
     }
     protected void fillRequest (HttpServletRequest request,int nbPost, int page, TypePost type) throws Exception{
-        Tuple<List<Post>,Integer> fromDB = fetchPost(nbPost, page , -1, -1, type);
+        Tuple<List<Post>,Integer> fromDB = fetchPost(nbPost, page ,new FetchPostFilter(), type);
         List<Integer> nbPage = handleNBpage(fromDB.getValueB(), page);
         request.setAttribute("posts", fromDB.getValueA());
+        if(type == TypePost.CLASSIC){
+            request.setAttribute("categories", fetchCategories());
+            request.setAttribute("states", fetchStates());
+            AddOrders(request);
+        }
         request.setAttribute("nbPage", nbPage);
         request.setAttribute("postPage", page);
+    }
+
+    protected void AddOrders(HttpServletRequest request){
+        List<Orders> orders = new ArrayList<>();
+        for (FetchPostFilter.FetchOrder order : FetchPostFilter.FetchOrder.values()){
+            String s = order.toString().toLowerCase().replace("_", " ");
+            orders.add(new Orders(s.substring(0,1).toUpperCase()+s.substring(1),order.toString()));
+        }
+        request.setAttribute("orders", orders);
     }
 
     /**
@@ -86,7 +101,7 @@ public abstract class AbstractFetchPost {
      * @param page      the page number
      * @return          a list of {@link Post}
      */
-    protected Tuple<List<Post>,Integer> fetchPost(int nbPost, int page, int idCategory, int idState,TypePost type){
+    protected Tuple<List<Post>,Integer> fetchPost(int nbPost, int page, FetchPostFilter filters,TypePost type){
         //todo : Fetch the post from the database
         List <Post> posts = new ArrayList<>();
         for(int i = 0; i < nbPost; i++){
@@ -161,25 +176,39 @@ public abstract class AbstractFetchPost {
         }
     }
 
-    protected Tuple<Integer,Integer> checkFilters (String cat, String state){
-        int idCategory = -1;
-        int idState = -1;
-        if(cat != null){
-            try {
-                idCategory = Integer.parseInt(cat);
-            }catch (Exception ignored){
-            }
-        }
-        if(state != null){
-            try {
-                idState = Integer.parseInt(state);
-            }catch (Exception ignored){
-            }
-        }
-        return new Tuple<>(idCategory, idState);
+    protected FetchPostFilter checkFilters (HttpServletRequest request){
+        int idCategory, idState , price ;
+        idCategory = idState = price = -1;
+        FetchPostFilter.FetchOrder order = FetchPostFilter.FetchOrder.DATE_DESCENDING;
+        try {
+            idCategory = Integer.parseInt(request.getParameter("cat"));
+            idState = Integer.parseInt(request.getParameter("state"));
+            price = Integer.parseInt(request.getParameter("price"));
+            order = FetchPostFilter.FetchOrder.valueOf(request.getParameter("order"));
+        }catch (Exception ignored){}
+        return new FetchPostFilter(idCategory, idState, order, price);
     }
 
+
+    //Private Type
     protected enum TypePost{
         CLASSIC, PRIVATE
+    }
+
+    public class Orders{
+        public String name;
+        public String value;
+
+        public Orders(String name, String value) {
+            this.name = name;
+            this.value = value;
+        }
+
+        public String getName() {
+            return name;
+        }
+        public String getValue() {
+            return value;
+        }
     }
 }

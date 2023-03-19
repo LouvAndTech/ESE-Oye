@@ -26,6 +26,15 @@
         <form action="ese-oye?id=ListPosts" method="post">
             <h1>Filtres :</h1>
             <hr>
+            <p>Order :</p>
+            <div class="custom_select">
+                <select class="allElement" name="tri" id="">
+                    <c:forEach var="ord" items="${orders}">
+                        <option value="${ord.value}">${ord.name}</option>
+                    </c:forEach>
+                </select>
+            </div>
+            <hr>
             <p>Catégorie :</p>
             <div class="custom_select">
                 <select class="allElement" name="cat" id="cat">
@@ -46,21 +55,16 @@
                 </select>
             </div>
             <hr>
+            <p>Prix Max :</p>
+            <input type="number" name="price" placeholder="Prix max" value="">
+            <hr>
             <button class="btn" type="submit">Appliquer</button>
         </form>
     </nav>
     <hr class="hrVertical">
     <div class="list">
-        <div class="tri">
-            <h2>Annonce << Toutes >> : Angers</h2>
-            <select name="tri" id="">
-                <option value="plusRecent">Tri: Plus récent</option>
-                <option value="moinRecent">Tri: Moins récent</option>
-                <option value="plusCher">Tri: Plus chère</option>
-                <option value="moinsCher">Tri: Moins chère</option>
-            </select>
-
-        </div>
+        <br>
+        <h2>Annonce : Angers</h2>
         <div class="posts centerSectionElement">
             <c:forEach var="post" items="${posts}">
                 <hr>
@@ -87,15 +91,15 @@
         </div>
 
         <div class="buttonContainer">
-            <button class="btn" onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${postPage-1}&cat=${cat}&state=${state}')"><span class="material-symbols-outlined">navigate_before</span></button>
+            <button class="btn" onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${postPage-1}&cat=${cat}&state=${state}&price=${price}&order=${order}')"><span class="material-symbols-outlined">navigate_before</span></button>
             <c:forEach var="page" items="${nbPage}">
                 <button <c:choose>
                     <c:when test="${postPage == page}">class="actual" style="cursor: default" </c:when>
-                    <c:otherwise>onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${page}&cat=${cat}&state=${state}')"</c:otherwise>
+                    <c:otherwise>onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${page}&cat=${cat}&state=${state}&price=${price}&order=${order}')"</c:otherwise>
                 </c:choose>
                 >${page}</button>
             </c:forEach>
-            <button class="btn" onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${postPage+1}&cat=${cat}&state=${state}')"><span class="material-symbols-outlined">navigate_next</span></button>
+            <button class="btn" onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${postPage+1}&cat=${cat}&state=${state}&price=${price}&order=${order}')"><span class="material-symbols-outlined">navigate_next</span></button>
         </div>
     </div>
 </section>
