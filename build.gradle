@@ -14,8 +14,8 @@ ext {
     junitVersion = '5.8.2'
 }
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
+	sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_17
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
@@ -33,6 +33,10 @@ dependencies {
     
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
 	implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.1'
+	
+	// https://mvnrepository.com/artifact/com.hierynomus/sshj
+	implementation group: 'com.hierynomus', name: 'sshj', version: '0.35.0'
+	
 }
 
 test {

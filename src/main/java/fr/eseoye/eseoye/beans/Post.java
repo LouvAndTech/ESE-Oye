@@ -6,22 +6,24 @@ import java.sql.Date;
  * Used to store a simplified version of a post
  */
 public class Post {
-    protected String id;
+    protected String secureId;
     protected String title;    
-    protected User author;
     protected float price;
-    protected Date date;
-    
-    protected Category category;
     protected String firstImage;
+    
+    protected Date date;
+    protected SimplifiedUser author;
+    protected PostState state;
+    protected Category category;
 
-    public Post(String id, String title, User author, float price, Date date, Category category, String firstImage){
-        this.id = id;
+    public Post(String secureId, String title, SimplifiedUser author, float price, Date date, Category category, PostState postState, String firstImage){
+        this.secureId = secureId;
         this.title = title;
         this.author = author;
         this.price = price;
         this.date = date;
         this.category = category;
+        this.state = postState;
         this.firstImage = firstImage;
     }
     
@@ -32,16 +34,20 @@ public class Post {
     public Category getCategory() {
 		return category;
 	}
+    
+    public PostState getState() {
+		return state;
+	}
 
-    public String getId() {
-        return id;
+    public String getSecureId() {
+        return secureId;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public User getAuthor() {
+    public SimplifiedUser getAuthor() {
         return author;
     }
 

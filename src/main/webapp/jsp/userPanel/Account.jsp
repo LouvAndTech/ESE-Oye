@@ -12,7 +12,6 @@
     <form action="" method="post">
         <div>
             <label class="textBox">
-<<<<<<< HEAD
                 <input type="text" name="name" placeholder="" value="Jean" required>
                 <span class="textBox_placeholder">Nom</span>
             </label>
@@ -40,7 +39,6 @@
         <div>
             <label class="textBox">
                 <input type="tel" name="phone" maxlength="14" placeholder="" value="1" required>
-=======
                 <input type="text" name="name" placeholder="" value="" required>
                 <span class="textBox_placeholder">Nom</span>
             </label>
@@ -68,7 +66,6 @@
         <div>
             <label class="textBox">
                 <input type="tel" name="phone" maxlength="14" placeholder="" value="" required>
->>>>>>> refs/remotes/origin/main
                 <span class="textBox_placeholder">## ## ## ## ##</span>
             </label>
         </div>

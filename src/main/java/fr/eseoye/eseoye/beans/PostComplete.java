@@ -13,8 +13,8 @@ public class PostComplete extends Post {
     //Contains
     protected List<String> imageList;
     
-    public PostComplete(String id, String title, User author, float price, Date date, String content, Category category, String firstImage, List<String> imageList) {
-        super(id, title, author,price, date, category, firstImage);
+    public PostComplete(String secureId, String title, SimplifiedUser author, float price, Date date, String content, Category category, PostState postState, String firstImage, List<String> imageList) {
+        super(secureId, title, author, price, date, category, postState, firstImage);
         this.imageList = imageList;
         this.content = content;
         
