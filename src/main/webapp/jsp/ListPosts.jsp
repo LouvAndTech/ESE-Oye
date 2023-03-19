@@ -15,6 +15,7 @@
     <script type="module" src="${pageContext.request.contextPath}/js/request.js" defer></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Annonces.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ListPosts.css">
+    <script src="${pageContext.request.contextPath}/js/inputs.js" defer></script>
     <title>List Posts</title>
 </head>
 <body>
@@ -26,20 +27,24 @@
             <h1>Filtres :</h1>
             <hr>
             <p>Catégorie :</p>
-            <select name="cat" id="cat">
-                <option value="-1">Aucune</option>
-                <c:forEach items="${categories}" var="cat">
-                    <option value="${cat.id}">${cat.name}</option>
-                </c:forEach>
-            </select>
+            <div class="custom_select">
+                <select name="cat" id="cat">
+                    <option value="-1">Aucune</option>
+                    <c:forEach items="${categories}" var="cat">
+                        <option value="${cat.id}">${cat.name}</option>
+                    </c:forEach>
+                </select>
+            </div>
             <hr>
             <p>État :</p>
-            <select name="state" id="state">
-                <option value="-1">Aucun</option>
-                <c:forEach items="${states}" var="state">
-                    <option value="${state.id}">${state.name}</option>
-                </c:forEach>
-            </select>
+            <div class="custom_select">
+                <select name="state" id="state">
+                    <option value="-1">Aucun</option>
+                    <c:forEach items="${states}" var="state">
+                        <option value="${state.id}">${state.name}</option>
+                    </c:forEach>
+                </select>
+            </div>
             <hr>
             <button class="btn" type="submit">Appliquer</button>
         </form>
