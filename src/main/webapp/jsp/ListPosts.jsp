@@ -28,7 +28,7 @@
             <hr>
             <p>Catégorie :</p>
             <div class="custom_select">
-                <select name="cat" id="cat">
+                <select class="allElement" name="cat" id="cat">
                     <option value="-1">Aucune</option>
                     <c:forEach items="${categories}" var="cat">
                         <option value="${cat.id}">${cat.name}</option>
@@ -38,7 +38,7 @@
             <hr>
             <p>État :</p>
             <div class="custom_select">
-                <select name="state" id="state">
+                <select class="allElement" name="state" id="state">
                     <option value="-1">Aucun</option>
                     <c:forEach items="${states}" var="state">
                         <option value="${state.id}">${state.name}</option>
@@ -53,12 +53,12 @@
     <div class="list">
         <div class="tri">
             <h2>Annonce << Toutes >> : Angers</h2>
-            <!---select name="tri" id="">
+            <select name="tri" id="">
                 <option value="plusRecent">Tri: Plus récent</option>
                 <option value="moinRecent">Tri: Moins récent</option>
                 <option value="plusCher">Tri: Plus chère</option>
                 <option value="moinsCher">Tri: Moins chère</option>
-            </select-->
+            </select>
 
         </div>
         <div class="posts centerSectionElement">

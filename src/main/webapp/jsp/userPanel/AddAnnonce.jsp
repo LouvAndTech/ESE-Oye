@@ -28,22 +28,26 @@
             <div class="carac">
                 <div class="cat">
                     <p>Catégorie :</p>
-                    <select name="categorie" id="">
-                        <option value="">-- Select catégorie --</option>
-                        <c:forEach var="c" items="${categories}">
-                            <option value="${c}">${c}</option>
-                        </c:forEach>
-                    </select>
+                    <div class="custom_select">
+                        <select name="categorie" id="">
+                            <option value="">-- Select catégorie --</option>
+                            <c:forEach var="c" items="${categories}">
+                                <option value="${c}">${c}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
                 </div>
                 <hr class="hrVertical">
                 <div class="state">
                     <p>Etat :</p>
-                    <select name="categorie" id="">
-                        <option value="">-- Select Etat --</option>
-                        <c:forEach var="c" items="${states}">
-                            <option value="${c}">${c}</option>
-                        </c:forEach>
-                    </select>
+                    <div class="custom_select">
+                        <select name="categorie" id="">
+                            <option value="">-- Select Etat --</option>
+                            <c:forEach var="c" items="${states}">
+                                <option value="${c}">${c}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
                 </div>
             </div>
             <hr>
