@@ -73,9 +73,11 @@ selectContainers.forEach(selectContainer => {
         if(optContainer.classList.contains("openSelect")){
             optContainer.classList.remove("openSelect");
             optContainer.style.height = 0;
+            optContainer.style.zIndex = 0;
         }else{
             optContainer.classList.add("openSelect");
             optContainer.style.height = 2.2*optContainer.children.length+"em";
+            optContainer.style.zIndex = 1;
         }
     });
     var ListOpt = selectContainer.querySelectorAll("select option");

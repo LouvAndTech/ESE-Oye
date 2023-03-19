@@ -284,6 +284,7 @@ section{
             background-color: var(--lightback);
             transition: all .5s;
             height: 0;
+            z-index: 0;
             border-bottom: 1.5px solid var(--iluminated);
 
             .cs_option_e{
