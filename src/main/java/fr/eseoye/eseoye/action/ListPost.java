@@ -1,9 +1,6 @@
 package fr.eseoye.eseoye.action;
 
-import fr.eseoye.eseoye.beans.Category;
-import fr.eseoye.eseoye.beans.Post;
-import fr.eseoye.eseoye.beans.PostComplete;
-import fr.eseoye.eseoye.beans.User;
+import fr.eseoye.eseoye.beans.*;
 import fr.eseoye.eseoye.io.DatabaseFactory;
 import fr.eseoye.eseoye.io.databases.DatabaseType;
 import fr.eseoye.eseoye.utils.Tuple;
@@ -35,19 +32,28 @@ public class ListPost implements Action{
      */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //if the user click on the next button
+        //Check the Filters the user has selected
+        Tuple<Integer,Integer> filters = checkFilters(request.getParameter("cat"),request.getParameter("state"));
+        Integer idCategory = filters.getValueA();
+        Integer idState = filters.getValueB();
+        request.setAttribute("cat", idCategory);
+        request.setAttribute("state", idState);
+        System.out.println("Cat : "+idCategory+" State : "+idState);
         try{
             if(request.getParameter("postPage") != null){
                 //Change page
                 int page = Integer.parseInt(request.getParameter("postPage"));
                 if(page < 1) page = 1; //make sure it's not negative
-                if(fetchPost(POST_PER_PAGE, page).getValueB() < page  && page > 1){
+                if(fetchPost(POST_PER_PAGE, page, idCategory,idState).getValueB() < page  && page > 1){
                     page--;
                 }
-                fillRequest(request, POST_PER_PAGE, page);
+                fillRequest(request, POST_PER_PAGE, page , idCategory, idState);
             }else if(request.getParameter("order") != null){
                 //Change order
                 throw new Exception("Not implemented yet");
+            }else if(request.getParameter("cat") != null || request.getParameter("state") != null) {
+                //Change category
+                fillRequest(request, POST_PER_PAGE, 1, idCategory, idState);
             }else {
                 //not supposed to happen, forward to the ListPosts.jsp
                 throw new Exception("Nothing to do");
@@ -83,6 +89,26 @@ public class ListPost implements Action{
         request.getRequestDispatcher("/jsp/ListPosts.jsp").forward(request, response);
     }
 
+
+
+    /**
+     * Fill the request with the posts and the number of page
+     * @param request  an {@link HttpServletRequest} object
+     * @param nbPost   the number of post to fetch
+     * @param page     the page numbers
+     * @param idCategory the id of the category
+     * @param idState the id of the state
+     */
+    private void fillRequest (HttpServletRequest request,int nbPost, int page, int idCategory, int idState) throws Exception{
+        Tuple<List<Post>,Integer> fromDB = fetchPost(nbPost, page , idCategory, idState);
+        List<Integer> nbPage = handleNBpage(fromDB.getValueB(), page);
+        request.setAttribute("posts", fromDB.getValueA());
+        request.setAttribute("nbPage", nbPage);
+        request.setAttribute("categories", fetchCategories());
+        request.setAttribute("states", fetchStates());
+        request.setAttribute("postPage", page);
+    }
+
     /**
      * Fill the request with the posts and the number of page
      * @param request  an {@link HttpServletRequest} object
@@ -90,11 +116,33 @@ public class ListPost implements Action{
      * @param page     the page numbers
      */
     private void fillRequest (HttpServletRequest request,int nbPost, int page) throws Exception{
-        Tuple<List<Post>,Integer> fromDB = fetchPost(nbPost, page );
-        List<Integer> nbPage = handleNBpage(fromDB.getValueB(), page);
-        request.setAttribute("posts", fromDB.getValueA());
-        request.setAttribute("nbPage", nbPage);
-        request.setAttribute("postPage", page);
+        this.fillRequest(request, nbPost, page, -1, -1);
+    }
+
+    /**
+     * Get all the categories from the database
+     * @return a list of {@link Category}
+     * @throws Exception
+     */
+    private List<Category> fetchCategories() throws Exception{
+        List<Category> categories = new ArrayList<>();
+        for (int i = 0;i<10;i++){
+            categories.add(new Category(i,"Cat"+i));
+        }
+        return categories;
+    }
+
+    /**
+     * Get all the states from the database
+     * @return a list of {@link PostState}
+     * @throws Exception
+     */
+    private List<PostState> fetchStates() throws Exception{
+        List<PostState> states = new ArrayList<>();
+        for (int i = 0;i<10;i++){
+            states.add(new PostState(i,"State"+i));
+        }
+        return states;
     }
 
     /**
@@ -103,7 +151,7 @@ public class ListPost implements Action{
      * @param page      the page number
      * @return          a list of {@link Post}
      */
-    private Tuple<List<Post>,Integer> fetchPost(int nbPost, int page ){
+    private Tuple<List<Post>,Integer> fetchPost(int nbPost, int page, int idCategory, int idState){
         //todo : Fetch the post from the database
         List <Post> posts = new ArrayList<>();
         for(int i = 0; i < nbPost; i++){
@@ -150,5 +198,29 @@ public class ListPost implements Action{
             }
             return list;
         }
+    }
+
+    /**
+     * Check if the filters are valid
+     * @param cat   the category id
+     * @param state the state id
+     * @return      a {@link Tuple} containing the category id and the state id
+     */
+    private Tuple<Integer,Integer> checkFilters (String cat, String state){
+        int idCategory = -1;
+        int idState = -1;
+        if(cat != null){
+            try {
+                idCategory = Integer.parseInt(cat);
+            }catch (Exception ignored){
+            }
+        }
+        if(state != null){
+            try {
+                idState = Integer.parseInt(state);
+            }catch (Exception ignored){
+            }
+        }
+        return new Tuple<>(idCategory, idState);
     }
 }
