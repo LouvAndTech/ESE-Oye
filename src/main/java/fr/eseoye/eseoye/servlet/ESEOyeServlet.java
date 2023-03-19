@@ -27,6 +27,7 @@ public class ESEOyeServlet extends HttpServlet {
         actionMap.put("UserPanel", UserPanel.getInstance());
         actionMap.put("Inscription", new Inscription());
         actionMap.put("Connexion", new Connexion());
+        actionMap.put("Error404", new Error404());
         System.out.println("INIT");
     }
 

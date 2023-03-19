@@ -15,52 +15,52 @@
   <title>inscription</title>
   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css" />
   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/Inscription.css" />
+  <script src="${pageContext.request.contextPath}/js/Check_Button.js" defer></script>
 </head>
 <body>
 
 <div class="title">
   <h1>ESE-OYE</h1>
 </div>
-<section class="container">
+<div>
+  <section class="container">
     <form method="post" action="ese-oye">
       <label class="textBox">
-        <input type="text" name="name" placeholder=" " required>
-        <span class="textBox_placeholder">prénom</span>
+        <input type="text" name="name" placeholder="prénom" required>
+
       </label>
       <br/>
       <label class="textBox">
-        <input type="text" name="surname" placeholder=" " required>
-        <span class="textBox_placeholder">nom</span>
+        <input type="text" name="surname" placeholder="nom " required>
       </label>
       <br/>
       <label class="textBox">
-        <input type="tel" name="phone" placeholder=" " required>
-        <span class="textBox_placeholder">numéro de téléphone</span>
+        <input type="tel" name="phone" placeholder="numéro de téléphone " required>
       </label>
       <br/>
       <label class="textBox">
-        <input type="email" name="mail" placeholder=" " required>
-        <span class="textBox_placeholder">mail</span>
+        <input type="email" name="mail" placeholder="mail" required>
         <br/>
         <input name="error" placeholder=" ">
       </label>
       <br/>
-
       <label class="textBox">
-        <input type="date" name="bday" placeholder=" " required max="08/03/2005" id="mybday" onclick="btchange()">
-        <span class="textBox_placeholder">date de naissance</span>
+        <input type="date" name="bday" placeholder="date de naissance " required max="08/03/2005" id="mybday" onclick="btchange()">
+
       </label>
       <br/>
       <label class="textBox">
-        <input type="password" name="password" placeholder=" " required >
-        <span class="textBox_placeholder">mot de passe</span>
+        <input type="password" name="password" placeholder="mot de passe" required >
       </label>
       <br/>
       <input type="submit" class="btn fill" value="Valider" id="myButton">
     </form>
     <a href="webapp/jsp/Connexion.jsp" class="btn fill">déjà inscrit ?</a>
-</section>
-<script src="${pageContext.request.contextPath}/js/Check_Button.js"></script>
+  </section>
+
+</div>
+
+
 
 </body>
 </html>

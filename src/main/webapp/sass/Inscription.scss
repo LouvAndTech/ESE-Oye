@@ -1,34 +1,46 @@
 @use "variables" as *;
 
-div{
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-
-  border: #393E46;
-
-}
-
 .title{
   width: 100%;
   border-bottom-color: #666666;
 
- h1{
-
-
- }
 }
-.container{
+div{
+  display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid grey;
-  width: 50%;
-  height: 30%;
+  width: fit-content;
   margin: auto;
-  border-radius: 30px;
-  box-shadow: 2px 2px 100px 6px #00adb5;
+
+  h1{
+    font-size: 6em;
+    font-weight: bold;
+    color: #00adb5;
+    margin: 0;
+    padding: 0;
+  }
+
+
+
+  .container{
+
+    border: 2px solid grey;
+    height: 350px;
+
+    border-radius: 30px;
+    box-shadow: 2px 2px 100px 6px #00adb5;
+    align-items: center;
+
+  }
+
 }
+
 form{
-  margin-left: 10%;
-  margin-top: 10%;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+input{
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
 }
