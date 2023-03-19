@@ -11,22 +11,27 @@ public class Post {
     protected User author;
     protected float price;
     protected Date date;
+    
+    protected Category category;
+    protected String firstImage;
 
-    public Post(String id, String title, User author, float price, Date date){
+    public Post(String id, String title, User author, float price, Date date, Category category, String firstImage){
         this.id = id;
         this.title = title;
         this.author = author;
         this.price = price;
         this.date = date;
+        this.category = category;
+        this.firstImage = firstImage;
     }
     
-    public Post(String title, User author, float price, Date date){
-        this.id = null; //TODO Generate new hash for the post
-        this.title = title;
-        this.author = author;
-        this.price = price;
-        this.date = date;
-    }
+    public String getFirstImage() {
+		return firstImage;
+	}
+    
+    public Category getCategory() {
+		return category;
+	}
 
     public String getId() {
         return id;
