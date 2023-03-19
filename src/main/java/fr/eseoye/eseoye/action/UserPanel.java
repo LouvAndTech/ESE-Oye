@@ -34,7 +34,7 @@ public class UserPanel implements Action{
         // Temporary code for session variable
         HttpSession session = request.getSession();
         if (session.getAttribute("admin") == null) {
-            session.setAttribute("admin", true);
+            session.setAttribute("admin", false);
         }
         // End of temporary code
 
@@ -54,7 +54,7 @@ public class UserPanel implements Action{
         // Temporary code for session variable
         HttpSession session = request.getSession();
         if (session.getAttribute("admin") == null) {
-            session.setAttribute("admin", true);
+            session.setAttribute("admin", false);
         }
         // End of temporary code
 
