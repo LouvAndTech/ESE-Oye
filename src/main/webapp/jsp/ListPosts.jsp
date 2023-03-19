@@ -14,57 +14,84 @@
     <script src="${pageContext.request.contextPath}/js/main.js"></script>
     <script type="module" src="${pageContext.request.contextPath}/js/request.js" defer></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Annonces.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ListPosts.css">
     <title>List Posts</title>
 </head>
 <body>
 <%@include file="theme/Header.jsp" %>
 
 <section>
-    <div class="tri">
-        <h2>Annonce << Toutes >> : Angers</h2>
-        <!---select name="tri" id="">
-            <option value="plusRecent">Tri: Plus récent</option>
-            <option value="moinRecent">Tri: Moins récent</option>
-            <option value="plusCher">Tri: Plus chère</option>
-            <option value="moinsCher">Tri: Moins chère</option>
-        </select-->
-
-    </div>
-    <div class="posts centerSectionElement">
-        <c:forEach var="post" items="${posts}">
+    <nav>
+        <form action="ese-oye?id=ListPosts" method="post">
+            <h1>Filtres :</h1>
             <hr>
-            <div class="post" onclick="window.Request.sendGet('ese-oye?id=OnePost&postId=${post.id}')">
-                <img src="${post.firstImage}" alt="">
-                <div class="content">
-                    <div class="header">
-                        <h2>${post.title}</h2>
-                        <h2>${post.price}€</h2>
-                    </div>
-                    <div class="footer">
-                        <div class="cat">
-                            <p>Catégorie :</p>
-                            <p>${post.category.name}</p>
+            <p>Catégorie :</p>
+            <select name="cat" id="cat">
+                <option value="-1">Aucune</option>
+                <c:forEach items="${categories}" var="cat">
+                    <option value="${cat.id}">${cat.name}</option>
+                </c:forEach>
+            </select>
+            <hr>
+            <p>État :</p>
+            <select name="state" id="state">
+                <option value="-1">Aucun</option>
+                <c:forEach items="${states}" var="state">
+                    <option value="${state.id}">${state.name}</option>
+                </c:forEach>
+            </select>
+            <hr>
+            <button class="btn" type="submit">Appliquer</button>
+        </form>
+    </nav>
+    <hr class="hrVertical">
+    <div class="list">
+        <div class="tri">
+            <h2>Annonce << Toutes >> : Angers</h2>
+            <!---select name="tri" id="">
+                <option value="plusRecent">Tri: Plus récent</option>
+                <option value="moinRecent">Tri: Moins récent</option>
+                <option value="plusCher">Tri: Plus chère</option>
+                <option value="moinsCher">Tri: Moins chère</option>
+            </select-->
+
+        </div>
+        <div class="posts centerSectionElement">
+            <c:forEach var="post" items="${posts}">
+                <hr>
+                <div class="post" onclick="window.Request.sendGet('ese-oye?id=OnePost&postId=${post.id}')">
+                    <img src="${post.firstImage}" alt="">
+                    <div class="content">
+                        <div class="header">
+                            <h2>${post.title}</h2>
+                            <h2>${post.price}€</h2>
                         </div>
-                        <div class="subtitle">
-                            <p class="author">${post.author.name} ${post.author.surname}</p>
-                            <p class="date">${post.date}</p>
+                        <div class="footer">
+                            <div class="cat">
+                                <p>Catégorie :</p>
+                                <p>${post.category.name}</p>
+                            </div>
+                            <div class="subtitle">
+                                <p class="author">${post.author.name} ${post.author.surname}</p>
+                                <p class="date">${post.date}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </c:forEach>
-    </div>
+            </c:forEach>
+        </div>
 
-    <div class="buttonContainer">
-        <button class="btn" onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${postPage-1}')"><span class="material-symbols-outlined">navigate_before</span></button>
-        <c:forEach var="page" items="${nbPage}">
-            <button <c:choose>
+        <div class="buttonContainer">
+            <button class="btn" onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${postPage-1}&cat=${cat}&state=${state}')"><span class="material-symbols-outlined">navigate_before</span></button>
+            <c:forEach var="page" items="${nbPage}">
+                <button <c:choose>
                     <c:when test="${postPage == page}">class="actual" style="cursor: default" </c:when>
-                    <c:otherwise>onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${page}')"</c:otherwise>
-                    </c:choose>
-            >${page}</button>
-        </c:forEach>
-        <button class="btn" onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${postPage+1}')"><span class="material-symbols-outlined">navigate_next</span></button>
+                    <c:otherwise>onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${page}&cat=${cat}&state=${state}')"</c:otherwise>
+                </c:choose>
+                >${page}</button>
+            </c:forEach>
+            <button class="btn" onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${postPage+1}&cat=${cat}&state=${state}')"><span class="material-symbols-outlined">navigate_next</span></button>
+        </div>
     </div>
 </section>
 
