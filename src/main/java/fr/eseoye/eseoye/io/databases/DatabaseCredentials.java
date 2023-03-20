@@ -8,9 +8,9 @@ public class DatabaseCredentials {
 	private DatabaseType type;
 	private String databaseName;
 	
-	public DatabaseCredentials(String url, int port, String username, String password, String databaseName, DatabaseType type) {
+	public DatabaseCredentials(String url, long port, String username, String password, String databaseName, DatabaseType type) {
 		this.url = url;
-		this.port = port;
+		this.port = Long.valueOf(port).intValue();
 		this.username = username;
 		this.password = password;
 		

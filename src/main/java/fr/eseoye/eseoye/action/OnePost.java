@@ -1,16 +1,31 @@
 package fr.eseoye.eseoye.action;
 
+import fr.eseoye.eseoye.beans.Category;
+import fr.eseoye.eseoye.beans.PostComplete;
+import fr.eseoye.eseoye.io.DatabaseFactory;
+import fr.eseoye.eseoye.io.IOHandler;
+import fr.eseoye.eseoye.io.databases.DatabaseCredentials;
+import fr.eseoye.eseoye.io.databases.DatabaseType;
 import java.io.IOException;
 import java.sql.Date;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import fr.eseoye.eseoye.beans.PostComplete;
 import fr.eseoye.eseoye.beans.User;
+import fr.eseoye.eseoye.io.databases.tables.PostTable;
 
 public class OnePost implements Action{
+
+    private final DatabaseCredentials dbCred;
+
+    public OnePost(DatabaseCredentials dbCred){
+        this.dbCred = dbCred;
+    }
 
     /**
      * Unused for now
@@ -45,9 +60,12 @@ public class OnePost implements Action{
      */
     @Override
     public void forward(HttpServletRequest request, HttpServletResponse response, String target) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        request.setAttribute("adminState", session.getAttribute("admin"));
+
         System.out.println("OnePost");
         try{
-            int postId = Integer.parseInt(request.getParameter("postId"));
+            String postId = request.getParameter("postId");
             System.out.println("postId : "+postId);
             request.setAttribute("post", fetchPost( postId ));
             request.getRequestDispatcher("/jsp/OnePost.jsp").forward(request, response);
@@ -62,9 +80,7 @@ public class OnePost implements Action{
      * @param postId    the id of the post to fetch
      * @return          the post as a {@link PostComplete}
      */
-    private PostComplete fetchPost(int postId){
-        //todo : Fetch the post from the database
-        //return new PostComplete("1", "Chair", new User(null, "Jean","Vend", "lol", new Date(2002,2,24), "0606060606", "j@j.j", "TierMonde"),1672, new Date(2020, 12, 12), "Description");
-        return null;
+    private PostComplete fetchPost(String postId){
+        return DatabaseFactory.getInstance().getTable(PostTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).fetchEntirePost(postId);
     }
 }

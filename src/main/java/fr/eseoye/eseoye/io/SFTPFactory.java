@@ -5,6 +5,7 @@ import java.io.IOException;
 import fr.eseoye.eseoye.io.ftp.SFTPConnection;
 import fr.eseoye.eseoye.io.ftp.SFTPCredentials;
 import net.schmizz.sshj.SSHClient;
+import net.schmizz.sshj.transport.verification.PromiscuousVerifier;
 
 public class SFTPFactory {
 	
@@ -32,6 +33,7 @@ public class SFTPFactory {
 	public SSHClient createSSHClient() throws IOException {
 		final SSHClient client = new SSHClient();
 		client.loadKnownHosts();
+		client.addHostKeyVerifier(new PromiscuousVerifier());
 		client.connect(credentials.getUrl(), credentials.getPort());
 		client.authPassword(credentials.getUsername(), credentials.getPassword());
 		

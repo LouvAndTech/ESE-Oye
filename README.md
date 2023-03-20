@@ -9,5 +9,5 @@ This project is build around Java EE, use gradle as build tool and is deployed o
 > ### Author :
 > * [Clement Raffray](https://github.com/278deco)
 > * [Julien Guitter](https://github.com/JulienGuitter)
-> * [Matthieu Ménager](https://github.com/watt2d)
+> * [Matthieu Ménager](https://www.linkedin.com/in/matthieu-menager-83180724a/)
 > * [Elouan Lérissel](https://github.com/LouvAndTech)

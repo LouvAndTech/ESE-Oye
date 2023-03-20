@@ -1,4 +1,3 @@
-
 export class Request{
     constructor(method, action) {
         this.form = document.createElement("form");
