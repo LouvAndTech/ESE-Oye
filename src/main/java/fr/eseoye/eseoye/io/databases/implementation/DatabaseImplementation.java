@@ -29,6 +29,8 @@ public abstract class DatabaseImplementation {
 
 	public abstract int getValuesCount(Connection connection, String table, List<String> values, String condition, List<Object> valuesCondition) throws SQLException;
 	
+	public abstract void deleteValues(Connection connection, String table, String condition, List<Object> valuesCondition) throws SQLException;
+	
 	protected String generateRequestEmptyValues(int valuesListSize) {
 		final StringBuilder sb = new StringBuilder();
 		for(int i = 0; i < valuesListSize; i++) sb.append("?, ");

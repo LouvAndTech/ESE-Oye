@@ -94,6 +94,13 @@ public class MariaDBImplementation extends DatabaseImplementation {
 	}
 	
 	@Override
+	public void deleteValues(Connection connection, String table, String condition, List<Object> valuesCondition) throws SQLException {
+		PreparedStatement statement = connection.prepareStatement("DELETE from `"+table+"` WHERE "+condition+";");
+		for(int i = 0; i < valuesCondition.size(); i++) statement.setObject(i, valuesCondition.get(i));
+		statement.executeUpdate();
+	}
+	
+	@Override
 	public DatabaseType getDBType() {
 		return DatabaseType.MARIADB;
 	}
