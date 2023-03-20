@@ -2,6 +2,7 @@ package fr.eseoye.eseoye.action.User;
 
 import fr.eseoye.eseoye.action.AbstractFetchPost;
 import fr.eseoye.eseoye.action.Action;
+import fr.eseoye.eseoye.io.databases.DatabaseCredentials;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class Posts extends AbstractFetchPost implements Action {
+    private final DatabaseCredentials dbCred;
+    public Posts(DatabaseCredentials dbCred) {
+        this.dbCred = dbCred;
+    }
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try{

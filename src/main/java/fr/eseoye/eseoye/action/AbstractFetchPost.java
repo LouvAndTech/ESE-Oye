@@ -1,9 +1,6 @@
 package fr.eseoye.eseoye.action;
 
-import fr.eseoye.eseoye.beans.Category;
-import fr.eseoye.eseoye.beans.Post;
-import fr.eseoye.eseoye.beans.PostState;
-import fr.eseoye.eseoye.beans.User;
+import fr.eseoye.eseoye.beans.*;
 import fr.eseoye.eseoye.io.DatabaseFactory;
 import fr.eseoye.eseoye.io.IOHandler;
 import fr.eseoye.eseoye.io.databases.tables.PostTable;
@@ -78,7 +75,7 @@ public abstract class AbstractFetchPost {
         request.setAttribute("postPage", page);
     }
     protected void fillRequest (HttpServletRequest request,int nbPost, int page, TypePost type) throws Exception{
-        Tuple<List<Post>,Integer> fromDB = fetchPost(nbPost, page ,new FetchPostFilter(), type);
+        Tuple<List<Post>,Integer> fromDB = fetchPost(nbPost, page , FetchPostFilter.builder().build(), type);
         List<Integer> nbPage = handleNBpage(fromDB.getValueB(), page);
         request.setAttribute("posts", fromDB.getValueA());
         if(type == TypePost.CLASSIC){
@@ -91,10 +88,9 @@ public abstract class AbstractFetchPost {
     }
 
     protected void AddOrders(HttpServletRequest request){
-        List<Orders> orders = new ArrayList<>();
-        for (FetchPostFilter.FetchOrder order : FetchPostFilter.FetchOrder.values()){
-            String s = order.toString().toLowerCase().replace("_", " ");
-            orders.add(new Orders(s.substring(0,1).toUpperCase()+s.substring(1),order.toString()));
+        List<FetchOrder> orders = new ArrayList<>();
+        for (FetchPostFilter.FetchOrderEnum order : FetchPostFilter.FetchOrderEnum.values()){
+            orders.add(order.getObject());
         }
         request.setAttribute("orders", orders);
     }
@@ -174,36 +170,19 @@ public abstract class AbstractFetchPost {
     protected FetchPostFilter checkFilters (HttpServletRequest request){
         int idCategory, idState , price ;
         idCategory = idState = price = -1;
-        FetchPostFilter.FetchOrder order = FetchPostFilter.FetchOrder.DATE_DESCENDING;
+        FetchPostFilter.FetchOrderEnum order = FetchPostFilter.FetchOrderEnum.DATE_DESCENDING;
         try {
             idCategory = Integer.parseInt(request.getParameter("cat"));
             idState = Integer.parseInt(request.getParameter("state"));
             price = Integer.parseInt(request.getParameter("price"));
-            order = FetchPostFilter.FetchOrder.valueOf(request.getParameter("order"));
+            order = FetchPostFilter.FetchOrderEnum.valueOf(request.getParameter("order"));
         }catch (Exception ignored){}
-        return new FetchPostFilter(idCategory, idState, order);
+        return FetchPostFilter.builder().category(idCategory).state(idState).maxPrice(price).order(order).build();
     }
 
 
     //Private Type
     protected enum TypePost{
         CLASSIC, PRIVATE
-    }
-
-    public class Orders{
-        public String name;
-        public String value;
-
-        public Orders(String name, String value) {
-            this.name = name;
-            this.value = value;
-        }
-
-        public String getName() {
-            return name;
-        }
-        public String getValue() {
-            return value;
-        }
     }
 }

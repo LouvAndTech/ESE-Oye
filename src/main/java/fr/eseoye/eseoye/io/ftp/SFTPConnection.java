@@ -67,7 +67,7 @@ public class SFTPConnection {
 			
 			return imagesId;
 		}catch(IOException e) {
-			System.err.println(e);
+			e.printStackTrace();
 			return null;
 			
 		}finally {

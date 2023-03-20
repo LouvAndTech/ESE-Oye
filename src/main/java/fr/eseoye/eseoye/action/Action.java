@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public interface Action {
+
     /** Execute the script link to a particular action.
       *
       * @param request   an {@link HttpServletRequest} object that

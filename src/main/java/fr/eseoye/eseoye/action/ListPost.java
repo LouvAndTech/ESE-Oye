@@ -2,6 +2,7 @@ package fr.eseoye.eseoye.action;
 
 import fr.eseoye.eseoye.beans.*;
 import fr.eseoye.eseoye.io.DatabaseFactory;
+import fr.eseoye.eseoye.io.databases.DatabaseCredentials;
 import fr.eseoye.eseoye.io.databases.DatabaseType;
 import fr.eseoye.eseoye.io.objects.FetchPostFilter;
 import fr.eseoye.eseoye.utils.Tuple;
@@ -9,6 +10,7 @@ import fr.eseoye.eseoye.utils.Tuple;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -16,6 +18,12 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ListPost extends AbstractFetchPost implements Action{
+
+    private final DatabaseCredentials dbCred;
+
+    public ListPost(DatabaseCredentials dbCred){
+        this.dbCred = dbCred;
+    }
 
     /**
      * Handle the next and previous button

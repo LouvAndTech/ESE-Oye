@@ -3,6 +3,7 @@ package fr.eseoye.eseoye.action;
 import fr.eseoye.eseoye.action.User.Account;
 import fr.eseoye.eseoye.action.User.AddPosts;
 import fr.eseoye.eseoye.action.User.Posts;
+import fr.eseoye.eseoye.io.databases.DatabaseCredentials;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,15 +17,18 @@ public class UserPanel implements Action{
     private static UserPanel instance = null;
     private Map<String, Action> actionMap = new HashMap<>();
 
-    private UserPanel(){
-        actionMap.put("Account", new Account());
-        actionMap.put("Annonce", new Posts());
-        actionMap.put("AddAnnonce", new AddPosts());
+    private final DatabaseCredentials dbCred;
+
+    private UserPanel(DatabaseCredentials dbCred){
+        this.dbCred = dbCred;
+        actionMap.put("Account", new Account(this.dbCred));
+        actionMap.put("Annonce", new Posts(this.dbCred));
+        actionMap.put("AddAnnonce", new AddPosts(this.dbCred));
     }
 
-    public static UserPanel getInstance(){
+    public static UserPanel getInstance(DatabaseCredentials dbCred){
         if(instance == null){
-            instance = new UserPanel();
+            instance = new UserPanel(dbCred);
         }
         return instance;
     }

@@ -4,6 +4,7 @@ import fr.eseoye.eseoye.beans.Category;
 import fr.eseoye.eseoye.beans.PostComplete;
 import fr.eseoye.eseoye.io.DatabaseFactory;
 import fr.eseoye.eseoye.io.IOHandler;
+import fr.eseoye.eseoye.io.databases.DatabaseCredentials;
 import fr.eseoye.eseoye.io.databases.DatabaseType;
 import java.io.IOException;
 import java.sql.Date;
@@ -19,6 +20,12 @@ import fr.eseoye.eseoye.beans.User;
 import fr.eseoye.eseoye.io.databases.tables.PostTable;
 
 public class OnePost implements Action{
+
+    private final DatabaseCredentials dbCred;
+
+    public OnePost(DatabaseCredentials dbCred){
+        this.dbCred = dbCred;
+    }
 
     /**
      * Unused for now

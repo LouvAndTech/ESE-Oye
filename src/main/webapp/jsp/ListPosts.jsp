@@ -30,7 +30,7 @@
             <div class="custom_select">
                 <select class="allElement" name="tri" id="">
                     <c:forEach var="ord" items="${orders}">
-                        <option value="${ord.value}">${ord.name}</option>
+                        <option value="${ord.value}">${ord.displayName}</option>
                     </c:forEach>
                 </select>
             </div>

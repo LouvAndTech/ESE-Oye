@@ -29,10 +29,10 @@
                 <div class="cat">
                     <p>Catégorie :</p>
                     <div class="custom_select">
-                        <select name="categorie" id="">
+                        <select name="category" id="">
                             <option value="">-- Select catégorie --</option>
                             <c:forEach var="c" items="${categories}">
-                                <option value="${c}">${c}</option>
+                                <option value="${c.id}">${c.name}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -41,10 +41,10 @@
                 <div class="state">
                     <p>Etat :</p>
                     <div class="custom_select">
-                        <select name="categorie" id="">
+                        <select name="state" id="">
                             <option value="">-- Select Etat --</option>
-                            <c:forEach var="c" items="${states}">
-                                <option value="${c}">${c}</option>
+                            <c:forEach var="s" items="${states}">
+                                <option value="${s.id}">${s.name}</option>
                             </c:forEach>
                         </select>
                     </div>
