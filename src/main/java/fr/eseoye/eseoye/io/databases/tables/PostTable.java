@@ -25,7 +25,7 @@ import fr.eseoye.eseoye.io.databases.DatabaseCredentials;
 import fr.eseoye.eseoye.io.databases.request.DatabaseRequest;
 import fr.eseoye.eseoye.io.ftp.SFTPConnection;
 import fr.eseoye.eseoye.io.objects.FetchPostFilter;
-import fr.eseoye.eseoye.io.objects.FetchPostFilter.FetchOrder;
+import fr.eseoye.eseoye.io.objects.FetchPostFilter.FetchOrderEnum;
 import fr.eseoye.eseoye.utils.Tuple;
 
 public class PostTable implements ITable {
@@ -45,7 +45,7 @@ public class PostTable implements ITable {
 		this.credentials = credentials;
 	}
 	
-	public String createNewPost(SFTPConnection sftpConnection, String userSecureID, String title, String content, float price, Category category, PostState state, List<InputStream> images) throws DataCreationException {
+	public String createNewPost(SFTPConnection sftpConnection, String userSecureID, String title, String content, float price, int categoryID, int stateID, List<InputStream> images) throws DataCreationException {
 		DatabaseRequest request = null;
 		
 		try {
@@ -58,7 +58,7 @@ public class PostTable implements ITable {
 			
 			final String postSecureId = SecurityHelper.generateSecureID(System.currentTimeMillis(), lastPostId, SecurityHelper.SECURE_ID_LENGTH); //Generate the new secure id for the post
 			
-			request.insertValues(postSecureId, Arrays.asList("title","content","price","category","user","state","date", "secure_id"), Arrays.asList(title, content, price, category.getId(), userDatabaseId, state.getId(), new Date(System.currentTimeMillis()), postSecureId));
+			request.insertValues(postSecureId, Arrays.asList("title","content","price","category","user","state","date", "secure_id"), Arrays.asList(title, content, price, categoryID, userDatabaseId, stateID, new Date(System.currentTimeMillis()), postSecureId));
 			
 			final int postDatabaseID = request.getValues("SELECT SCOPE_IDENTITY();").getInt(0); //Get the id for the fresh created post
 						
@@ -82,6 +82,8 @@ public class PostTable implements ITable {
 			}
 		}
 	}
+	
+//	public String modifyPost(String )
 
 	public Tuple<List<Post>, Integer> fetchShortPost(int postNumber, int pageNumber, FetchPostFilter parameters) {
 		return fetchShortPost(postNumber, pageNumber, null, parameters);
@@ -133,7 +135,7 @@ public class PostTable implements ITable {
 		}
 	}
 	
-	private String generateOrderClausePost(FetchOrder order) {
+	private String generateOrderClausePost(FetchOrderEnum order) {
 		switch (order) {
 			case DATE_ASCENDING: 
 				return "ORDER BY "+getTableName()+".date ASC";
