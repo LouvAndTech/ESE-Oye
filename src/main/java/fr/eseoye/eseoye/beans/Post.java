@@ -12,11 +12,11 @@ public class Post {
     protected String firstImage;
 
     protected Date date;
-    protected SimplifiedUser author;
+    protected SimplifiedEntity author;
     protected PostState state;
     protected Category category;
 
-    public Post(String secureId, String title, SimplifiedUser author, float price, Date date, Category category, PostState postState, String firstImage){
+    public Post(String secureId, String title, SimplifiedEntity author, float price, Date date, Category category, PostState postState, String firstImage){
         this.secureId = secureId;
         this.title = title;
         this.author = author;
@@ -47,7 +47,7 @@ public class Post {
         return title;
     }
 
-    public SimplifiedUser getAuthor() {
+    public SimplifiedEntity getAuthor() {
         return author;
     }
 

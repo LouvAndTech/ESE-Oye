@@ -81,71 +81,72 @@ public class FetchPostFilter {
 	public static FetchPostFilter.Builder builder() {
 		return new FetchPostFilter.Builder();
 	}
-
+	
 	public static class Builder {
-
-		private int categoryID, stateID;
+		
+		private int categoryID = -1;
+		private int stateID = -1;
 		private FetchOrderEnum order = FetchOrderEnum.DATE_DESCENDING;
-		private float maxPrice;
+		private float maxPrice = -1;
 		private Set<String> keyWords;
 		private boolean mustBeValidated = true;
-
+		
 		private Builder() {
 			this.keyWords = new HashSet<>();
 		}
-
+		
 		public Builder category(int categoryID) {
 			this.categoryID = categoryID;
 			return this;
 		}
-
+		
 		public Builder state(int stateID) {
 			this.stateID = stateID;
 			return this;
 		}
-
+		
 		public Builder maxPrice(float maxPrice) {
 			this.maxPrice = maxPrice;
 			return this;
 		}
-
+		
 		public Builder order(FetchOrderEnum o) {
 			this.order = o;
 			return this;
 		}
-
+		
 		public Builder keyWords(Set<String> words) {
 			this.keyWords = words;
 			return this;
 		}
-
+		
 		public Builder keyWords(String... words) {
 			for(String v : words) this.keyWords.add(v);
 			return this;
 		}
-
+		
 		public Builder mustBeValidated(boolean value) {
 			this.mustBeValidated = value;
 			return this;
 		}
-
+		
 		public FetchPostFilter build() {
 			return new FetchPostFilter(this);
 		}
-
+		
 	}
-
+	
 	public enum FetchOrderEnum {
-		PRICE_ASCENDING("Prix"),
-		PRICE_DESCENDING(""),
-		DATE_ASCENDING(""),
-		DATE_DESCENDING("");
-
+		PRICE_ASCENDING("Prix ascendant"),
+		PRICE_DESCENDING("Prix descendant"),
+		DATE_ASCENDING("Date ascendante"),
+		DATE_DESCENDING("Date descendante");
+		
 		private String name;
 		private FetchOrderEnum(String name) {
 			this.name = name;
 		}
-
+		
 		public FetchOrder getObject() {
 			return new FetchOrder(name, this);
 		}
