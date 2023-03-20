@@ -21,7 +21,7 @@ public class JSONConfiguration extends JSONFile {
 	public DatabaseCredentials getDatabaseCredentials() {
 		return new DatabaseCredentials(
 				(String)getData("db_credentials").get("username"),
-				(int)getData("db_credentials").get("port"),
+				(long)getData("db_credentials").get("port"),
 				(String)getData("db_credentials").get("username"),
 				(String)getData("db_credentials").get("password"),
 				(String)getData("db_credentials").get("name"),
@@ -31,7 +31,7 @@ public class JSONConfiguration extends JSONFile {
 	public SFTPCredentials getSFTPCredentials() {
 		return new SFTPCredentials(
 				(String)getData("ftp_credentials").get("url"), 
-				(int)getData("ftp_credentials").get("port"), 
+				(long)getData("ftp_credentials").get("port"), 
 				(String)getData("ftp_credentials").get("username"), 
 				(String)getData("ftp_credentials").get("password"));
 	}

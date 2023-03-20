@@ -1,8 +1,6 @@
 package fr.eseoye.eseoye.io;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 import fr.eseoye.eseoye.io.json.JSONConfiguration;
 
@@ -10,23 +8,10 @@ public class IOHandler {
 	
 	private static IOHandler instance;
 	
-	private final Path pathToSaveable;
-	
 	private final JSONConfiguration configuration;
 
 	private IOHandler() {
-		this.pathToSaveable = Path.of("data");
-		if(!Files.exists(pathToSaveable)) {
-			try {
-				Files.createDirectories(pathToSaveable);
-			} catch (IOException e) {
-				System.out.println("An error occured while creaating directory "+this.pathToSaveable.toAbsolutePath().toString()+" "+e.getMessage());
-			}
-			System.out.println("Directory "+this.pathToSaveable.toAbsolutePath().toString()+" has been successfully created !");
-		}
-		else System.out.println("Directory "+this.pathToSaveable.toAbsolutePath().toString()+" has been successfully loaded !");
-		
-		this.configuration = new JSONConfiguration(this.pathToSaveable.toAbsolutePath().toString());
+		this.configuration = new JSONConfiguration("data");
 	}
 	
 	public boolean saveAllFiles() {
