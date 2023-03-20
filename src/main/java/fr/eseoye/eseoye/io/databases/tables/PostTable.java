@@ -51,7 +51,7 @@ public class PostTable implements ITable {
 		try {
 			request = new DatabaseRequest(factory, credentials);
 			
-			final int userDatabaseId = request.getValues(USER_TABLE_NAME, Arrays.asList("id"), "secure_id = ?", Arrays.asList(userSecureID)).getInt("id"); //Get the id of the user and store it for the creation of the post
+			final int userDatabaseId = request.getValues(USER_TABLE_NAME, Arrays.asList("id"), "secure_id=?", Arrays.asList(userSecureID)).getInt("id"); //Get the id of the user and store it for the creation of the post
 
 			final int lastPostId = request.getValues("SELECT id FROM "+getTableName()+" ORDER BY id DESC LIMIT 1;").getInt("id"); //Get the last id for post in the table
 			final int lastPostImgId = request.getValues("SELECT id FROM "+getTableName()+" ORDER BY id DESC LIMIT 1;").getInt("id"); //Get the last id for a post img in the table
@@ -64,7 +64,7 @@ public class PostTable implements ITable {
 						
 			List<String> imagesId = sftpConnection.addNewPostImage(postSecureId, lastPostImgId, images);
 			for(String imgId : imagesId) {
-				request.insertValues("Post_IMG",Arrays.asList("post, secure_id"), Arrays.asList(postDatabaseID, imgId));
+				request.insertValues("Post_IMG",Arrays.asList("post","secure_id"), Arrays.asList(postDatabaseID, imgId));
 			}
 			
 			return null;
