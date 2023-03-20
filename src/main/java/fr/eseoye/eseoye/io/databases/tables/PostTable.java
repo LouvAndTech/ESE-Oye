@@ -118,7 +118,7 @@ public class PostTable implements ITable {
 							" LIMIT "+postNumber+" OFFSET "+(pageNumber*postNumber)+";", whereClause.getValueB());
 			
 			while(res.next()) {
-				final SimplifiedEntity u = new SimplifiedEntity(res.getString("p_name"), res.getString("p_surname"));
+				final SimplifiedEntity u = new SimplifiedEntity(res.getString("u_name"), res.getString("u_surname"));
 				final Category c = new Category("c_name");
 				final PostState ps = new PostState("ps_name");
 				
