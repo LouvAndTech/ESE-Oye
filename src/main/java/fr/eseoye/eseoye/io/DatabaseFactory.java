@@ -17,6 +17,11 @@ public class DatabaseFactory {
 	private DatabaseFactory() {}
 	
 	public static DatabaseFactory getInstance() {
+		if(instance == null) {
+			synchronized (DatabaseFactory.class) {
+				if(DatabaseFactory.instance == null) instance = new DatabaseFactory();
+			}
+		}
 		return instance;
 	}
 	

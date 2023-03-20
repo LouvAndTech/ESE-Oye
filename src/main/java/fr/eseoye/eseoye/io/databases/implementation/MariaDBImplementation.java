@@ -24,7 +24,7 @@ public class MariaDBImplementation extends DatabaseImplementation {
 	public void insertValues(Connection connection, String table, List<String> fields, List<Object> values) throws SQLException {
 		PreparedStatement preparedStatement = connection
 				.prepareStatement("INSERT INTO "+table+"("+convertListToDatabaseFields(fields)+") VALUES("+this.generateRequestEmptyValues(values.size())+");");
-			for(int i = 0; i < values.size(); i++) preparedStatement.setObject(i, values.get(i));
+			for(int i = 0; i < values.size(); i++) preparedStatement.setObject(i+1, values.get(i));
 		preparedStatement.executeUpdate();
 	}
 	
@@ -33,7 +33,7 @@ public class MariaDBImplementation extends DatabaseImplementation {
 		//TODO check sqlRequest size and values size ?
 		PreparedStatement preparedStatement = connection
 				.prepareStatement(sqlRequest);
-			for(int i = 0; i < values.size(); i++) preparedStatement.setObject(i, values.get(i));
+			for(int i = 0; i < values.size(); i++) preparedStatement.setObject(i+1, values.get(i));
 		preparedStatement.executeUpdate();
 		
 	}
@@ -42,8 +42,8 @@ public class MariaDBImplementation extends DatabaseImplementation {
 	public void updateValues(Connection connection, String table, List<String> fields, List<String> values, String condition, List<Object> valuesCondition) throws SQLException {
 		PreparedStatement preparedStatement = connection
 				.prepareStatement("UPDATE "+table+" SET "+convertArgumentsToUpdateFields(fields, values)+" WHERE "+condition+";");
-			for(int i = 0; i < values.size(); i++) preparedStatement.setString(i, values.get(i));
-			for(int i = values.size(); i < values.size()+valuesCondition.size(); i++) preparedStatement.setObject(i, valuesCondition.get(i-values.size()));
+			for(int i = 0; i < values.size(); i++) preparedStatement.setString(i+1, values.get(i));
+			for(int i = values.size(); i < values.size()+valuesCondition.size(); i++) preparedStatement.setObject(i+1, valuesCondition.get(i-values.size()));
 		preparedStatement.executeUpdate();
 	}
 
@@ -62,7 +62,7 @@ public class MariaDBImplementation extends DatabaseImplementation {
 	public ResultSet getValues(Connection connection, String table, List<String> fields, String condition, List<Object> valuesCondition) throws SQLException {
 		//TODO check condition size and valuesCondition size ?
 		PreparedStatement statement = connection.prepareStatement("SELECT "+convertListToDatabaseFields(fields)+" FROM "+table+" WHERE "+condition+";");
-		for(int i = 0; i < valuesCondition.size(); i++) statement.setObject(i, valuesCondition.get(i));
+		for(int i = 0; i < valuesCondition.size(); i++) statement.setObject(i+1, valuesCondition.get(i));
 		
 		return statement.executeQuery();
 	}
@@ -76,21 +76,30 @@ public class MariaDBImplementation extends DatabaseImplementation {
 	@Override
 	public ResultSet getValuesWithCondition(Connection connection, String sqlRequest, List<Object> valuesCondition) throws SQLException {
 		PreparedStatement statement = connection.prepareStatement(sqlRequest);
-		for(int i = 0; i < valuesCondition.size(); i++) statement.setObject(i, valuesCondition.get(i));
-		return statement.executeQuery(sqlRequest);
+		for(int i = 0; i < valuesCondition.size(); i++) statement.setObject(i+1, valuesCondition.get(i));
+		return statement.executeQuery();
 	}
 
 	@Override
 	public int getValuesCount(Connection connection, String table, List<String> columnsName) throws SQLException {
 		Statement statement = connection.createStatement();
-		return statement.executeQuery("SELECT COUNT("+convertListToDatabaseFields(columnsName)+") FROM "+table+";").getInt(0);
+		ResultSet res = statement.executeQuery("SELECT COUNT("+convertListToDatabaseFields(columnsName)+") AS cnt FROM "+table+";");
+		return res.next() ? res.getInt("cnt") : 0;
 	}
 	
 	@Override
 	public int getValuesCount(Connection connection, String table, List<String> columnsName, String condition, List<Object> valuesCondition) throws SQLException {
-		PreparedStatement statement = connection.prepareStatement("SELECT COUNT("+convertListToDatabaseFields(columnsName)+") FROM "+table+" WHERE "+condition+";");
-		for(int i = 0; i < valuesCondition.size(); i++) statement.setObject(i, valuesCondition.get(i));
-		return statement.executeQuery().getInt(0);
+		PreparedStatement statement = connection.prepareStatement("SELECT COUNT("+convertListToDatabaseFields(columnsName)+") AS cnt FROM "+table+" WHERE "+condition+";");
+		for(int i = 0; i < valuesCondition.size(); i++) statement.setObject(i+1, valuesCondition.get(i));
+		ResultSet res = statement.executeQuery();
+		return res.next() ? res.getInt("cnt") : 0;
+	}
+	
+	@Override
+	public void deleteValues(Connection connection, String table, String condition, List<Object> valuesCondition) throws SQLException {
+		PreparedStatement statement = connection.prepareStatement("DELETE from `"+table+"` WHERE "+condition+";");
+		for(int i = 0; i < valuesCondition.size(); i++) statement.setObject(i+1, valuesCondition.get(i));
+		statement.executeUpdate();
 	}
 	
 	@Override

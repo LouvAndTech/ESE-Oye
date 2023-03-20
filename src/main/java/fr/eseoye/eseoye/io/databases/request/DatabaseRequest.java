@@ -32,16 +32,11 @@ public class DatabaseRequest {
 	}
 	
 	public DatabaseRequest(DatabaseFactory factory, DatabaseCredentials credentials) throws SQLException {
-		this.dbImplementation = credentials.getDatabaseType().getImplementation();
-		this.credentials = credentials;
-		
-		this.openConnection();
-		
-		this.instantClose = false;
+		this(factory, credentials, false);
 	}
 	
 	public void openConnection() throws SQLException {
-		if(!this.dbConnection.isClosed()) throw new SQLException("Couldn't open an already opened connection to the database");
+		if(this.dbConnection != null && !this.dbConnection.isClosed()) throw new SQLException("Couldn't open an already opened connection to the database");
 		this.dbConnection = factory.getConnection(this.credentials);
 	}
 	
@@ -105,6 +100,7 @@ public class DatabaseRequest {
 	
 	public CachedRowSet getValuesWithCondition(String sqlRequest, List<Object> valuesCondition) throws SQLException {
 		if(this.dbConnection.isClosed()) throw new SQLException("Couldn't execute the method because no connection to the database was found.");
+		System.out.println(sqlRequest);
 		final CachedRowSet result = RowSetProvider.newFactory().createCachedRowSet();
 		result.populate(this.dbImplementation.getValuesWithCondition(dbConnection, sqlRequest, valuesCondition));
 		
@@ -131,8 +127,15 @@ public class DatabaseRequest {
 		return result;
 	}
 	
+	public void deleteValues(String table, String condition, List<Object> valuesCondition) throws SQLException {
+		if(this.dbConnection.isClosed()) throw new SQLException("Couldn't execute the method because no connection to the database was found.");
+		this.dbImplementation.deleteValues(dbConnection, table, condition, valuesCondition);
+		
+		if(instantClose) this.dbConnection.close();
+	}
+	
 	public void closeConnection() throws SQLException {
-		if(this.dbConnection.isClosed()) throw new SQLException("Couldn't close an already closed connection to the database");
+		if(this.dbConnection != null && this.dbConnection.isClosed()) throw new SQLException("Couldn't close an already closed connection to the database");
 		this.dbConnection.close();
 	}
 	

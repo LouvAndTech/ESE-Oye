@@ -2,7 +2,6 @@ package fr.eseoye.eseoye.io.json;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,10 +25,8 @@ public abstract class JSONFile {
 	 */
 	public JSONFile(String path, String fileName) {
 		this.path = Path.of(path, fileName);
-
+		
 		try {
-			if(!Files.exists(this.path)) Files.createFile(this.path);
-
 			readFile();
 
 			reviewFormat();
@@ -62,7 +59,7 @@ public abstract class JSONFile {
 			@Override
 			public void run() {
 				try {
-					FileWriter fw = new FileWriter(path.toFile());
+					FileWriter fw = new FileWriter(path.toString());
 
 					fw.write(FILES_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(dataMap));
 
@@ -118,7 +115,7 @@ public abstract class JSONFile {
 	protected HashMap<String, Object> getData(String src) {
 		Object obj = getData().get(src);
 		if(obj instanceof HashMap) return (HashMap<String, Object>) obj;
-		else throw new ClassCastException("The key "+src+" didn't contained a HashMap");
+		else throw new ClassCastException("The key "+src+" didn't contained a HashMap ");
 	}
 
 	/**
@@ -130,8 +127,9 @@ public abstract class JSONFile {
 	@SuppressWarnings("unchecked")
 	protected void readFile() throws IOException {
 		try {
-			this.dataMap = FILES_MAPPER.readValue(this.path.toFile(), HashMap.class);
+			this.dataMap = FILES_MAPPER.readValue(getClass().getClassLoader().getResourceAsStream(this.path.toString()), HashMap.class);
 		}catch(Exception e) {
+			e.printStackTrace();
 			this.dataMap = new HashMap<>();
 		}
 	}

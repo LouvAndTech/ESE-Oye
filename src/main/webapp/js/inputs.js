@@ -2,6 +2,7 @@ const textboxs = Array.prototype.slice.call(document.querySelectorAll('.textBox 
 const btns = document.querySelectorAll("input[type='submit']");
 const passSecu = document.getElementsByClassName("passSecu")[0];
 const listText = [];
+
 textboxs.forEach(textbox => {
     //active or disable the save button
     listText.push(textbox.value);

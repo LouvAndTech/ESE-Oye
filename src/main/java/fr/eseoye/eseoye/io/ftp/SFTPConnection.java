@@ -67,9 +67,30 @@ public class SFTPConnection {
 			
 			return imagesId;
 		}catch(IOException e) {
-			System.err.println(e);
+			e.printStackTrace();
 			return null;
 			
+		}finally {
+			if(sftp != null) sftp.close();
+			if(client != null) {
+				client.disconnect();
+				client.close();
+			}
+		}
+	}
+	
+	public void removePostImage(String postSecureID, String imageSecureID) throws IOException {
+		SSHClient client = null;
+		SFTPClient sftp = null;
+		
+		try {
+			client= factory.createSSHClient();
+			sftp = client.newSFTPClient();
+			
+			sftp.rm(SEPARATOR+ROOT_DIRECTORY+SEPARATOR+POST_DIRECTORY+SEPARATOR+postSecureID+SEPARATOR+imageSecureID+".jpg");
+			
+		}catch(IOException e) {
+			System.err.println(e);
 		}finally {
 			if(sftp != null) sftp.close();
 			if(client != null) {
@@ -120,6 +141,27 @@ public class SFTPConnection {
 			System.err.println(e);
 			
 			return null;
+		}finally {
+			if(sftp != null) sftp.close();
+			if(client != null) {
+				client.disconnect();
+				client.close();
+			}
+		}
+	}
+	
+	public void removeUserImage(String userSecureID, String imageSecureID) throws IOException {
+		SSHClient client = null;
+		SFTPClient sftp = null;
+		
+		try {
+			client= factory.createSSHClient();
+			sftp = client.newSFTPClient();
+			
+			sftp.rm(SEPARATOR+ROOT_DIRECTORY+SEPARATOR+USER_DIRECTORY+SEPARATOR+userSecureID+SEPARATOR+imageSecureID+".jpg");
+			
+		}catch(IOException e) {
+			System.err.println(e);
 		}finally {
 			if(sftp != null) sftp.close();
 			if(client != null) {
