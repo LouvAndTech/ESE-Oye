@@ -2,9 +2,9 @@ package fr.eseoye.eseoye.beans;
 
 import java.sql.Date;
 
-public class User extends SimplifiedUser {
+public class User extends SimplifiedEntity {
 
-	private String id;
+	private String secureID;
 	
 	private String password;
 	private Date birth;
@@ -12,9 +12,9 @@ public class User extends SimplifiedUser {
 	private String mail;
 	private String state;
 	
-	public User(String id, String name, String surname, String password, Date birth, String phone, String mail, String state) {
-		super(name, surname);
-		this.id = id;
+	public User(String secureID, String name, String surname, String password, Date birth, String phone, String mail, String state) {
+		super(secureID, name, surname);
+		this.secureID = secureID;
 		this.password = password;
 		this.birth = birth;
 		this.phone = phone;
@@ -23,7 +23,7 @@ public class User extends SimplifiedUser {
 	}
 	
 	public String getId() {
-		return id;
+		return secureID;
 	}
 	
 	public String getPassword() {
