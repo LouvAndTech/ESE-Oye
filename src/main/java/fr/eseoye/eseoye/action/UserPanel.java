@@ -50,7 +50,7 @@ public class UserPanel implements Action{
 
         request.setCharacterEncoding("UTF-8");
         String id = request.getParameter("contentPage");
-        System.out.println("Forward : "+id);
+        //System.out.println("Forward : "+id);
         if(id == null || !actionMap.containsKey(id)) {
             id="Account";
         }
