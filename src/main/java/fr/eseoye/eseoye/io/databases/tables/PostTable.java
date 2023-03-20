@@ -51,18 +51,27 @@ public class PostTable implements ITable {
 		try {
 			request = new DatabaseRequest(factory, credentials);
 			
-			final int userDatabaseId = request.getValues(USER_TABLE_NAME, Arrays.asList("id"), "secure_id=?", Arrays.asList(userSecureID)).getInt("id"); //Get the id of the user and store it for the creation of the post
-
-			final int lastPostId = request.getValues("SELECT id FROM "+getTableName()+" ORDER BY id DESC LIMIT 1;").getInt("id"); //Get the last id for post in the table
-			final int lastPostImgId = request.getValues("SELECT id FROM "+getTableName()+" ORDER BY id DESC LIMIT 1;").getInt("id"); //Get the last id for a post img in the table
+			final CachedRowSet requestUserDatabaseId = request.getValues(USER_TABLE_NAME, Arrays.asList("id"), "secure_id=?", Arrays.asList(userSecureID)); //Get the id of the user and store it for the creation of the post
+			if(!requestUserDatabaseId.next()) throw new SQLException();
+			final int userDatabaseID = requestUserDatabaseId.getInt("id");
 			
-			final String postSecureId = SecurityHelper.generateSecureID(System.currentTimeMillis(), lastPostId, SecurityHelper.SECURE_ID_LENGTH); //Generate the new secure id for the post
+			final CachedRowSet requestLastPostId = request.getValues("SELECT id FROM "+getTableName()+" ORDER BY id DESC LIMIT 1;"); //Get the last id for post in the table
+			if(!requestLastPostId.next()) throw new SQLException();
+			final int lastPostID = requestLastPostId.getInt("id");
 			
-			request.insertValues(postSecureId, Arrays.asList("title","content","price","category","user","state","date", "secure_id"), Arrays.asList(title, content, price, categoryID, userDatabaseId, stateID, new Date(System.currentTimeMillis()), postSecureId));
+			final CachedRowSet requestLastPostImgId = request.getValues("SELECT id FROM "+POST_IMG_TABLE_NAME+" ORDER BY id DESC LIMIT 1;"); //Get the last id for a post img in the table
+			if(!requestLastPostImgId.next()) throw new SQLException();
+			final int lastPostImgID = requestLastPostImgId.getInt("id");
 			
-			final int postDatabaseID = request.getValues("SELECT SCOPE_IDENTITY();").getInt(0); //Get the id for the fresh created post
-						
-			List<String> imagesId = sftpConnection.addNewPostImage(postSecureId, lastPostImgId, images);
+			final String postSecureId = SecurityHelper.generateSecureID(System.currentTimeMillis(), lastPostID, SecurityHelper.SECURE_ID_LENGTH); //Generate the new secure id for the post
+			
+			request.insertValues(postSecureId, Arrays.asList("title","content","price","category","user","state","date", "secure_id"), Arrays.asList(title, content, price, categoryID, userDatabaseID, stateID, new Date(System.currentTimeMillis()), postSecureId));
+			
+			final CachedRowSet requestPostDatabaseID = request.getValues("SELECT SCOPE_IDENTITY() AS lid;"); //Get the id for the fresh created post
+			if(!requestPostDatabaseID.next()) throw new SQLException();
+			final int postDatabaseID = requestPostDatabaseID.getInt("lid");
+			
+			List<String> imagesId = sftpConnection.addNewPostImage(postSecureId, lastPostImgID, images);
 			for(String imgId : imagesId) {
 				request.insertValues("Post_IMG",Arrays.asList("post","secure_id"), Arrays.asList(postDatabaseID, imgId));
 			}
