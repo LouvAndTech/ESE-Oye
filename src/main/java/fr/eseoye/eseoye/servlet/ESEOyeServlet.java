@@ -10,6 +10,7 @@ import fr.eseoye.eseoye.io.databases.tables.PostTable;
 
 //Libraries
 import java.io.*;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.ServletException;
@@ -36,6 +37,8 @@ public class ESEOyeServlet extends HttpServlet {
             actionMap.put("ListPosts", new ListPost(dbCred));
             actionMap.put("OnePost", new OnePost(dbCred));
             actionMap.put("UserPanel", UserPanel.getInstance(dbCred));
+            actionMap.put("Inscription", new Inscription());
+            actionMap.put("Connexion", new Connexion());
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -98,6 +101,10 @@ public class ESEOyeServlet extends HttpServlet {
         if(id == null || !actionMap.containsKey(id)) {
             id="Index";
         }
-        actionMap.get(id).execute(request,response);
+        try {
+            actionMap.get(id).execute(request,response);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

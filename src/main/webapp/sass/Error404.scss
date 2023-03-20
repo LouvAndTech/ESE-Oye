@@ -1,4 +1,21 @@
-body{
-  background-image: url('http://eseoye.elouan-lerissel.fr/404.jpg');
-  no-repeat : null;
+body {
+  padding-bottom: 10em;
+  position: absolute;
+  min-width: fit-content;
+  min-height: fit-content;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+h1{
+  color: black;
+  background-color: aliceblue;
+  background-size: fit-content;
+  text-align: center;
+  font-size: 50px;
+  margin-top: 20%;
+}
+img{
+  border-radius: 30px;
 }

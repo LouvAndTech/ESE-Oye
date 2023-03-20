@@ -20,7 +20,23 @@ import java.util.Arrays;
 public class Inscription implements Action{
 
     @Override
+
+    /**
+     * Load the post asked before forwarding to the page
+     * @param request   an {@link HttpServletRequest} object that
+     *                  contains the request the client has made
+     *                      of the servlet
+     * @param response  an {@link HttpServletResponse} object that
+     *                      contains the response the servlet sends
+     *                      to the client
+     * @throws ServletException an {@link ServletException}
+     * @throws IOException      an {@link IOException}
+     */
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ParseException {
+
+        /**
+         * Check if the mail is already used
+         */
 
         Ternary resultMail = DatabaseFactory.getInstance().getTable(UserTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).isAccoundCreationPossible(request.getParameter("mail"), request.getParameter("password"));
         if(resultMail == Ternary.TRUE) {
