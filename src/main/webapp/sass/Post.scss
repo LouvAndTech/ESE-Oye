@@ -19,6 +19,12 @@ section{
     }
 }
 
+.imgInLine{
+    img{
+        width: 19%;
+    }
+}
+
 .carrousel{
     display: grid;
     grid-template-columns: 2fr;
@@ -165,7 +171,19 @@ section{
     }
 }
 
-
+.btnAdminControl{
+    display: flex;
+    flex-direction: row-reverse;
+    padding-right: 1em;
+    p{
+        margin-right: auto;
+    }
+    a{
+        margin: 0;
+        margin-left: 1em;
+        cursor: pointer;
+    }
+}
 
 
 

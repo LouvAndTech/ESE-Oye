@@ -14,16 +14,13 @@ function dayDark(){
     changeThemeColor();
     changeIconTheme();
     document.cookie = 'darkTheme='+dark+'; path=/; max-age=2592000';
-    console.log(document.cookie)
 }
 
 function changeThemeColor(){
-    console.log("la")
     if(loaded){
         changeIconTheme();
     }
     dark=!dark;
-    console.log("load");
     Object.keys(listColor).forEach(key => {
         const tempColor = listColor[key];
         listColor[key] = getComputedStyle(document.documentElement).getPropertyValue(key);
@@ -32,7 +29,6 @@ function changeThemeColor(){
 }
 
 function changeIconTheme(){
-    console.log("icon change")
     var icon = document.querySelector(".icon_dark_mode");
     icon.innerHTML = dark ? "dark_mode" : "light_mode";
 }

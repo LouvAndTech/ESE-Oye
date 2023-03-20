@@ -46,3 +46,29 @@ section{
         padding: 1em 2em;
     }
 }
+
+.ConfigUser{
+    display: flex;
+    margin-right: 1em;
+    p{
+        width: fit-content;
+    }
+    .end{
+        margin-left: auto;
+        display: flex;
+        a{
+            height: 100%;
+            display: block;
+            span{
+                line-height: 2em;
+            }
+            &:hover span{
+                cursor: pointer;
+                color: var(--iluminated);
+            }
+        }
+    }
+    &:hover{
+        background-color: var(--lightback);
+    }
+}

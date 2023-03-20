@@ -1,8 +1,6 @@
 package fr.eseoye.eseoye.action;
 
-import fr.eseoye.eseoye.action.User.Account;
-import fr.eseoye.eseoye.action.User.AddPosts;
-import fr.eseoye.eseoye.action.User.Posts;
+import fr.eseoye.eseoye.action.User.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +21,8 @@ public class UserPanel implements Action{
         actionMap.put("AddAnnonce", new AddPosts());
 
         //Admin Part
+        actionMap.put("AdminListUser", new AdminListUser());
+        actionMap.put("AdminValidePost", new AdminValidePost());
     }
 
     public static UserPanel getInstance(){

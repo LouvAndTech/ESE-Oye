@@ -76,6 +76,6 @@
 </section>
 
 <%@include file="theme/Footer.jsp" %>
-<script src="../js/Carrousel_post.js"></script>
+<script src="${pageContext.request.contextPath}/js/Carrousel_post.js"></script>
 </body>
 </html>

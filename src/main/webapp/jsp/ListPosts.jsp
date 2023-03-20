@@ -80,6 +80,11 @@
                                 <p>Catégorie :</p>
                                 <p>${post.category.name}</p>
                             </div>
+                            <hr class="hrVertical">
+                            <div class="cat">
+                                <p>Etat :</p>
+                                <p>A definir</p>
+                            </div>
                             <div class="subtitle">
                                 <p class="author">${post.author.name} ${post.author.surname}</p>
                                 <p class="date">${post.date}</p>

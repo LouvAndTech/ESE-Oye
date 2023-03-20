@@ -53,7 +53,7 @@ public class ESEOyeServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
         if (session.getAttribute("admin") == null) {
-            session.setAttribute("admin", false);
+            session.setAttribute("admin", true);
         }
 
         String id = request.getParameter("id");
@@ -81,7 +81,7 @@ public class ESEOyeServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
         if (session.getAttribute("admin") == null) {
-            session.setAttribute("admin", false);
+            session.setAttribute("admin", true);
         }
 
         String id = request.getParameter("id");
