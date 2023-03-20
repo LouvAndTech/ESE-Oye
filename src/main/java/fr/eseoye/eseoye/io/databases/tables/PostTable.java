@@ -67,13 +67,13 @@ public class PostTable implements ITable {
 			
 			request.insertValues(getTableName(), Arrays.asList("title","content","price","category","user","state","date", "secure_id"), Arrays.asList(title, content, price, categoryID, userDatabaseID, stateID, new Date(System.currentTimeMillis()), postSecureId));
 			
-			final CachedRowSet requestPostDatabaseID = request.getValues("SELECT SCOPE_IDENTITY() AS lid;"); //Get the id for the fresh created post
+			final CachedRowSet requestPostDatabaseID = request.getValues("SELECT LAST_INSERT_ID() AS lid;"); //Get the id for the fresh created post
 			if(!requestPostDatabaseID.next()) throw new SQLException();
 			final int postDatabaseID = requestPostDatabaseID.getInt("lid");
 			
 			List<String> imagesId = sftpConnection.addNewPostImage(postSecureId, lastPostImgID, images);
 			for(String imgId : imagesId) {
-				request.insertValues("Post_IMG",Arrays.asList("post","secure_id"), Arrays.asList(postDatabaseID, imgId));
+				request.insertValues(POST_IMG_TABLE_NAME,Arrays.asList("post","secure_id"), Arrays.asList(postDatabaseID, imgId));
 			}
 			
 			return null;
