@@ -1,5 +1,7 @@
 package fr.eseoye.eseoye.io.databases;
 
+import java.util.Arrays;
+
 import fr.eseoye.eseoye.io.databases.implementation.DatabaseImplementation;
 import fr.eseoye.eseoye.io.databases.implementation.MariaDBImplementation;
 
@@ -24,5 +26,9 @@ public enum DatabaseType {
 			default:
 				return null;
 		}
+	}
+	
+	public static DatabaseType of(String name) {
+		return Arrays.asList(DatabaseType.values()).stream().filter(type -> type.toString().equalsIgnoreCase(name)).findFirst().get();
 	}
 }
