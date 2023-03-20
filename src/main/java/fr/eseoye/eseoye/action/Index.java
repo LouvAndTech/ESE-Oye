@@ -9,6 +9,7 @@ import java.io.IOException;
 
 public class Index implements Action{
 
+
     private final DatabaseCredentials dbCred;
 
     public Index(DatabaseCredentials dbCred){

@@ -15,25 +15,19 @@
     <script type="module" src="${pageContext.request.contextPath}/js/Request.js" defer></script>
 
 </head>
-<body>
+    <body>
 
 
-<h1>Error 404 : cheh</h1>
-<c:choose>
-    <c:when test = "${sessionScope.username == null}">
-        <input type="submit" class="btn fill" value="retourner au site"onclick="window.Request.sendGet('ese-oye?id=Inscription')">
-    </c:when>
-    <c:otherwise>
-        <input type="submit" class="btn fill" value="retourner au site"onclick="window.Request.sendGet('ese-oye')">
-    </c:otherwise>
-</c:choose>
+        <h1>Error 404 : impossible de trouver ce que vous cherchez</h1>
+        <c:choose>
+            <c:when test = "${sessionScope.username == null}">
+                <input type="submit" class="btn fill" value="retourner au site"onclick="window.Request.sendGet('ese-oye?id=Inscription')">
+            </c:when>
+            <c:otherwise>
+                <input type="submit" class="btn fill" value="retourner au site"onclick="window.Request.sendGet('ese-oye')">
+            </c:otherwise>
+        </c:choose>
+        <img src="http://eseoye.elouan-lerissel.fr/404.jpg"" alt="404" class="img404">
 
-
-
-
-
-
-
-
-</body>
+    </body>
 </html>

@@ -17,6 +17,7 @@
   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css" />
   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/Inscription.css" />
   <script src="${pageContext.request.contextPath}/js/inputs.js" defer></script>
+  <script type="module" src="${pageContext.request.contextPath}/js/request.js" defer></script>
 </head>
 <body>
 
@@ -26,37 +27,40 @@
 <div>
   <section class="container">
     <form method="post" action="ese-oye">
+      <c:if test="${error}">
+        <div class="error">
+          <p>Erreur d'authentification</p>
+        </div>
+      </c:if>
       <label class="textBox">
         <input type="text" name="name" placeholder="prénom" required>
 
       </label>
-      <br/>
+      <br/><br/>
       <label class="textBox">
         <input type="text" name="surname" placeholder="nom " required>
       </label>
-      <br/>
+      <br/><br/>
       <label class="textBox">
         <input type="tel" name="phone" placeholder="numéro de téléphone " required>
       </label>
-      <br/>
+      <br/><br/>
       <label class="textBox">
         <input type="email" name="mail" placeholder="mail" required>
-        <br/>
-        <input name="error" placeholder=" ">
       </label>
-      <br/>
+      <br/><br/>
       <label class="textBox">
         <input type="date" name="bday" placeholder="date de naissance " required max="08/03/2005" id="mybday" onclick="btchange()">
 
       </label>
-      <br/>
+      <br/><br/>
       <label class="textBox">
         <input type="password" name="password" placeholder="mot de passe" required >
       </label>
-      <br/>
+      <br/><br/>
       <input type="submit" class="btn fill" value="Valider" id="myButton">
     </form>
-    <a href="webapp/jsp/Connexion.jsp" class="btn fill">déjà inscrit ?</a>
+    <input type="submit" class="btn fill" value="déjà inscrit ?"onclick="window.Request.sendPost('ese-oye?id=Connexion')">
   </section>
 
 </div>

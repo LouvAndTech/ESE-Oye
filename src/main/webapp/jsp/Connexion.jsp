@@ -14,6 +14,7 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>connexion</title>
+  <script type="module" src="${pageContext.request.contextPath}/js/request.js" defer></script>
   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css" />
   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/Connexion.css" />
 </head>
@@ -33,6 +34,12 @@
       <br/><br/>
       <input class="btn fill" type="submit" value="Se connecter">
     </form>
+
+  </div>
+
+    <input class="btn fill" type="submit" value="pas encore inscrit ?" onclick="window.Request.sendPost('ese-oye?id=Inscription')">
+  <div>
+
   </div>
 </section>
 

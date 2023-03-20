@@ -2,6 +2,11 @@ package fr.eseoye.eseoye.servlet;
 
 //Actions
 import fr.eseoye.eseoye.action.*;
+import fr.eseoye.eseoye.io.DatabaseFactory;
+import fr.eseoye.eseoye.io.IOHandler;
+import fr.eseoye.eseoye.io.SFTPFactory;
+import fr.eseoye.eseoye.io.databases.DatabaseCredentials;
+import fr.eseoye.eseoye.io.databases.tables.PostTable;
 
 //Libraries
 import java.io.*;
@@ -24,10 +29,26 @@ public class ESEOyeServlet extends HttpServlet {
      */
     @Override
     public void init(){
+<<<<<<<<< Temporary merge branch 1
         actionMap.put("Index", new Index());
         actionMap.put("ListPosts", new ListPost());
         actionMap.put("OnePost", new OnePost());
         actionMap.put("UserPanel", UserPanel.getInstance());
+        actionMap.put("Inscription", new Inscription());
+        actionMap.put("Connexion", new Connexion());
+        actionMap.put("Error404", new Error404());
+=========
+        try {
+            SFTPFactory.createInstance(IOHandler.getInstance().getConfiguration().getSFTPCredentials());
+            DatabaseCredentials dbCred = IOHandler.getInstance().getConfiguration().getDatabaseCredentials();
+            actionMap.put("Index", new Index(dbCred));
+            actionMap.put("ListPosts", new ListPost(dbCred));
+            actionMap.put("OnePost", new OnePost(dbCred));
+            actionMap.put("UserPanel", UserPanel.getInstance(dbCred));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+>>>>>>>>> Temporary merge branch 2
         System.out.println("INIT");
 
     }
@@ -49,7 +70,8 @@ public class ESEOyeServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
         if (session.getAttribute("admin") == null) {
-            session.setAttribute("admin", true);
+            session.setAttribute("admin", false);
+            session.setAttribute("idUser", "1");
         }
 
         String id = request.getParameter("id");
@@ -77,7 +99,8 @@ public class ESEOyeServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
         if (session.getAttribute("admin") == null) {
-            session.setAttribute("admin", true);
+            session.setAttribute("admin", false);
+            session.setAttribute("idUser", "1");
         }
 
         String id = request.getParameter("id");

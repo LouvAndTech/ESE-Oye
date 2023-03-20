@@ -13,7 +13,19 @@ import java.io.IOException;
 
 public class Connexion  implements Action{
     @Override
+    /**
+     * Load the post asked before forwarding to the page
+     * @param request   an {@link HttpServletRequest} object that
+     *                  contains the request the client has made
+     *                      of the servlet
+     * @param response  an {@link HttpServletResponse} object that
+     *                      contains the response the servlet sends
+     *                      to the client
+     * @throws ServletException an {@link ServletException}
+     * @throws IOException      an {@link IOException}
+     */
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
 
          String isaccount = DatabaseFactory.getInstance().getTable(UserTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).checkUserConnection(request.getParameter("mail"), request.getParameter("password"));
          if(isaccount== null){

@@ -37,8 +37,8 @@ public class OnePost implements Action{
      *                  contains the response the servlet sends
      *                  to the client
      *
-     * @throws ServletException an {@link ServletException}
-     * @throws IOException     an {@link IOException}
+     * @throws ServletException
+     * @throws IOException
      */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -80,9 +80,14 @@ public class OnePost implements Action{
      * @param postId    the id of the post to fetch
      * @return          the post as a {@link PostComplete}
      */
+<<<<<<<<< Temporary merge branch 1
+    private PostComplete fetchPost(int postId){
+        //todo : Fetch the post from the database
+        //return new PostComplete("1", "Chair", new User(null, "Jean","Vend", "lol", new Date(2002,2,24), "0606060606", "j@j.j", "TierMonde"),1672, new Date(2020, 12, 12), "Description");
+        return null;
+=========
     private PostComplete fetchPost(String postId){
-        System.out.println("Fetch One entiere post :");
-        System.out.println(DatabaseFactory.getInstance().getTable(PostTable.class, dbCred).fetchEntirePost(postId));
-        return DatabaseFactory.getInstance().getTable(PostTable.class, dbCred).fetchEntirePost(postId);
+        return DatabaseFactory.getInstance().getTable(PostTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).fetchEntirePost(postId);
+>>>>>>>>> Temporary merge branch 2
     }
 }

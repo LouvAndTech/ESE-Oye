@@ -35,7 +35,7 @@ public class UserPanel implements Action{
     }
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ParseException {
         HttpSession session = request.getSession();
         request.setAttribute("adminState", session.getAttribute("admin"));
 
