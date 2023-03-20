@@ -61,7 +61,7 @@ public class PostTable implements ITable {
 			
 			final CachedRowSet requestLastPostImgId = request.getValues("SELECT id FROM "+POST_IMG_TABLE_NAME+" ORDER BY id DESC LIMIT 1;"); //Get the last id for a post img in the table
 			int lastPostImgID = 0;
-			if(!requestLastPostImgId.next()) lastPostImgID = requestLastPostImgId.getInt("id");
+			if(requestLastPostImgId.next()) lastPostImgID = requestLastPostImgId.getInt("id");
 			
 			final String postSecureId = SecurityHelper.generateSecureID(System.currentTimeMillis(), lastPostID, SecurityHelper.SECURE_ID_LENGTH); //Generate the new secure id for the post
 			
