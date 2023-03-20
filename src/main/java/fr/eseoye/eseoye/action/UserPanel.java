@@ -31,13 +31,8 @@ public class UserPanel implements Action{
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Temporary code for session variable
         HttpSession session = request.getSession();
-        if (session.getAttribute("admin") == null) {
-            session.setAttribute("admin", false);
-        }
-        // End of temporary code
-
+        request.setAttribute("adminState", session.getAttribute("admin"));
 
         String id = request.getParameter("contentPage");
         System.out.println("Execute : "+id);
@@ -45,29 +40,21 @@ public class UserPanel implements Action{
             id="Account";
         }
         request.setAttribute("contentPage", id);
-        request.setAttribute("adminState", session.getAttribute("admin"));
         actionMap.get(id).execute(request,response);
     }
 
     @Override
     public void forward(HttpServletRequest request, HttpServletResponse response, String target) throws ServletException, IOException {
-        // Temporary code for session variable
         HttpSession session = request.getSession();
-        if (session.getAttribute("admin") == null) {
-            session.setAttribute("admin", false);
-        }
-        // End of temporary code
-
+        request.setAttribute("adminState", session.getAttribute("admin"));
 
         request.setCharacterEncoding("UTF-8");
-
         String id = request.getParameter("contentPage");
         //System.out.println("Forward : "+id);
         if(id == null || !actionMap.containsKey(id)) {
             id="Account";
         }
         request.setAttribute("contentPage", id);
-        request.setAttribute("adminState", session.getAttribute("admin"));
         actionMap.get(id).forward(request,response,"/jsp/UserPanel.jsp");
 
 

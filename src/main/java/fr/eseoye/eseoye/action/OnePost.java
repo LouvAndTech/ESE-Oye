@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import fr.eseoye.eseoye.beans.PostComplete;
 import fr.eseoye.eseoye.beans.User;
@@ -52,6 +53,9 @@ public class OnePost implements Action{
      */
     @Override
     public void forward(HttpServletRequest request, HttpServletResponse response, String target) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        request.setAttribute("adminState", session.getAttribute("admin"));
+
         System.out.println("OnePost");
         try{
             String postId = request.getParameter("postId");
