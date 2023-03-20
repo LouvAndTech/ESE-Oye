@@ -109,6 +109,11 @@ public class FetchPostFilter {
 			return this;
 		}
 		
+		public Builder order(FetchOrderEnum o) {
+			this.order = o;
+			return this;
+		}
+		
 		public Builder keyWords(Set<String> words) {
 			this.keyWords = words;
 			return this;
