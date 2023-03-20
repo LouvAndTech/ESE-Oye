@@ -110,7 +110,7 @@ public class DatabaseRequest {
 	
 	public int getValuesCount(String table, List<String> values) throws SQLException {
 		if(this.dbConnection.isClosed()) throw new SQLException("Couldn't execute the method because no connection to the database was found.");
-		int result =  this.dbImplementation.getValuesCount(dbConnection, table, values);
+		int result = this.dbImplementation.getValuesCount(dbConnection, table, values);
 		
 		if(instantClose) this.dbConnection.close();
 		

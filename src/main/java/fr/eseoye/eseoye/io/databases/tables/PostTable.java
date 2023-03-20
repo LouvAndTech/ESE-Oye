@@ -121,7 +121,7 @@ public class PostTable implements ITable {
 				final Category c = new Category("c_name");
 				final PostState ps = new PostState("ps_name");
 				
-				final List<String> postImages = fetchPostImages(request, res.getString("p_id"), res.getString("p_sid"), 1);
+				final List<String> postImages = fetchPostImages(request, res.getInt("p_id"), res.getString("p_sid"), 1);
 				if(postImages.isEmpty()) postImages.add(SFTPHelper.getFormattedImageURL(ImageDirectory.ROOT, "", "1.jpg"));
 				
 				post.add(new Post(res.getString("p_sid"), res.getString("p_title"), u, res.getInt("p_price"), res.getDate("p_date"), c, ps, postImages.get(0)));
@@ -189,7 +189,7 @@ public class PostTable implements ITable {
 				final Category c = new Category("c_name");
 				final PostState ps = new PostState("ps_name");
 				
-				final List<String> postImages = fetchPostImages(request, res.getString("p_id"), res.getString("p_sid"), 4);
+				final List<String> postImages = fetchPostImages(request, res.getInt("p_id"), res.getString("p_sid"), 4);
 				if(postImages.isEmpty()) postImages.add(SFTPHelper.getFormattedImageURL(ImageDirectory.ROOT, "", "1.jpg"));
 				
 				pc = new PostComplete(res.getString("p_sid"), res.getString("p_title"), u, res.getFloat("p_price"), res.getDate("p_date"), res.getString("p_content"), c, ps, postImages.get(0), postImages.subList(1, postImages.size()));
@@ -210,7 +210,7 @@ public class PostTable implements ITable {
 		return pc;
 	}
 	
-	private List<String> fetchPostImages(DatabaseRequest req, String postDatabaseID, String postSecureID, int limit) {
+	private List<String> fetchPostImages(DatabaseRequest req, int postDatabaseID, String postSecureID, int limit) {
 		final List<String> postImages = new ArrayList<>();
 		try {
 			final CachedRowSet res = req.getValues(POST_IMG_TABLE_NAME, Arrays.asList("secure_id"), "post=?", Arrays.asList(postDatabaseID));
