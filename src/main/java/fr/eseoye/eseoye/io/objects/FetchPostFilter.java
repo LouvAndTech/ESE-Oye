@@ -131,10 +131,10 @@ public class FetchPostFilter {
 	}
 	
 	public enum FetchOrderEnum {
-		PRICE_ASCENDING("Prix"),
-		PRICE_DESCENDING(""),
-		DATE_ASCENDING(""),
-		DATE_DESCENDING("");
+		PRICE_ASCENDING("Prix ascendant"),
+		PRICE_DESCENDING("Prix descendant"),
+		DATE_ASCENDING("Date ascendante"),
+		DATE_DESCENDING("Date descendante");
 		
 		private String name;
 		private FetchOrderEnum(String name) {
