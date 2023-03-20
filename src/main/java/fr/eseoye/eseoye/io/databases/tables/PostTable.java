@@ -109,7 +109,7 @@ public class PostTable implements ITable {
 			final Tuple<String, List<Object>> whereClause = generateWhereClausePost(userSecureID, parameters);
 			final String orderClause = generateOrderClausePost(parameters.getOrder());
 			
-			final CachedRowSet res = request.getValuesWithCondition("SELECT "+getTableName()+".id, "+getTableName()+".secure_id, "+getTableName()+".title, "+USER_TABLE_NAME+".name, "+USER_TABLE_NAME+".surname, "+getTableName()+".price, "+CATEGORY_TABLE_NAME+".name, "+POST_STATE_TABLE_NAME+".name, "+getTableName()+".date FROM "+getTableName()+" "+
+			final CachedRowSet res = request.getValuesWithCondition("SELECT "+getTableName()+".id AS p_id, "+getTableName()+".secure_id AS p_sid, "+getTableName()+".title AS p_title, "+USER_TABLE_NAME+".name AS u_name, "+USER_TABLE_NAME+".surname AS u_surname, "+getTableName()+".price AS p_price, "+CATEGORY_TABLE_NAME+".name AS c_name, "+POST_STATE_TABLE_NAME+".name AS ps_name, "+getTableName()+".date AS p_date FROM "+getTableName()+" "+
 							"INNER JOIN "+USER_TABLE_NAME+" ON "+getTableName()+".user = "+USER_TABLE_NAME+".id "+
 							"INNER JOIN "+CATEGORY_TABLE_NAME+" ON "+getTableName()+".category = "+CATEGORY_TABLE_NAME+".id "+
 							"INNER JOIN "+POST_STATE_TABLE_NAME+" ON "+getTableName()+".state = "+POST_STATE_TABLE_NAME+".id " +
@@ -118,14 +118,14 @@ public class PostTable implements ITable {
 							" LIMIT "+postNumber+" OFFSET "+(pageNumber*postNumber)+";", whereClause.getValueB());
 			
 			while(res.next()) {
-				final SimplifiedEntity u = new SimplifiedEntity(res.getString(USER_TABLE_NAME+".name"), res.getString(USER_TABLE_NAME+".surname"));
-				final Category c = new Category(CATEGORY_TABLE_NAME+".name");
-				final PostState ps = new PostState(POST_STATE_TABLE_NAME+".name");
+				final SimplifiedEntity u = new SimplifiedEntity(res.getString("p_name"), res.getString("p_surname"));
+				final Category c = new Category("c_name");
+				final PostState ps = new PostState("ps_name");
 				
-				final List<String> postImages = fetchPostImages(request, res.getString(getTableName()+".id"), res.getString(getTableName()+".secure_id"), 1);
+				final List<String> postImages = fetchPostImages(request, res.getString("p_id"), res.getString("p_sid"), 1);
 				if(postImages.isEmpty()) postImages.add(SFTPHelper.getFormattedImageURL(ImageDirectory.ROOT, "", "1.jpg"));
 				
-				post.add(new Post(res.getString("secure_id"), res.getString("title"), u, res.getInt("price"), res.getDate("date"), c, ps, postImages.get(0)));
+				post.add(new Post(res.getString("p_sid"), res.getString("p_title"), u, res.getInt("p_price"), res.getDate("p_date"), c, ps, postImages.get(0)));
 			}
 			
 			int totalPostNumber = request.getValuesCount(getTableName(), Arrays.asList("id"));
