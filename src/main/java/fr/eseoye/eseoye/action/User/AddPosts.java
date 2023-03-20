@@ -30,6 +30,19 @@ public class AddPosts implements Action {
         this.dbCred = dbCred;
     }
 
+    /**
+     * Method called by the servlet to process a post request on the AddPost page.
+     * @param request   an {@link HttpServletRequest} object that
+     *                  contains the request the client has made
+     *                  of the servlet
+     *
+     * @param response  an {@link HttpServletResponse} object that
+     *                  contains the response the servlet sends
+     *                  to the client
+     *
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("AddPosts : execute (start)");
@@ -66,6 +79,21 @@ public class AddPosts implements Action {
         request.getRequestDispatcher("/jsp/UserPanel.jsp").forward(request,response);
     }
 
+    /**
+     * Method called by the servlet to process a get request on the AddPost page.
+     * @param request   an {@link HttpServletRequest} object that
+     *                  contains the request the client has made
+     *                  of the servlet
+     *
+     * @param response  an {@link HttpServletResponse} object that
+     *                  contains the response the servlet sends
+     *                  to the client
+     *
+     * @param target    a string to define the view to forward
+     *
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     public void forward(HttpServletRequest request, HttpServletResponse response, String target) throws ServletException, IOException {
         request.setAttribute("categories", DatabaseFactory.getInstance().getTable(PostCategoryTable.class, dbCred ).fetchAllCategory());
@@ -75,6 +103,9 @@ public class AddPosts implements Action {
     }
 
 
+    /**
+     * Class used to store the data of a post to add
+     */
     private class PostToAdd {
         public String title;
         public String description;
@@ -83,6 +114,11 @@ public class AddPosts implements Action {
         public Integer state;
         public List<InputStream> images;
 
+        /**
+         * Constructor of the class
+         * @param request an {@link HttpServletRequest} object that contains the request the client has made on the AddPost page
+         * @param images a list of {@link InputStream} containing the images of the new post
+         */
         public PostToAdd(HttpServletRequest request, List<InputStream> images){
             this.title = request.getParameter("title");
             this.description = request.getParameter("description");
@@ -91,6 +127,10 @@ public class AddPosts implements Action {
             this.state = Integer.parseInt(request.getParameter("state"));
             this.images = images;
         }
+        /**
+         * Method to check if all the fields are filled
+         * @throws IllegalArgumentException if a field is not filled
+         */
         public void isComplete() throws IllegalArgumentException{
             if(title == null || description == null || price == null || category == null || state == null || images == null)
                 throw new IllegalArgumentException("Tous les champs doivent être remplis");

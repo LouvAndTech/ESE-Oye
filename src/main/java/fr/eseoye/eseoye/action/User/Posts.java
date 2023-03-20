@@ -10,11 +10,23 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class Posts extends AbstractFetchPost implements Action {
-    private final DatabaseCredentials dbCred;
     public Posts(DatabaseCredentials dbCred) {
-        this.dbCred = dbCred;
+        super(dbCred);
     }
 
+    /**
+     * The Method that will be called when the user send a post request on the list of his posts
+     * @param request   an {@link HttpServletRequest} object that
+     *                  contains the request the client has made
+     *                  of the servlet
+     *
+     * @param response  an {@link HttpServletResponse} object that
+     *                  contains the response the servlet sends
+     *                  to the client
+     *
+     * @throws ServletException if the target resource throws this exception
+     * @throws IOException    if the target resource throws this exception
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try{
@@ -27,6 +39,21 @@ public class Posts extends AbstractFetchPost implements Action {
         request.getRequestDispatcher("/jsp/UserPanel.jsp").forward(request, response);
     }
 
+    /**
+     * The Method that will be called when the user want to see the list of his posts
+     * @param request   an {@link HttpServletRequest} object that
+     *                  contains the request the client has made
+     *                  of the servlet
+     *
+     * @param response  an {@link HttpServletResponse} object that
+     *                  contains the response the servlet sends
+     *                  to the client
+     *
+     * @param target    a string to define the view to forward
+     *
+     * @throws ServletException if the target resource throws this exception
+     * @throws IOException if the target resource throws this exception
+     */
     @Override
     public void forward(HttpServletRequest request, HttpServletResponse response, String target) throws ServletException, IOException {
         try {

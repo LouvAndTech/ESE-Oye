@@ -37,8 +37,8 @@ public class OnePost implements Action{
      *                  contains the response the servlet sends
      *                  to the client
      *
-     * @throws ServletException
-     * @throws IOException
+     * @throws ServletException an {@link ServletException}
+     * @throws IOException     an {@link IOException}
      */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -81,6 +81,8 @@ public class OnePost implements Action{
      * @return          the post as a {@link PostComplete}
      */
     private PostComplete fetchPost(String postId){
-        return DatabaseFactory.getInstance().getTable(PostTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).fetchEntirePost(postId);
+        System.out.println("Fetch One entiere post :");
+        System.out.println(DatabaseFactory.getInstance().getTable(PostTable.class, dbCred).fetchEntirePost(postId));
+        return DatabaseFactory.getInstance().getTable(PostTable.class, dbCred).fetchEntirePost(postId);
     }
 }

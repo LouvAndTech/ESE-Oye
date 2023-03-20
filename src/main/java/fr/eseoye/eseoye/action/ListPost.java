@@ -1,28 +1,16 @@
 package fr.eseoye.eseoye.action;
 
-import fr.eseoye.eseoye.beans.*;
-import fr.eseoye.eseoye.io.DatabaseFactory;
 import fr.eseoye.eseoye.io.databases.DatabaseCredentials;
-import fr.eseoye.eseoye.io.databases.DatabaseType;
-import fr.eseoye.eseoye.io.objects.FetchPostFilter;
-import fr.eseoye.eseoye.utils.Tuple;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.crypto.Data;
 import java.io.IOException;
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class ListPost extends AbstractFetchPost implements Action{
 
-    private final DatabaseCredentials dbCred;
-
-    public ListPost(DatabaseCredentials dbCred){
-        this.dbCred = dbCred;
+    public ListPost(DatabaseCredentials dbCred) {
+        super(dbCred);
     }
 
     /**
@@ -65,10 +53,12 @@ public class ListPost extends AbstractFetchPost implements Action{
      */
     @Override
     public void forward(HttpServletRequest request, HttpServletResponse response, String target) throws ServletException, IOException {
+        System.out.println("Forwarding to " + target);
         try {
-            AddOrders(request);
-            fillRequest(request, POST_PER_PAGE, 1, TypePost.CLASSIC);
-        } catch (Exception ignored) {}
+            fillRequest(request, POST_PER_PAGE, 0, TypePost.CLASSIC);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         request.getRequestDispatcher("/jsp/ListPosts.jsp").forward(request, response);
     }
 }

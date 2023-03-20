@@ -2,21 +2,25 @@ package fr.eseoye.eseoye.action;
 
 import fr.eseoye.eseoye.beans.*;
 import fr.eseoye.eseoye.io.DatabaseFactory;
-import fr.eseoye.eseoye.io.IOHandler;
+import fr.eseoye.eseoye.io.databases.DatabaseCredentials;
+import fr.eseoye.eseoye.io.databases.tables.PostCategoryTable;
+import fr.eseoye.eseoye.io.databases.tables.PostStateTable;
 import fr.eseoye.eseoye.io.databases.tables.PostTable;
 import fr.eseoye.eseoye.io.objects.FetchPostFilter;
 import fr.eseoye.eseoye.utils.Tuple;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public abstract class AbstractFetchPost {
+
+    private final DatabaseCredentials dbCred;
+
+    public AbstractFetchPost(DatabaseCredentials dbCred){
+        this.dbCred = dbCred;
+    }
 
     protected static final int POST_PER_PAGE = 10;
 
@@ -62,6 +66,8 @@ public abstract class AbstractFetchPost {
      * @param nbPost   the number of post to fetch
      * @param page     the page numbers
      * @param filters  a {@link FetchPostFilter} object
+     * @param type     a {@link TypePost} object
+     * @throws Exception an {@link Exception} of the error if any
      */
     protected void fillRequest (HttpServletRequest request,int nbPost, int page, FetchPostFilter filters, TypePost type) throws Exception{
         Tuple<List<Post>,Integer> fromDB = fetchPost(nbPost, page , filters, type);
@@ -71,28 +77,46 @@ public abstract class AbstractFetchPost {
         request.setAttribute("nbPage", nbPage);
         request.setAttribute("categories", fetchCategories());
         request.setAttribute("states", fetchStates());
-        AddOrders(request);
+        request.setAttribute("orders", fetchOrders(request));
         request.setAttribute("postPage", page);
     }
+
+    /**
+     * Check the filters from the request
+     * @param request an {@link HttpServletRequest} object
+     * @param nbPost the number of post to fetch
+     * @param page the page numbers
+     * @param type a {@link TypePost} object
+     * @throws Exception an {@link Exception} of the error if any
+     */
     protected void fillRequest (HttpServletRequest request,int nbPost, int page, TypePost type) throws Exception{
+        System.out.println(type);
+        System.out.println(fetchPost(nbPost, page , FetchPostFilter.builder().build(), type));
         Tuple<List<Post>,Integer> fromDB = fetchPost(nbPost, page , FetchPostFilter.builder().build(), type);
         List<Integer> nbPage = handleNBpage(fromDB.getValueB(), page);
         request.setAttribute("posts", fromDB.getValueA());
         if(type == TypePost.CLASSIC){
+            System.out.println("Classic");
+            System.out.println(fetchCategories());
             request.setAttribute("categories", fetchCategories());
             request.setAttribute("states", fetchStates());
-            AddOrders(request);
+            request.setAttribute("orders", fetchOrders(request));
         }
         request.setAttribute("nbPage", nbPage);
         request.setAttribute("postPage", page);
     }
 
-    protected void AddOrders(HttpServletRequest request){
+    /**
+     * Fetch the posts from the database
+     * @param request
+     * @return  a {@link List} of {@link FetchOrder} object
+     */
+    protected List<FetchOrder> fetchOrders(HttpServletRequest request){
         List<FetchOrder> orders = new ArrayList<>();
         for (FetchPostFilter.FetchOrderEnum order : FetchPostFilter.FetchOrderEnum.values()){
             orders.add(order.getObject());
         }
-        request.setAttribute("orders", orders);
+        return orders;
     }
 
     /**
@@ -102,7 +126,7 @@ public abstract class AbstractFetchPost {
      * @return          a list of {@link Post}
      */
     protected Tuple<List<Post>,Integer> fetchPost(int nbPost, int page, FetchPostFilter filters,TypePost type){
-        return DatabaseFactory.getInstance().getTable(PostTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).fetchShortPost(nbPost, page,filters);
+        return DatabaseFactory.getInstance().getTable(PostTable.class, dbCred).fetchShortPost(nbPost, page,filters);
     }
 
     /**
@@ -110,12 +134,8 @@ public abstract class AbstractFetchPost {
      * @return a list of {@link Category}
      * @throws Exception
      */
-    protected static List<Category> fetchCategories() throws Exception{
-        List<Category> categories = new ArrayList<>();
-        for (int i = 0;i<10;i++){
-            categories.add(new Category(i,"Cat"+i));
-        }
-        return categories;
+    protected List<Category> fetchCategories() throws Exception{
+        return DatabaseFactory.getInstance().getTable(PostCategoryTable.class, dbCred).fetchAllCategory();
     }
 
     /**
@@ -124,11 +144,7 @@ public abstract class AbstractFetchPost {
      * @throws Exception
      */
     protected List<PostState> fetchStates() throws Exception{
-        List<PostState> states = new ArrayList<>();
-        for (int i = 0;i<10;i++){
-            states.add(new PostState(i,"State"+i));
-        }
-        return states;
+        return DatabaseFactory.getInstance().getTable(PostStateTable.class, dbCred).fetchAllState();
     }
 
     /**
@@ -167,6 +183,11 @@ public abstract class AbstractFetchPost {
         }
     }
 
+    /**
+     * Check the filters from the request
+     * @param request an {@link HttpServletRequest} object
+     * @return a {@link FetchPostFilter} object filled with the request parameters
+     */
     protected FetchPostFilter checkFilters (HttpServletRequest request){
         int idCategory, idState , price ;
         idCategory = idState = price = -1;
@@ -181,7 +202,11 @@ public abstract class AbstractFetchPost {
     }
 
 
-    //Private Type
+    /**
+     * The type of post to fetch
+     *  - CLASSIC : fetch all the post (with the filters)
+     *  - PRIVATE : fetch only the post of the current user (without the filters)
+     */
     protected enum TypePost{
         CLASSIC, PRIVATE
     }

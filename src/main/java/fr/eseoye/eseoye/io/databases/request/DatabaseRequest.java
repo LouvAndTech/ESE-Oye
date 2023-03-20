@@ -100,6 +100,7 @@ public class DatabaseRequest {
 	
 	public CachedRowSet getValuesWithCondition(String sqlRequest, List<Object> valuesCondition) throws SQLException {
 		if(this.dbConnection.isClosed()) throw new SQLException("Couldn't execute the method because no connection to the database was found.");
+		System.out.println(sqlRequest);
 		final CachedRowSet result = RowSetProvider.newFactory().createCachedRowSet();
 		result.populate(this.dbImplementation.getValuesWithCondition(dbConnection, sqlRequest, valuesCondition));
 		
