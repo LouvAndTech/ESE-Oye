@@ -84,9 +84,10 @@ public class FetchPostFilter {
 	
 	public static class Builder {
 		
-		private int categoryID, stateID;
+		private int categoryID = -1;
+		private int stateID = -1;
 		private FetchOrderEnum order = FetchOrderEnum.DATE_DESCENDING;
-		private float maxPrice;
+		private float maxPrice = -1;
 		private Set<String> keyWords;
 		private boolean mustBeValidated = true;
 		
