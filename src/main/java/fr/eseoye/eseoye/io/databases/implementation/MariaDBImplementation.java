@@ -83,14 +83,16 @@ public class MariaDBImplementation extends DatabaseImplementation {
 	@Override
 	public int getValuesCount(Connection connection, String table, List<String> columnsName) throws SQLException {
 		Statement statement = connection.createStatement();
-		return statement.executeQuery("SELECT COUNT("+convertListToDatabaseFields(columnsName)+") FROM "+table+";").getInt(0);
+		ResultSet res = statement.executeQuery("SELECT COUNT("+convertListToDatabaseFields(columnsName)+") AS cnt FROM "+table+";");
+		return res.next() ? res.getInt("cnt") : 0;
 	}
 	
 	@Override
 	public int getValuesCount(Connection connection, String table, List<String> columnsName, String condition, List<Object> valuesCondition) throws SQLException {
-		PreparedStatement statement = connection.prepareStatement("SELECT COUNT("+convertListToDatabaseFields(columnsName)+") FROM "+table+" WHERE "+condition+";");
+		PreparedStatement statement = connection.prepareStatement("SELECT COUNT("+convertListToDatabaseFields(columnsName)+") AS cnt FROM "+table+" WHERE "+condition+";");
 		for(int i = 0; i < valuesCondition.size(); i++) statement.setObject(i+1, valuesCondition.get(i));
-		return statement.executeQuery().getInt(0);
+		ResultSet res = statement.executeQuery();
+		return res.next() ? res.getInt("cnt") : 0;
 	}
 	
 	@Override
