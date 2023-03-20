@@ -4,8 +4,9 @@ import static fr.eseoye.eseoye.io.json.JSONAssertion.assertInstanceof;
 
 import java.util.HashMap;
 
+import fr.eseoye.eseoye.io.databases.DatabaseCredentials;
+import fr.eseoye.eseoye.io.databases.DatabaseType;
 import fr.eseoye.eseoye.io.ftp.SFTPCredentials;
-import fr.eseoye.eseoye.utils.Tuple;
 
 public class JSONConfiguration extends JSONFile {
 
@@ -17,8 +18,14 @@ public class JSONConfiguration extends JSONFile {
 		return (String)getData("db_credentials").get("url");
 	}
 	
-	public Tuple<String, String> getDatabaseCredentials() {
-		return new Tuple<>((String)getData("db_credentials").get("username"),(String)getData("db_credentials").get("password"));
+	public DatabaseCredentials getDatabaseCredentials() {
+		return new DatabaseCredentials(
+				(String)getData("db_credentials").get("username"),
+				(int)getData("db_credentials").get("port"),
+				(String)getData("db_credentials").get("username"),
+				(String)getData("db_credentials").get("password"),
+				(String)getData("db_credentials").get("name"),
+				DatabaseType.of((String)getData("db_credentials").get("type")));
 	}
 	
 	public SFTPCredentials getSFTPCredentials() {
@@ -33,6 +40,7 @@ public class JSONConfiguration extends JSONFile {
 	public void reviewFormat() {
 		assertInstanceof(getData().get("db_credentials"), HashMap.class, "db_credentials");
 		assertInstanceof(getData("db_credentials").get("url"), String.class, "db_credentials.url");
+		assertInstanceof(getData("db_credentials").get("url"), Long.class, "db_credentials.port");
 		assertInstanceof(getData("db_credentials").get("username"), String.class, "db_credentials.username");
 		assertInstanceof(getData("db_credentials").get("password"), String.class, "db_credentials.password");
 		
