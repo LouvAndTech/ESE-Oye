@@ -1,7 +1,10 @@
 package fr.eseoye.eseoye.action;
 
-import fr.eseoye.eseoye.beans.Post;
-import fr.eseoye.eseoye.beans.PostComplete;
+import fr.eseoye.eseoye.beans.*;
+import fr.eseoye.eseoye.io.DatabaseFactory;
+import fr.eseoye.eseoye.io.databases.DatabaseType;
+import fr.eseoye.eseoye.io.objects.FetchPostFilter;
+import fr.eseoye.eseoye.utils.Tuple;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -9,9 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class ListPost implements Action{
+public class ListPost extends AbstractFetchPost implements Action{
 
     /**
      * Handle the next and previous button
@@ -28,21 +32,14 @@ public class ListPost implements Action{
      */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //if the user click on the next button
         try{
-            //Get the page number, and put it back in the request
-            int page = Integer.parseInt(request.getParameter("postPage"));
-            if(page < 1) page = 1; //make sure it's not negative
-            request.setAttribute("postPage", page);
-            //Get the 10 posts corresponding from the database and forward to the ListPosts.jsp
-            request.setAttribute("posts", fetchPost(10, page));
-            request.getRequestDispatcher("/jsp/ListPosts.jsp").forward(request, response);
+            handlePage(request, response, TypePost.CLASSIC);
         }catch (Exception e){
-            //If the parse fail, we forward to the ListPosts.jsp with the first 10 posts
-            //also append when there is no more post to display
-            System.out.println("Error : " + e.getMessage());
+            //If there is as errpr we forward to the ListPosts.jsp with the first 10 posts
             this.forward(request, response, "/jsp/ListPosts.jsp");
         }
+        //Forward to the ListPosts.jsp with the right posts and page number
+        request.getRequestDispatcher("/jsp/ListPosts.jsp").forward(request, response);
     }
 
     /**
@@ -60,25 +57,10 @@ public class ListPost implements Action{
      */
     @Override
     public void forward(HttpServletRequest request, HttpServletResponse response, String target) throws ServletException, IOException {
-        request.setAttribute("posts", fetchPost(10, 1   ));
-        request.setAttribute("postPage", 1);
+        try {
+            AddOrders(request);
+            fillRequest(request, POST_PER_PAGE, 1, TypePost.CLASSIC);
+        } catch (Exception ignored) {}
         request.getRequestDispatcher("/jsp/ListPosts.jsp").forward(request, response);
-    }
-
-
-    /**
-     * [WIP] Fetch the posts from the database
-     * @param nbPost    the number of post to fetch
-     * @param page      the page number
-     * @return          a list of {@link Post}
-     */
-    private List<Post> fetchPost(int nbPost, int page ){
-        //todo : Fetch the post from the database
-        List <Post> posts = new ArrayList<>();
-        /*posts.add(new Post(4, "Lit", "Pen", 100, new Date(2023, 2, 18)));
-        posts.add(new Post(3, "Commode", "Le", 256, new Date(2021, 10, 28)));
-        posts.add(new Post(2, "Table", "Marie",3, new Date(2021, 5, 3)));
-        posts.add(new Post(1, "Chair", "Jean",1672, new Date(2020, 12, 12)));*/
-        return posts;
     }
 }

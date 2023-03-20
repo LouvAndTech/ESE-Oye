@@ -116,6 +116,10 @@ public class FetchPostFilter {
 	public FetchPostFilter(int categoryID, int stateID, boolean mustBeValidated) {
 		this(categoryID, stateID, FetchOrder.DATE_DESCENDING, -1, new HashSet<>(), mustBeValidated);
 	}
+
+	public FetchPostFilter() {
+		this(-1, -1, FetchOrder.DATE_DESCENDING, -1, new HashSet<>());
+	}
 	
 	public int getCategoryID() {
 		return categoryID;

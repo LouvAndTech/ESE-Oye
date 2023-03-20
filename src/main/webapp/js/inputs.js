@@ -85,3 +85,44 @@ textareas.forEach(textarea => {
         textarea.children[1].innerHTML = textarea.children[0].value.length+"/2000";
     })
 });
+
+//custom select
+var selectElem;
+var selectContainers = document.querySelectorAll('.custom_select');
+selectContainers.forEach(selectContainer => {
+    selectContainer.innerHTML += '<div class="cs_container"><div class="cs_select"><p>-- Select Option --</p><span class="material-symbols-outlined">expand_more</span></div><div class="cs_option"></div></div>';
+    var btnSelect = selectContainer.children[1].children[0];
+    var optContainer = selectContainer.children[1].children[1];
+    btnSelect.addEventListener("click", function(){
+        selectElem = selectContainer;
+        if(optContainer.classList.contains("openSelect")){
+            optContainer.classList.remove("openSelect");
+            optContainer.style.height = 0;
+            optContainer.style.zIndex = 0;
+        }else{
+            optContainer.classList.add("openSelect");
+            optContainer.style.height = 2.2*optContainer.children.length+"em";
+            optContainer.style.zIndex = 1;
+        }
+    });
+    var ListOpt = selectContainer.querySelectorAll("select option");
+    var allElement = selectContainer.querySelector("select").classList.contains("allElement");
+    for(var i=allElement?0:1; i<ListOpt.length; i++){
+        optContainer.innerHTML += '<div class="cs_option_e" value="'+ListOpt[i].value+'"><p>'+ListOpt[i].innerHTML+'</p></div>';
+    }
+    selectContainer.querySelectorAll(".cs_option_e").forEach(e => {
+        e.addEventListener("click", function(){
+            e.parentNode.parentNode.parentNode.children[0].value = e.getAttribute("value");
+            e.parentNode.parentNode.children[0].children[0].innerHTML = e.children[0].innerHTML;
+        });
+    });
+});
+document.addEventListener("click", function(){
+    selectContainers.forEach(selectContainer => {
+        if(selectElem != selectContainer){
+            selectContainer.children[1].children[1].classList.remove("openSelect");
+            selectContainer.children[1].children[1].style.height = 0;
+        }
+    });
+    selectElem = null;
+});
