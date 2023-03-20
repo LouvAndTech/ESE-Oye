@@ -112,10 +112,10 @@ public class PostTable implements ITable {
 			final CachedRowSet res = request.getValuesWithCondition("SELECT "+getTableName()+".id, "+getTableName()+".secure_id, "+getTableName()+".title, "+USER_TABLE_NAME+".name, "+USER_TABLE_NAME+".surname, "+getTableName()+".price, "+CATEGORY_TABLE_NAME+".name, "+POST_STATE_TABLE_NAME+".name, "+getTableName()+".date FROM "+getTableName()+" "+
 							"INNER JOIN "+USER_TABLE_NAME+" ON "+getTableName()+".user = "+USER_TABLE_NAME+".id "+
 							"INNER JOIN "+CATEGORY_TABLE_NAME+" ON "+getTableName()+".category = "+CATEGORY_TABLE_NAME+".id "+
-							"INNER JOIN "+POST_STATE_TABLE_NAME+" ON "+getTableName()+".state = "+POST_STATE_TABLE_NAME+".id" +
-							" "+whereClause.getValueA()+" "+
-							"LIMIT "+postNumber+" OFFSET "+(pageNumber*postNumber)+
-							" "+orderClause+";", whereClause.getValueB());
+							"INNER JOIN "+POST_STATE_TABLE_NAME+" ON "+getTableName()+".state = "+POST_STATE_TABLE_NAME+".id " +
+							whereClause.getValueA()+" "+
+							orderClause+
+							" LIMIT "+postNumber+" OFFSET "+(pageNumber*postNumber)+";", whereClause.getValueB());
 			
 			while(res.next()) {
 				final SimplifiedEntity u = new SimplifiedEntity(res.getString(USER_TABLE_NAME+".name"), res.getString(USER_TABLE_NAME+".surname"));
