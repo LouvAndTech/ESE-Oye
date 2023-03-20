@@ -7,17 +7,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import fr.eseoye.eseoye.io.DatabaseFactory;
 import fr.eseoye.eseoye.io.databases.DatabaseType;
 
 public class MariaDBImplementation extends DatabaseImplementation {
-
-	private DatabaseFactory factory;
-	private String dbName;
 	
-	public MariaDBImplementation(DatabaseFactory factory, String databaseName) {
-		this.factory = factory;
-		this.dbName = databaseName;
+	public MariaDBImplementation() {
 		try {
 			Class.forName("org.mariadb.jdbc.Driver");
 		}catch(ClassNotFoundException e) {
@@ -27,72 +21,85 @@ public class MariaDBImplementation extends DatabaseImplementation {
 	}
 	
 	@Override
-	public void insertValues(String table, List<String> fields, List<String> values) throws SQLException {
-		Connection connection = factory.getConnection(getDBType(), this.dbName); 
+	public void insertValues(Connection connection, String table, List<String> fields, List<Object> values) throws SQLException {
 		PreparedStatement preparedStatement = connection
 				.prepareStatement("INSERT INTO "+table+"("+convertListToDatabaseFields(fields)+") VALUES("+this.generateRequestEmptyValues(values.size())+");");
-			for(int i = 0; i < values.size(); i++) preparedStatement.setString(i, values.get(i));
+			for(int i = 0; i < values.size(); i++) preparedStatement.setObject(i+1, values.get(i));
 		preparedStatement.executeUpdate();
 	}
 	
 	@Override
-	public void insertValues(String sqlRequest, List<String> values) throws SQLException {
+	public void insertValues(Connection connection, String sqlRequest, List<Object> values) throws SQLException {
 		//TODO check sqlRequest size and values size ?
-		Connection connection = factory.getConnection(getDBType(), this.dbName); 
 		PreparedStatement preparedStatement = connection
 				.prepareStatement(sqlRequest);
-			for(int i = 0; i < values.size(); i++) preparedStatement.setString(i, values.get(i));
+			for(int i = 0; i < values.size(); i++) preparedStatement.setObject(i+1, values.get(i));
 		preparedStatement.executeUpdate();
 		
 	}
 
 	@Override
-	public void updateValues(String table, List<String> fields, List<String> values, String condition) throws SQLException {
-		Connection connection = factory.getConnection(getDBType(), this.dbName); 
+	public void updateValues(Connection connection, String table, List<String> fields, List<String> values, String condition, List<Object> valuesCondition) throws SQLException {
 		PreparedStatement preparedStatement = connection
 				.prepareStatement("UPDATE "+table+" SET "+convertArgumentsToUpdateFields(fields, values)+" WHERE "+condition+";");
-			for(int i = 0; i < values.size(); i++) preparedStatement.setString(i, values.get(i));
+			for(int i = 0; i < values.size(); i++) preparedStatement.setString(i+1, values.get(i));
+			for(int i = values.size(); i < values.size()+valuesCondition.size(); i++) preparedStatement.setObject(i+1, valuesCondition.get(i-values.size()));
 		preparedStatement.executeUpdate();
 	}
 
 	@Override
-	public void updateValues(String sqlRequest, List<String> values) throws SQLException {
-		insertValues(sqlRequest, values);
+	public void updateValues(Connection connection, String sqlRequest, List<Object> values) throws SQLException {
+		insertValues(connection, sqlRequest, values);
 	}
 	
 	@Override
-	public ResultSet getValues(String table, List<String> values) throws SQLException {
-		Connection connexion = factory.getConnection(getDBType(), table); 
-		Statement statement = connexion.createStatement();
-		return statement.executeQuery("SELECT "+convertListToDatabaseFields(values)+" FROM "+table+";");
+	public ResultSet getValues(Connection connection, String table, List<String> fields) throws SQLException {
+		Statement statement = connection.createStatement();
+		return statement.executeQuery("SELECT "+convertListToDatabaseFields(fields)+" FROM "+table+";");
 	}
 	
 	@Override
-	public ResultSet getValues(String table, List<String> values, String condition) throws SQLException {
-		Connection connexion = factory.getConnection(getDBType(), table); 
-		Statement statement = connexion.createStatement();
-		return statement.executeQuery("SELECT "+convertListToDatabaseFields(values)+" FROM "+table+" WHERE "+condition+";");
+	public ResultSet getValues(Connection connection, String table, List<String> fields, String condition, List<Object> valuesCondition) throws SQLException {
+		//TODO check condition size and valuesCondition size ?
+		PreparedStatement statement = connection.prepareStatement("SELECT "+convertListToDatabaseFields(fields)+" FROM "+table+" WHERE "+condition+";");
+		for(int i = 0; i < valuesCondition.size(); i++) statement.setObject(i+1, valuesCondition.get(i));
+		
+		return statement.executeQuery();
 	}
 
 	@Override
-	public ResultSet getValues(String sqlRequest) throws SQLException {
-		Connection connexion = factory.getConnection(getDBType(), this.dbName); 
-		Statement statement = connexion.createStatement();
+	public ResultSet getValues(Connection connection, String sqlRequest) throws SQLException {
+		Statement statement = connection.createStatement();
 		return statement.executeQuery(sqlRequest);
 	}
+	
+	@Override
+	public ResultSet getValuesWithCondition(Connection connection, String sqlRequest, List<Object> valuesCondition) throws SQLException {
+		PreparedStatement statement = connection.prepareStatement(sqlRequest);
+		for(int i = 0; i < valuesCondition.size(); i++) statement.setObject(i+1, valuesCondition.get(i));
+		return statement.executeQuery();
+	}
 
 	@Override
-	public int getValuesCount(String table, String columnName) throws SQLException {
-		final Connection connection = factory.getConnection(getDBType(), dbName);
+	public int getValuesCount(Connection connection, String table, List<String> columnsName) throws SQLException {
 		Statement statement = connection.createStatement();
-		return statement.executeQuery("SELECT COUNT("+columnName+") FROM "+table+";").getInt(0);
+		ResultSet res = statement.executeQuery("SELECT COUNT("+convertListToDatabaseFields(columnsName)+") AS cnt FROM "+table+";");
+		return res.next() ? res.getInt("cnt") : 0;
 	}
 	
 	@Override
-	public int getValuesCount(String table, String columnName, String condition) throws SQLException {
-		final Connection connection = factory.getConnection(getDBType(), dbName);
-		Statement statement = connection.createStatement();
-		return statement.executeQuery("SELECT COUNT("+columnName+") FROM "+table+" WHERE "+condition+";").getInt(0);
+	public int getValuesCount(Connection connection, String table, List<String> columnsName, String condition, List<Object> valuesCondition) throws SQLException {
+		PreparedStatement statement = connection.prepareStatement("SELECT COUNT("+convertListToDatabaseFields(columnsName)+") AS cnt FROM "+table+" WHERE "+condition+";");
+		for(int i = 0; i < valuesCondition.size(); i++) statement.setObject(i+1, valuesCondition.get(i));
+		ResultSet res = statement.executeQuery();
+		return res.next() ? res.getInt("cnt") : 0;
+	}
+	
+	@Override
+	public void deleteValues(Connection connection, String table, String condition, List<Object> valuesCondition) throws SQLException {
+		PreparedStatement statement = connection.prepareStatement("DELETE from `"+table+"` WHERE "+condition+";");
+		for(int i = 0; i < valuesCondition.size(); i++) statement.setObject(i+1, valuesCondition.get(i));
+		statement.executeUpdate();
 	}
 	
 	@Override
