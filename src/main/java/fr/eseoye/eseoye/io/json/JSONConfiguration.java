@@ -20,7 +20,7 @@ public class JSONConfiguration extends JSONFile {
 	
 	public DatabaseCredentials getDatabaseCredentials() {
 		return new DatabaseCredentials(
-				(String)getData("db_credentials").get("username"),
+				(String)getData("db_credentials").get("url"),
 				(long)getData("db_credentials").get("port"),
 				(String)getData("db_credentials").get("username"),
 				(String)getData("db_credentials").get("password"),
