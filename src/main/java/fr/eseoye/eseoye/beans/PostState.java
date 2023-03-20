@@ -1,16 +1,16 @@
 package fr.eseoye.eseoye.beans;
 
-public class Category {
-	
+public class PostState {
+
 	private int id;
 	private String name;
 	
-	public Category(int id, String name) {
+	public PostState(int id, String name) {
 		this.id = id;
 		this.name = name;
 	}
 	
-	public Category(String name) {
+	public PostState(String name) {
 		this.id = -1;
 		this.name = name;
 	}
@@ -22,4 +22,5 @@ public class Category {
 	public String getName() {
 		return name;
 	}
+	
 }
