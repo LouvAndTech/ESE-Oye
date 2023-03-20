@@ -33,10 +33,6 @@ public class FetchPostFilter {
 		this.order = builder.order;
 		this.mustBeValidated = builder.mustBeValidated;
 	}
-
-	public FetchPostFilter() {
-		this(-1, -1, FetchOrder.DATE_DESCENDING, -1, new HashSet<>());
-	}
 	
 	public int getCategoryID() {
 		return categoryID;

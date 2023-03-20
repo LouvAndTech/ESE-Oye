@@ -4,6 +4,12 @@ import static fr.eseoye.eseoye.io.json.JSONAssertion.assertInstanceof;
 
 import java.util.HashMap;
 
+import fr.eseoye.eseoye.action.Index;
+import fr.eseoye.eseoye.action.ListPost;
+import fr.eseoye.eseoye.action.OnePost;
+import fr.eseoye.eseoye.action.UserPanel;
+import fr.eseoye.eseoye.io.IOHandler;
+import fr.eseoye.eseoye.io.SFTPFactory;
 import fr.eseoye.eseoye.io.databases.DatabaseCredentials;
 import fr.eseoye.eseoye.io.databases.DatabaseType;
 import fr.eseoye.eseoye.io.ftp.SFTPCredentials;
@@ -38,15 +44,14 @@ public class JSONConfiguration extends JSONFile {
 	
 	@Override
 	public void reviewFormat() {
-		assertInstanceof(getData().get("db_credentials"), HashMap.class, "db_credentials");
+		System.out.println(getData());
+		//assertInstanceof(getData().get("db_credentials"), HashMap.class, "db_credentials");
 		assertInstanceof(getData("db_credentials").get("url"), String.class, "db_credentials.url");
-		assertInstanceof(getData("db_credentials").get("url"), Long.class, "db_credentials.port");
 		assertInstanceof(getData("db_credentials").get("username"), String.class, "db_credentials.username");
 		assertInstanceof(getData("db_credentials").get("password"), String.class, "db_credentials.password");
-		
+
 		assertInstanceof(getData().get("ftp_credentials"), HashMap.class, "ftp_credentials");
 		assertInstanceof(getData("ftp_credentials").get("url"), String.class, "ftp_credentials.url");
-		assertInstanceof(getData("ftp_credentials").get("port"), Long.class, "ftp_credentials.port");
 		assertInstanceof(getData("ftp_credentials").get("username"), String.class, "ftp_credentials.username");
 		assertInstanceof(getData("ftp_credentials").get("password"), String.class, "ftp_credentials.password");
 	}

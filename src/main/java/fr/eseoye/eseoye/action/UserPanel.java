@@ -1,6 +1,9 @@
 package fr.eseoye.eseoye.action;
 
-import fr.eseoye.eseoye.action.User.*;
+import fr.eseoye.eseoye.action.User.Account;
+import fr.eseoye.eseoye.action.User.AddPosts;
+import fr.eseoye.eseoye.action.User.Posts;
+import fr.eseoye.eseoye.io.databases.DatabaseCredentials;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,21 +17,24 @@ public class UserPanel implements Action{
     private static UserPanel instance = null;
     private Map<String, Action> actionMap = new HashMap<>();
 
-    private UserPanel(){
+    private final DatabaseCredentials dbCred;
+
+    private UserPanel(DatabaseCredentials dbCred){
+        this.dbCred = dbCred;
         //User Part
-        actionMap.put("Account", new Account());
-        actionMap.put("Annonce", new Posts());
-        actionMap.put("AddAnnonce", new AddPosts());
+        actionMap.put("Account", new Account(this.dbCred));
+        actionMap.put("Annonce", new Posts(this.dbCred));
+        actionMap.put("AddAnnonce", new AddPosts(this.dbCred));
 
         //Admin Part
-        actionMap.put("AdminListUser", new AdminListUser());
-        actionMap.put("AdminValidePost", new AdminValidePost());
-        actionMap.put("AdminAddUser", new AdminAddUser());
+        actionMap.put("AdminListUser", new AdminListUser(this.dbCred));
+        actionMap.put("AdminValidePost", new AdminValidePost(this.dbCred));
+        actionMap.put("AdminAddUser", new AdminAddUser(this.dbCred));
     }
 
-    public static UserPanel getInstance(){
+    public static UserPanel getInstance(DatabaseCredentials dbCred){
         if(instance == null){
-            instance = new UserPanel();
+            instance = new UserPanel(dbCred);
         }
         return instance;
     }

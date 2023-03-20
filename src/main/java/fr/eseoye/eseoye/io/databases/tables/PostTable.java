@@ -2,6 +2,7 @@ package fr.eseoye.eseoye.io.databases.tables;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -78,6 +79,7 @@ public class PostTable implements ITable {
 			
 			return null;
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new DataCreationException(getClass(), CreationExceptionReason.FAILED_DB_CREATION);
 		} catch (IOException e) {
 			throw new DataCreationException(getClass(), CreationExceptionReason.FAILED_IMAGE_UPLOAD);
@@ -107,20 +109,25 @@ public class PostTable implements ITable {
 			
 			final Tuple<String, List<Object>> whereClause = generateWhereClausePost(userSecureID, parameters);
 			final String orderClause = generateOrderClausePost(parameters.getOrder());
-			
-			final CachedRowSet res = request.getValuesWithCondition("SELECT "+getTableName()+".id AS p_id, "+getTableName()+".secure_id AS p_sid, "+getTableName()+".title AS p_title, "+USER_TABLE_NAME+".name AS u_name, "+USER_TABLE_NAME+".surname AS u_surname, "+getTableName()+".price AS p_price, "+CATEGORY_TABLE_NAME+".name AS c_name, "+POST_STATE_TABLE_NAME+".name AS ps_name, "+getTableName()+".date AS p_date FROM "+getTableName()+" "+
+
+			final CachedRowSet res = request.getValuesWithCondition("SELECT "+getTableName()+".id AS p_id, "+getTableName()+".secure_id AS p_sid, "+getTableName()+".title AS p_title, "+USER_TABLE_NAME+".name u_name, "+USER_TABLE_NAME+".surname u_surname, "+getTableName()+".price AS p_price, "+CATEGORY_TABLE_NAME+".name AS c_name, "+POST_STATE_TABLE_NAME+".name AS ps_name, "+getTableName()+".date AS p_date FROM "+getTableName()+" "+
 							"INNER JOIN "+USER_TABLE_NAME+" ON "+getTableName()+".user = "+USER_TABLE_NAME+".id "+
 							"INNER JOIN "+CATEGORY_TABLE_NAME+" ON "+getTableName()+".category = "+CATEGORY_TABLE_NAME+".id "+
 							"INNER JOIN "+POST_STATE_TABLE_NAME+" ON "+getTableName()+".state = "+POST_STATE_TABLE_NAME+".id " +
 							whereClause.getValueA()+" "+
 							orderClause+
 							" LIMIT "+postNumber+" OFFSET "+(pageNumber*postNumber)+";", whereClause.getValueB());
-			
+			ResultSetMetaData rsmd = res.getMetaData();
 			while(res.next()) {
-				final SimplifiedEntity u = new SimplifiedEntity(res.getString("u_name"), res.getString("u_surname"));
+				for(int i = 1; i < rsmd.getColumnCount(); i++) {
+					if (i > 1) System.out.print(",  ");
+					String columnValue = res.getString(i);
+					System.out.print(columnValue + " " + rsmd.getColumnLabel(i));
+				}
+
+				final SimplifiedEntity u = new SimplifiedEntity("for-o", "fdjnkv");
 				final Category c = new Category("c_name");
 				final PostState ps = new PostState("ps_name");
-				
 				final List<String> postImages = fetchPostImages(request, res.getInt("p_id"), res.getString("p_sid"), 1);
 				if(postImages.isEmpty()) postImages.add(SFTPHelper.getFormattedImageURL(ImageDirectory.ROOT, "", "1.jpg"));
 				
@@ -132,6 +139,7 @@ public class PostTable implements ITable {
 			return new Tuple<>(post, (int)Math.floor(totalPostNumber/postNumber));
 		} catch (SQLException e) {
 			//TODO Handle exception
+			e.printStackTrace();
 			return null;
 		}finally {
 			if(request != null) {
@@ -195,7 +203,7 @@ public class PostTable implements ITable {
 				pc = new PostComplete(res.getString("p_sid"), res.getString("p_title"), u, res.getFloat("p_price"), res.getDate("p_date"), res.getString("p_content"), c, ps, postImages.get(0), postImages.subList(1, postImages.size()));
 			}
 		} catch (SQLException e) {
-			//TODO Handle exception
+			e.printStackTrace();
 			return null;
 		}finally {
 			if(request != null) {

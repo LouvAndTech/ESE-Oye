@@ -7,10 +7,10 @@ import java.sql.Date;
  */
 public class Post {
     protected String secureId;
-    protected String title;    
+    protected String title;
     protected float price;
     protected String firstImage;
-    
+
     protected Date date;
     protected SimplifiedEntity author;
     protected PostState state;
@@ -34,7 +34,7 @@ public class Post {
     public Category getCategory() {
 		return category;
 	}
-    
+
     public PostState getState() {
 		return state;
 	}

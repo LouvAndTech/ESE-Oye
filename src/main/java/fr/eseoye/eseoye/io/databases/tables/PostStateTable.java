@@ -31,6 +31,7 @@ public class PostStateTable implements ITable {
 			
 			return result;
 		} catch (SQLException e) {
+			e.printStackTrace();
 			//TODO Handle exception
 			return null;
 		}

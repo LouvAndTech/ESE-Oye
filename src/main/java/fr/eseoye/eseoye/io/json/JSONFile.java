@@ -115,7 +115,7 @@ public abstract class JSONFile {
 	protected HashMap<String, Object> getData(String src) {
 		Object obj = getData().get(src);
 		if(obj instanceof HashMap) return (HashMap<String, Object>) obj;
-		else throw new ClassCastException("The key "+src+" didn't contained a HashMap");
+		else throw new ClassCastException("The key "+src+" didn't contained a HashMap ");
 	}
 
 	/**
@@ -129,6 +129,7 @@ public abstract class JSONFile {
 		try {
 			this.dataMap = FILES_MAPPER.readValue(getClass().getClassLoader().getResourceAsStream(this.path.toString()), HashMap.class);
 		}catch(Exception e) {
+			e.printStackTrace();
 			this.dataMap = new HashMap<>();
 		}
 	}
