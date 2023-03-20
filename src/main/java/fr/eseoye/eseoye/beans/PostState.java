@@ -10,6 +10,11 @@ public class PostState {
 		this.name = name;
 	}
 	
+	public PostState(String name) {
+		this.id = -1;
+		this.name = name;
+	}
+	
 	public int getId() {
 		return id;
 	}

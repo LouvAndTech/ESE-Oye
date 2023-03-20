@@ -2,11 +2,10 @@ package fr.eseoye.eseoye.beans;
 
 import java.sql.Date;
 
-public class User {
+public class User extends SimplifiedUser {
 
 	private String id;
 	
-	private String name, surname;
 	private String password;
 	private Date birth;
 	private String phone;
@@ -14,9 +13,8 @@ public class User {
 	private String state;
 	
 	public User(String id, String name, String surname, String password, Date birth, String phone, String mail, String state) {
+		super(name, surname);
 		this.id = id;
-		this.name = name;
-		this.surname = surname;
 		this.password = password;
 		this.birth = birth;
 		this.phone = phone;
@@ -26,14 +24,6 @@ public class User {
 	
 	public String getId() {
 		return id;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public String getSurname() {
-		return surname;
 	}
 	
 	public String getPassword() {

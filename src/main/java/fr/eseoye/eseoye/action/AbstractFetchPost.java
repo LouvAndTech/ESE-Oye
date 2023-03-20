@@ -4,6 +4,9 @@ import fr.eseoye.eseoye.beans.Category;
 import fr.eseoye.eseoye.beans.Post;
 import fr.eseoye.eseoye.beans.PostState;
 import fr.eseoye.eseoye.beans.User;
+import fr.eseoye.eseoye.io.DatabaseFactory;
+import fr.eseoye.eseoye.io.IOHandler;
+import fr.eseoye.eseoye.io.databases.tables.PostTable;
 import fr.eseoye.eseoye.io.objects.FetchPostFilter;
 import fr.eseoye.eseoye.utils.Tuple;
 
@@ -96,22 +99,13 @@ public abstract class AbstractFetchPost {
     }
 
     /**
-     * [WIP] Fetch the posts from the database
+     * Fetch the posts from the database
      * @param nbPost    the number of post to fetch
      * @param page      the page number
      * @return          a list of {@link Post}
      */
     protected Tuple<List<Post>,Integer> fetchPost(int nbPost, int page, FetchPostFilter filters,TypePost type){
-        //todo : Fetch the post from the database
-        List <Post> posts = new ArrayList<>();
-        for(int i = 0; i < nbPost; i++){
-            User us = new User( String.valueOf(i),"Name "+i,"Surname "+i, "pass",new Date(System.currentTimeMillis()),"0987654321","mail@mail.mail","OK");
-            Post post = new Post(String.valueOf(i), "Title"+i, us,i+10, new Date(System.currentTimeMillis()),new Category(i, "Cat"+i),"http://eseoye.elouan-lerissel.fr/blankImg.png");
-            posts.add(post);
-        }
-        int maxPageProv = 7;
-        if(page > maxPageProv) posts = new ArrayList<>();
-        return new Tuple<>(posts, maxPageProv);
+        return DatabaseFactory.getInstance().getTable(PostTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials());
     }
 
     /**

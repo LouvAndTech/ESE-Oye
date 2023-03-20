@@ -4,6 +4,7 @@ import static fr.eseoye.eseoye.io.json.JSONAssertion.assertInstanceof;
 
 import java.util.HashMap;
 
+import fr.eseoye.eseoye.io.ftp.SFTPCredentials;
 import fr.eseoye.eseoye.utils.Tuple;
 
 public class JSONConfiguration extends JSONFile {
@@ -20,12 +21,12 @@ public class JSONConfiguration extends JSONFile {
 		return new Tuple<>((String)getData("db_credentials").get("username"),(String)getData("db_credentials").get("password"));
 	}
 	
-	public String getStorageServerURL() {
-		return (String)getData("ftp_credentials").get("url");
-	}
-	
-	public Tuple<String, String> getStorageServerCredentials() {
-		return new Tuple<>((String)getData("ftp_credentials").get("username"),(String)getData("ftp_credentials").get("password"));
+	public SFTPCredentials getSFTPCredentials() {
+		return new SFTPCredentials(
+				(String)getData("ftp_credentials").get("url"), 
+				(int)getData("ftp_credentials").get("port"), 
+				(String)getData("ftp_credentials").get("username"), 
+				(String)getData("ftp_credentials").get("password"));
 	}
 	
 	@Override
@@ -37,6 +38,7 @@ public class JSONConfiguration extends JSONFile {
 		
 		assertInstanceof(getData().get("ftp_credentials"), HashMap.class, "ftp_credentials");
 		assertInstanceof(getData("ftp_credentials").get("url"), String.class, "ftp_credentials.url");
+		assertInstanceof(getData("ftp_credentials").get("port"), Long.class, "ftp_credentials.port");
 		assertInstanceof(getData("ftp_credentials").get("username"), String.class, "ftp_credentials.username");
 		assertInstanceof(getData("ftp_credentials").get("password"), String.class, "ftp_credentials.password");
 	}
