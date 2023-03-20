@@ -23,6 +23,7 @@ public class UserPanel implements Action{
         //Admin Part
         actionMap.put("AdminListUser", new AdminListUser());
         actionMap.put("AdminValidePost", new AdminValidePost());
+        actionMap.put("AdminAddUser", new AdminAddUser());
     }
 
     public static UserPanel getInstance(){

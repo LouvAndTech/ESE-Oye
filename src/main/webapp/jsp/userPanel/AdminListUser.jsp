@@ -13,7 +13,7 @@
         <p>Ajouter un utilisateur</p>
     </div>
     <div class="end">
-        <a><span class="material-symbols-outlined">add_circle</span></a>
+        <a href="ese-oye?id=UserPanel&contentPage=AdminAddUser"><span class="material-symbols-outlined">add_circle</span></a>
     </div>
 </div>
 <hr>

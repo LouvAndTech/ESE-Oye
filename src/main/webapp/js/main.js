@@ -35,7 +35,6 @@ function changeIconTheme(){
 
 window.onload = function(){
     loaded = true;
-    console.log(dark);
     changeIconTheme();
 }
 
