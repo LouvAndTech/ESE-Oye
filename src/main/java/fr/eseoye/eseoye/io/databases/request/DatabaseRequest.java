@@ -41,7 +41,7 @@ public class DatabaseRequest {
 	}
 	
 	public void openConnection() throws SQLException {
-		if(!this.dbConnection.isClosed()) throw new SQLException("Couldn't open an already opened connection to the database");
+		if(this.dbConnection != null && !this.dbConnection.isClosed()) throw new SQLException("Couldn't open an already opened connection to the database");
 		this.dbConnection = factory.getConnection(this.credentials);
 	}
 	
@@ -131,8 +131,15 @@ public class DatabaseRequest {
 		return result;
 	}
 	
+	public void deleteValues(String table, String condition, List<Object> valuesCondition) throws SQLException {
+		if(this.dbConnection.isClosed()) throw new SQLException("Couldn't execute the method because no connection to the database was found.");
+		this.dbImplementation.deleteValues(dbConnection, table, condition, valuesCondition);
+		
+		if(instantClose) this.dbConnection.close();
+	}
+	
 	public void closeConnection() throws SQLException {
-		if(this.dbConnection.isClosed()) throw new SQLException("Couldn't close an already closed connection to the database");
+		if(this.dbConnection != null && this.dbConnection.isClosed()) throw new SQLException("Couldn't close an already closed connection to the database");
 		this.dbConnection.close();
 	}
 	
