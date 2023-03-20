@@ -32,12 +32,7 @@ public class DatabaseRequest {
 	}
 	
 	public DatabaseRequest(DatabaseFactory factory, DatabaseCredentials credentials) throws SQLException {
-		this.dbImplementation = credentials.getDatabaseType().getImplementation();
-		this.credentials = credentials;
-		
-		this.openConnection();
-		
-		this.instantClose = false;
+		this(factory, credentials, false);
 	}
 	
 	public void openConnection() throws SQLException {
