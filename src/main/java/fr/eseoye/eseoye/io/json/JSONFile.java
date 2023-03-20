@@ -2,8 +2,6 @@ package fr.eseoye.eseoye.io.json;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +12,7 @@ public abstract class JSONFile {
 
 	private static final ObjectMapper FILES_MAPPER = new ObjectMapper().enable(DeserializationFeature.USE_LONG_FOR_INTS);
 
-	protected Path path;
+	protected String path;
 
 	private volatile Map<String, Object> dataMap;
 
@@ -25,11 +23,9 @@ public abstract class JSONFile {
 	 * @param fileName - the file name with the extension
 	 */
 	public JSONFile(String path, String fileName) {
-		this.path = Path.of(path, fileName);
-
+		this.path = path;
+		
 		try {
-			if(!Files.exists(this.path)) Files.createFile(this.path);
-
 			readFile();
 
 			reviewFormat();
@@ -62,7 +58,7 @@ public abstract class JSONFile {
 			@Override
 			public void run() {
 				try {
-					FileWriter fw = new FileWriter(path.toFile());
+					FileWriter fw = new FileWriter(path);
 
 					fw.write(FILES_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(dataMap));
 
@@ -96,7 +92,7 @@ public abstract class JSONFile {
 	 * 
 	 * @return a path object
 	 */
-	public Path getFilePath() {
+	public String getFilePath() {
 		return this.path;
 	}
 
@@ -130,7 +126,7 @@ public abstract class JSONFile {
 	@SuppressWarnings("unchecked")
 	protected void readFile() throws IOException {
 		try {
-			this.dataMap = FILES_MAPPER.readValue(getClass().getClassLoader().getResourceAsStream(this.path.toString()), HashMap.class);
+			this.dataMap = FILES_MAPPER.readValue(getClass().getClassLoader().getResourceAsStream(this.path), HashMap.class);
 		}catch(Exception e) {
 			this.dataMap = new HashMap<>();
 		}
