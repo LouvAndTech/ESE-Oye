@@ -68,6 +68,7 @@ public abstract class AbstractFetchPost {
      */
     protected void fillRequest (HttpServletRequest request,int nbPost, int page, FetchPostFilter filters, TypePost type) throws Exception{
         Tuple<List<Post>,Integer> fromDB = fetchPost(nbPost, page , filters, type);
+        System.out.println(fromDB.getValueA().size());
         List<Integer> nbPage = handleNBpage(fromDB.getValueB(), page);
         request.setAttribute("posts", fromDB.getValueA());
         request.setAttribute("nbPage", nbPage);
@@ -105,7 +106,7 @@ public abstract class AbstractFetchPost {
      * @return          a list of {@link Post}
      */
     protected Tuple<List<Post>,Integer> fetchPost(int nbPost, int page, FetchPostFilter filters,TypePost type){
-        return DatabaseFactory.getInstance().getTable(PostTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials());
+        return DatabaseFactory.getInstance().getTable(PostTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).fetchShortPost(nbPost, page,filters);
     }
 
     /**
@@ -180,7 +181,7 @@ public abstract class AbstractFetchPost {
             price = Integer.parseInt(request.getParameter("price"));
             order = FetchPostFilter.FetchOrder.valueOf(request.getParameter("order"));
         }catch (Exception ignored){}
-        return new FetchPostFilter(idCategory, idState, order, price);
+        return new FetchPostFilter(idCategory, idState, order);
     }
 
 
