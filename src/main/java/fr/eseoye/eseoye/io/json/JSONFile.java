@@ -130,7 +130,7 @@ public abstract class JSONFile {
 	@SuppressWarnings("unchecked")
 	protected void readFile() throws IOException {
 		try {
-			this.dataMap = FILES_MAPPER.readValue(this.path.toFile(), HashMap.class);
+			this.dataMap = FILES_MAPPER.readValue(getClass().getClassLoader().getResourceAsStream(this.path.toString()), HashMap.class);
 		}catch(Exception e) {
 			this.dataMap = new HashMap<>();
 		}
