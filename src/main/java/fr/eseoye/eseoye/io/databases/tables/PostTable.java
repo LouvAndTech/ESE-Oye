@@ -103,14 +103,14 @@ public class PostTable implements ITable {
 	public Tuple<List<Post>, Integer> fetchShortPost(int postNumber, int pageNumber, String userSecureID, FetchPostFilter parameters) {
 		final List<Post> post = new ArrayList<>();
 		DatabaseRequest request = null;
-		
+
 		try {
 			request = new DatabaseRequest(factory, credentials);
-			
+
 			final Tuple<String, List<Object>> whereClause = generateWhereClausePost(userSecureID, parameters);
 			final String orderClause = generateOrderClausePost(parameters.getOrder());
-
-			final CachedRowSet res = request.getValuesWithCondition("SELECT "+getTableName()+".id AS p_id, "+getTableName()+".secure_id AS p_sid, "+getTableName()+".title AS p_title, "+USER_TABLE_NAME+".name u_name, "+USER_TABLE_NAME+".surname u_surname, "+getTableName()+".price AS p_price, "+CATEGORY_TABLE_NAME+".name AS c_name, "+POST_STATE_TABLE_NAME+".name AS ps_name, "+getTableName()+".date AS p_date FROM "+getTableName()+" "+
+			
+			final CachedRowSet res = request.getValuesWithCondition("SELECT "+getTableName()+".id, "+getTableName()+".secure_id, "+getTableName()+".title, "+USER_TABLE_NAME+".name, "+USER_TABLE_NAME+".surname, "+getTableName()+".price, "+CATEGORY_TABLE_NAME+".name, "+POST_STATE_TABLE_NAME+".name, "+getTableName()+".date FROM "+getTableName()+" "+
 							"INNER JOIN "+USER_TABLE_NAME+" ON "+getTableName()+".user = "+USER_TABLE_NAME+".id "+
 							"INNER JOIN "+CATEGORY_TABLE_NAME+" ON "+getTableName()+".category = "+CATEGORY_TABLE_NAME+".id "+
 							"INNER JOIN "+POST_STATE_TABLE_NAME+" ON "+getTableName()+".state = "+POST_STATE_TABLE_NAME+".id " +
@@ -133,13 +133,13 @@ public class PostTable implements ITable {
 				
 				post.add(new Post(res.getString("p_sid"), res.getString("p_title"), u, res.getInt("p_price"), res.getDate("p_date"), c, ps, postImages.get(0)));
 			}
-			
+
 			int totalPostNumber = request.getValuesCount(getTableName(), Arrays.asList("id"));
-			
+
 			return new Tuple<>(post, (int)Math.floor(totalPostNumber/postNumber));
 		} catch (SQLException e) {
-			//TODO Handle exception
 			e.printStackTrace();
+			//TODO Handle exception
 			return null;
 		}finally {
 			if(request != null) {
@@ -182,16 +182,16 @@ public class PostTable implements ITable {
 	public PostComplete fetchEntirePost(String postID) {
 		PostComplete pc = null;
 		DatabaseRequest request = null;
-		
+
 		try {
 			request = new DatabaseRequest(factory, credentials);
-			
-			final CachedRowSet res = request.getValuesWithCondition("SELECT "+getTableName()+".id AS p_id, "+getTableName()+".secure_id AS p_sid, "+getTableName()+".title AS p_title, "+getTableName()+".content AS p_content, "+USER_TABLE_NAME+".name AS u_name, "+USER_TABLE_NAME+".surname AS u_surname, "+getTableName()+".price AS p_price, "+CATEGORY_TABLE_NAME+".name AS c_name, "+POST_STATE_TABLE_NAME+".name AS ps_name, "+getTableName()+".date AS p_date FROM "+getTableName()+" "+
+
+			final CachedRowSet res = request.getValuesWithCondition("SELECT "+getTableName()+".id, "+getTableName()+".secure_id, "+getTableName()+".title, "+USER_TABLE_NAME+".name, "+USER_TABLE_NAME+".surname "+getTableName()+".price, "+CATEGORY_TABLE_NAME+".name, "+POST_STATE_TABLE_NAME+".name, "+getTableName()+".date FROM "+getTableName()+" "+
 					"INNER JOIN "+USER_TABLE_NAME+" ON "+getTableName()+".user = "+USER_TABLE_NAME+".id "+
 					"INNER JOIN "+CATEGORY_TABLE_NAME+" ON "+getTableName()+".category = "+CATEGORY_TABLE_NAME+".id "+
 					"INNER JOIN "+POST_STATE_TABLE_NAME+" ON "+getTableName()+".state = "+POST_STATE_TABLE_NAME+".id"+
 					"WHERE "+getTableName()+".secure_id=?", Arrays.asList(postID));
-			
+
 			if(res.next()) {
 				final SimplifiedEntity u = new SimplifiedEntity(res.getString("u_name"), res.getString("u_surname"));
 				final Category c = new Category("c_name");
@@ -199,7 +199,7 @@ public class PostTable implements ITable {
 				
 				final List<String> postImages = fetchPostImages(request, res.getInt("p_id"), res.getString("p_sid"), 4);
 				if(postImages.isEmpty()) postImages.add(SFTPHelper.getFormattedImageURL(ImageDirectory.ROOT, "", "1.jpg"));
-				
+
 				pc = new PostComplete(res.getString("p_sid"), res.getString("p_title"), u, res.getFloat("p_price"), res.getDate("p_date"), res.getString("p_content"), c, ps, postImages.get(0), postImages.subList(1, postImages.size()));
 			}
 		} catch (SQLException e) {
