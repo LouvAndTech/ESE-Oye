@@ -162,12 +162,12 @@ public class PostTable implements ITable {
 		final StringBuilder sb = new StringBuilder("WHERE ");
 		final List<Object> whereObj = new ArrayList<>();
 		
-		if(userSecureID != null) { sb.append(USER_TABLE_NAME+".secure_id = ?, "); whereObj.add(userSecureID); }
-		if(parameters.isCategoryPresent()) { sb.append(CATEGORY_TABLE_NAME+".id = ?, "); whereObj.add(parameters.getCategoryID()); }
-		if(parameters.isStatePresent()) { sb.append(POST_STATE_TABLE_NAME+".id = ?, "); whereObj.add(parameters.getStateID()); }
-		if(parameters.isMaxPricePresent()) { sb.append(getTableName()+".price <= ?, "); whereObj.add(parameters.getMaxPrice()); }
-		if(parameters.mustBeValidated()) { sb.append(getTableName()+".lock = ?, "); whereObj.add(0); }
-		sb.setLength(sb.length()-2);
+		if(userSecureID != null) { sb.append(USER_TABLE_NAME+".secure_id = ? AND "); whereObj.add(userSecureID); }
+		if(parameters.isCategoryPresent()) { sb.append(CATEGORY_TABLE_NAME+".id = ? AND "); whereObj.add(parameters.getCategoryID()); }
+		if(parameters.isStatePresent()) { sb.append(POST_STATE_TABLE_NAME+".id = ? AND "); whereObj.add(parameters.getStateID()); }
+		if(parameters.isMaxPricePresent()) { sb.append(getTableName()+".price <= ? AND "); whereObj.add(parameters.getMaxPrice()); }
+		if(parameters.mustBeValidated()) { sb.append(getTableName()+".lock = ? AND "); whereObj.add(0); }
+		sb.setLength(sb.length()-5);
 		
 		return whereObj.size() != 0 ? new Tuple<>(sb.toString(), whereObj) : new Tuple<>("", whereObj);
 	}
@@ -183,7 +183,7 @@ public class PostTable implements ITable {
 					"INNER JOIN "+USER_TABLE_NAME+" ON "+getTableName()+".user = "+USER_TABLE_NAME+".id "+
 					"INNER JOIN "+CATEGORY_TABLE_NAME+" ON "+getTableName()+".category = "+CATEGORY_TABLE_NAME+".id "+
 					"INNER JOIN "+POST_STATE_TABLE_NAME+" ON "+getTableName()+".state = "+POST_STATE_TABLE_NAME+".id"+
-					"WHERE "+getTableName()+"=?", Arrays.asList(postID));
+					"WHERE "+getTableName()+".secure_id=?", Arrays.asList(postID));
 			
 			if(res.next()) {
 				final SimplifiedEntity u = new SimplifiedEntity(res.getString(USER_TABLE_NAME+".name"), res.getString(USER_TABLE_NAME+".surname"));
