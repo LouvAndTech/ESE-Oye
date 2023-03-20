@@ -14,7 +14,7 @@ import fr.eseoye.eseoye.beans.Category;
 import fr.eseoye.eseoye.beans.Post;
 import fr.eseoye.eseoye.beans.PostComplete;
 import fr.eseoye.eseoye.beans.PostState;
-import fr.eseoye.eseoye.beans.SimplifiedUser;
+import fr.eseoye.eseoye.beans.SimplifiedEntity;
 import fr.eseoye.eseoye.exceptions.DataCreationException;
 import fr.eseoye.eseoye.exceptions.DataCreationException.CreationExceptionReason;
 import fr.eseoye.eseoye.helpers.SFTPHelper;
@@ -109,7 +109,7 @@ public class PostTable implements ITable {
 			final Tuple<String, List<Object>> whereClause = generateWhereClausePost(userSecureID, parameters);
 			final String orderClause = generateOrderClausePost(parameters.getOrder());
 			
-			final CachedRowSet res = request.getValuesWithCondition("SELECT "+getTableName()+".id, "+getTableName()+".secure_id, "+getTableName()+".title, "+USER_TABLE_NAME+".name, "+USER_TABLE_NAME+".surname "+getTableName()+".price, "+CATEGORY_TABLE_NAME+".name, "+POST_STATE_TABLE_NAME+".name, "+getTableName()+".date FROM "+getTableName()+" "+
+			final CachedRowSet res = request.getValuesWithCondition("SELECT "+getTableName()+".id, "+getTableName()+".secure_id, "+getTableName()+".title, "+USER_TABLE_NAME+".name, "+USER_TABLE_NAME+".surname, "+getTableName()+".price, "+CATEGORY_TABLE_NAME+".name, "+POST_STATE_TABLE_NAME+".name, "+getTableName()+".date FROM "+getTableName()+" "+
 							"INNER JOIN "+USER_TABLE_NAME+" ON "+getTableName()+".user = "+USER_TABLE_NAME+".id "+
 							"INNER JOIN "+CATEGORY_TABLE_NAME+" ON "+getTableName()+".category = "+CATEGORY_TABLE_NAME+".id "+
 							"INNER JOIN "+POST_STATE_TABLE_NAME+" ON "+getTableName()+".state = "+POST_STATE_TABLE_NAME+".id" +
@@ -118,7 +118,7 @@ public class PostTable implements ITable {
 							" "+orderClause+";", whereClause.getValueB());
 			
 			while(res.next()) {
-				final SimplifiedUser u = new SimplifiedUser(res.getString(USER_TABLE_NAME+".name"), res.getString(USER_TABLE_NAME+".surname"));
+				final SimplifiedEntity u = new SimplifiedEntity(res.getString(USER_TABLE_NAME+".name"), res.getString(USER_TABLE_NAME+".surname"));
 				final Category c = new Category(CATEGORY_TABLE_NAME+".name");
 				final PostState ps = new PostState(POST_STATE_TABLE_NAME+".name");
 				
@@ -186,7 +186,7 @@ public class PostTable implements ITable {
 					"WHERE "+getTableName()+"=?", Arrays.asList(postID));
 			
 			if(res.next()) {
-				final SimplifiedUser u = new SimplifiedUser(res.getString(USER_TABLE_NAME+".name"), res.getString(USER_TABLE_NAME+".surname"));
+				final SimplifiedEntity u = new SimplifiedEntity(res.getString(USER_TABLE_NAME+".name"), res.getString(USER_TABLE_NAME+".surname"));
 				final Category c = new Category(CATEGORY_TABLE_NAME+".name");
 				final PostState ps = new PostState(POST_STATE_TABLE_NAME+".name");
 				
