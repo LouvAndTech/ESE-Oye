@@ -65,7 +65,7 @@ public class PostTable implements ITable {
 			
 			final String postSecureId = SecurityHelper.generateSecureID(System.currentTimeMillis(), lastPostID, SecurityHelper.SECURE_ID_LENGTH); //Generate the new secure id for the post
 			
-			request.insertValues(getTableName(), Arrays.asList("title","content","price","category","user","state","date", "secure_id"), Arrays.asList(title, content, price, categoryID, userDatabaseID, stateID, new Date(System.currentTimeMillis()), postSecureId));
+			request.insertValues(getTableName(), Arrays.asList("title","content","price","category","user","state","lock", "date", "secure_id"), Arrays.asList(title, content, price, categoryID, userDatabaseID, stateID, true, new Date(System.currentTimeMillis()), postSecureId));
 			
 			final CachedRowSet requestPostDatabaseID = request.getValues("SELECT LAST_INSERT_ID() AS lid;"); //Get the id for the fresh created post
 			if(!requestPostDatabaseID.next()) throw new SQLException();
@@ -161,11 +161,11 @@ public class PostTable implements ITable {
 		final StringBuilder sb = new StringBuilder("WHERE ");
 		final List<Object> whereObj = new ArrayList<>();
 		
-		if(userSecureID != null) { sb.append(USER_TABLE_NAME+".secure_id = ? AND "); whereObj.add(userSecureID); }
-		if(parameters.isCategoryPresent()) { sb.append(CATEGORY_TABLE_NAME+".id = ? AND "); whereObj.add(parameters.getCategoryID()); }
-		if(parameters.isStatePresent()) { sb.append(POST_STATE_TABLE_NAME+".id = ? AND "); whereObj.add(parameters.getStateID()); }
-		if(parameters.isMaxPricePresent()) { sb.append(getTableName()+".price <= ? AND "); whereObj.add(parameters.getMaxPrice()); }
-		if(parameters.mustBeValidated()) { sb.append(getTableName()+".lock = ? AND "); whereObj.add(0); }
+		if(userSecureID != null) { sb.append(USER_TABLE_NAME+".secure_id=? AND "); whereObj.add(userSecureID); }
+		if(parameters.isCategoryPresent()) { sb.append(CATEGORY_TABLE_NAME+".id=? AND "); whereObj.add(parameters.getCategoryID()); }
+		if(parameters.isStatePresent()) { sb.append(POST_STATE_TABLE_NAME+".id=? AND "); whereObj.add(parameters.getStateID()); }
+		if(parameters.isMaxPricePresent()) { sb.append(getTableName()+".price<=? AND "); whereObj.add(parameters.getMaxPrice()); }
+		if(parameters.mustBeValidated()) { sb.append(getTableName()+".lock=? AND "); whereObj.add(0); }
 		sb.setLength(sb.length()-5);
 		
 		return whereObj.size() != 0 ? new Tuple<>(sb.toString(), whereObj) : new Tuple<>("", whereObj);
