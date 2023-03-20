@@ -3,7 +3,6 @@ package fr.eseoye.eseoye.beans;
 public class Admin {
 
 	private String id;
-	
 	private String name, surname;
 	private String password;	
 	private int rank;

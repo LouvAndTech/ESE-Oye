@@ -17,9 +17,12 @@ public class UserPanel implements Action{
     private Map<String, Action> actionMap = new HashMap<>();
 
     private UserPanel(){
+        //User Part
         actionMap.put("Account", new Account());
         actionMap.put("Annonce", new Posts());
         actionMap.put("AddAnnonce", new AddPosts());
+
+        //Admin Part
     }
 
     public static UserPanel getInstance(){
