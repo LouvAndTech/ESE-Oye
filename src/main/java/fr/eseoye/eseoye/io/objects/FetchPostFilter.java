@@ -3,10 +3,12 @@ package fr.eseoye.eseoye.io.objects;
 import java.util.HashSet;
 import java.util.Set;
 
+import fr.eseoye.eseoye.beans.FetchOrder;
+
 public class FetchPostFilter {
 
 	private int categoryID, stateID;
-	private FetchOrder order;
+	private FetchOrderEnum order;
 	private float maxPrice;
 	private Set<String> keyWords;
 	private boolean mustBeValidated;
@@ -23,98 +25,13 @@ public class FetchPostFilter {
 	 * @param mustBeValidated if the post must be validated by an administrator to be fetch
 	 * @see fr.eseoye.eseoye.io.objects.FetchPostParameter.FetchOrder
 	 */
-	public FetchPostFilter(int categoryID, int stateID, FetchOrder order, float maxPrice, Set<String> keyWords, boolean mustBeValidated) {
-		this.categoryID = categoryID;
-		this.stateID = stateID;
-		this.order = order;
-		this.maxPrice = maxPrice;
-		this.keyWords = keyWords;
-		this.mustBeValidated = true;
-	}
-	
-	/**
-	 * Create a new parameter for fetching the post list<br><br>
-	 * When you doesn't want to use a filter, you can set it to <strong>-1</strong> for an integer parameter<br>
-	 * or use another constructor of the class<br>
-	 * <i>The parameter mustBeValidated is true by default</i>
-	 * @param categoryID the id of the category you want to filter
-	 * @param stateID the id of the state you want to filter
-	 * @param order the ordering of the post
-	 * @param maxPrice the maximum price for a post
-	 * @see fr.eseoye.eseoye.io.objects.FetchPostParameter.FetchOrder
-	 */
-	public FetchPostFilter(int categoryID, int stateID, FetchOrder order, float maxPrice, Set<String> keysWords) {
-		this(categoryID, stateID, order, maxPrice, keysWords, true);
-	}
-	
-	/**
-	 * Create a new parameter for fetching the post list<br><br>
-	 * When you doesn't want to use a filter, you can set it to <strong>-1</strong> for an integer parameter<br>
-	 * or use another constructor of the class
-	 * @param categoryID the id of the category you want to filter
-	 * @param stateID the id of the state you want to filter
-	 * @param order the ordering of the post
-	 * @param maxPrice the maximum price for a post
-	 * @param mustBeValidated if the post must be validated by an administrator to be fetch
-	 * @see fr.eseoye.eseoye.io.objects.FetchPostParameter.FetchOrder
-	 */
-	public FetchPostFilter(int categoryID, int stateID, FetchOrder order, float maxPrice, boolean mustBeValidated) {
-		this(categoryID, stateID, order, maxPrice, new HashSet<>(), mustBeValidated);
-	}
-	
-	/**
-	 * Create a new parameter for fetching the post list<br><br>
-	 * When you doesn't want to use a filter, you can set it to <strong>-1</strong> for an integer parameter<br>
-	 * or use another constructor of the class <br>
-	 * <i>The parameter mustBeValidated is true by default</i>
-	 * @param categoryID the id of the category you want to filter
-	 * @param stateID the id of the state you want to filter
-	 * @param order the ordering of the post
-	 * @see fr.eseoye.eseoye.io.objects.FetchPostParameter.FetchOrder
-	 */
-	public FetchPostFilter(int categoryID, int stateID, FetchOrder order) {
-		this(categoryID, stateID, order, -1, new HashSet<>(), true);
-	}
-	
-	/**
-	 * Create a new parameter for fetching the post list<br><br>
-	 * When you doesn't want to use a filter, you can set it to <strong>-1</strong> for an integer parameter<br>
-	 * or use another constructor of the class
-	 * @param categoryID the id of the category you want to filter
-	 * @param stateID the id of the state you want to filter
-	 * @param order the ordering of the post
-	 * @param mustBeValidated if the post must be validated by an administrator to be fetch
-	 * @see fr.eseoye.eseoye.io.objects.FetchPostParameter.FetchOrder
-	 */
-	public FetchPostFilter(int categoryID, int stateID, FetchOrder order, boolean mustBeValidated) {
-		this(categoryID, stateID, order, -1, new HashSet<>(), mustBeValidated);
-
-	}
-	
-	/**
-	 * Create a new parameter for fetching the post list<br><br>
-	 * When you doesn't want to use a filter, you can set it to <strong>-1</strong> for an integer parameter<br>
-	 * or use another constructor of the class<br>
-	 * <i>The parameter mustBeValidated is true by default</i>
-	 * @param categoryID the id of the category you want to filter
-	 * @param stateID the id of the state you want to filter
-	 * @see fr.eseoye.eseoye.io.objects.FetchPostParameter.FetchOrder
-	 */
-	public FetchPostFilter(int categoryID, int stateID) {
-		this(categoryID, stateID, FetchOrder.DATE_DESCENDING, -1, new HashSet<>(), true);
-	}
-	
-	/**
-	 * Create a new parameter for fetching the post list<br><br>
-	 * When you doesn't want to use a filter, you can set it to <strong>-1</strong> for an integer parameter<br>
-	 * or use another constructor of the class
-	 * @param categoryID the id of the category you want to filter
-	 * @param stateID the id of the state you want to filter
-	 * @param mustBeValidated if the post must be validated by an administrator to be fetch
-	 * @see fr.eseoye.eseoye.io.objects.FetchPostParameter.FetchOrder
-	 */
-	public FetchPostFilter(int categoryID, int stateID, boolean mustBeValidated) {
-		this(categoryID, stateID, FetchOrder.DATE_DESCENDING, -1, new HashSet<>(), mustBeValidated);
+	private FetchPostFilter(FetchPostFilter.Builder builder) {
+		this.categoryID = builder.categoryID;
+		this.stateID = builder.stateID;
+		this.keyWords = builder.keyWords;
+		this.maxPrice = builder.maxPrice;
+		this.order = builder.order;
+		this.mustBeValidated = builder.mustBeValidated;
 	}
 
 	public FetchPostFilter() {
@@ -137,7 +54,7 @@ public class FetchPostFilter {
 		return maxPrice;
 	}
 	
-	public FetchOrder getOrder() {
+	public FetchOrderEnum getOrder() {
 		return order;
 	}
 	
@@ -165,11 +82,76 @@ public class FetchPostFilter {
 		return maxPrice != -1;
 	}
 	
-	public enum FetchOrder {
-		PRICE_ASCENDING,
-		PRICE_DESCENDING,
-		DATE_ASCENDING,
-		DATE_DESCENDING;
+	public static FetchPostFilter.Builder builder() {
+		return new FetchPostFilter.Builder();
 	}
-
+	
+	public static class Builder {
+		
+		private int categoryID, stateID;
+		private FetchOrderEnum order = FetchOrderEnum.DATE_DESCENDING;
+		private float maxPrice;
+		private Set<String> keyWords;
+		private boolean mustBeValidated = true;
+		
+		private Builder() {
+			this.keyWords = new HashSet<>();
+		}
+		
+		public Builder category(int categoryID) {
+			this.categoryID = categoryID;
+			return this;
+		}
+		
+		public Builder state(int stateID) {
+			this.stateID = stateID;
+			return this;
+		}
+		
+		public Builder maxPrice(float maxPrice) {
+			this.maxPrice = maxPrice;
+			return this;
+		}
+		
+		public Builder order(FetchOrderEnum o) {
+			this.order = o;
+			return this;
+		}
+		
+		public Builder keyWords(Set<String> words) {
+			this.keyWords = words;
+			return this;
+		}
+		
+		public Builder keyWords(String... words) {
+			for(String v : words) this.keyWords.add(v);
+			return this;
+		}
+		
+		public Builder mustBeValidated(boolean value) {
+			this.mustBeValidated = value;
+			return this;
+		}
+		
+		public FetchPostFilter build() {
+			return new FetchPostFilter(this);
+		}
+		
+	}
+	
+	public enum FetchOrderEnum {
+		PRICE_ASCENDING("Prix ascendant"),
+		PRICE_DESCENDING("Prix descendant"),
+		DATE_ASCENDING("Date ascendante"),
+		DATE_DESCENDING("Date descendante");
+		
+		private String name;
+		private FetchOrderEnum(String name) {
+			this.name = name;
+		}
+		
+		public FetchOrder getObject() {
+			return new FetchOrder(name, this);
+		}
+	}
 }
