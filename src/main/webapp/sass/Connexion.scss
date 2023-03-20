@@ -1,23 +1,15 @@
-
-div{
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-
-  border: #393E46;
-
-}
-h1{
-  justify-content: center;
-}
-.container{
-  margin-top: 15%;
-  margin-left: 35%;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid grey;
-  width: 30%;
-  height: 40%;
-  border-radius: 30px;
-  box-shadow: 2px 2px 100px 6px #00adb5;
+section{
+  position: relative;
+  .container{
+    min-width: fit-content;
+    min-height: fit-content;
+    padding: 2em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    box-shadow: 2px 2px 100px 6px #00adb5;
+    border-radius: 30px;
+  }
 }

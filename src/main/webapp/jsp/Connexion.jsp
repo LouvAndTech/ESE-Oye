@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
   <meta charset="">
@@ -17,21 +18,23 @@
   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/Connexion.css" />
 </head>
 
-<div class="container">
-  <form method="post" action="ese-oye">
-    <h1>Connection</h1>
-    <label class="textBox">
-      <input type="text" name="mail" placeholder=" " required>
-      <span class="textBox_placeholder">Mail</span>
-    </label>
-    <br/>
-    <label class="textBox">
-      <input type="password" name="password" placeholder=" " required>
-      <span class="textBox_placeholder">Mot de passe</span>
-    </label>
-  </form>
-
-</div>
+<section>
+  <div class="container">
+    <form method="post" action="ese-oye">
+      <c:if test="${error}">
+        <div class="error">
+          <p>Erreur d'authentification</p
+        </div>
+      </c:if>
+      <h1>Connection</h1>
+      <input type="text" name="mail" placeholder="Mail" required>
+      <br/><br/>
+      <input type="password" name="password" placeholder="Mot de passe" required>
+      <br/><br/>
+      <input class="btn fill" type="submit" value="Se connecter">
+    </form>
+  </div>
+</section>
 
 
 
