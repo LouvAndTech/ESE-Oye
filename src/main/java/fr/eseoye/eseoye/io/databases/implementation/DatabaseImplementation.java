@@ -13,7 +13,7 @@ public abstract class DatabaseImplementation {
 	
 	public abstract void insertValues(Connection connection, String sqlRequest, List<Object> values) throws SQLException;
 	
-	public abstract void updateValues(Connection connection, String table, List<String> fields, List<String> values, String condition, List<Object> valuesCondition) throws SQLException;
+	public abstract void updateValues(Connection connection, String table, List<String> fields, List<Object> values, String condition, List<Object> valuesCondition) throws SQLException;
 	
 	public abstract void updateValues(Connection connection, String sqlRequest, List<Object> values) throws SQLException;
 	
@@ -46,10 +46,9 @@ public abstract class DatabaseImplementation {
 		return sb.toString();
 	}
 	
-	protected String convertArgumentsToUpdateFields(List<String> keys, List<String> values) {
-		if(keys.size() != values.size()) return null;
+	protected String convertArgumentsToUpdateFields(List<String> keys) {
 		final StringBuilder sb = new StringBuilder();
-		for(int i = 0; i < keys.size(); i++) sb.append(keys.get(i)+"="+values.get(i)+", ");
+		for(int i = 0; i < keys.size(); i++) sb.append(keys.get(i)+"=?, ");
 		sb.setLength(sb.length()-2);
 		return sb.toString();
 	}

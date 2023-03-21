@@ -12,6 +12,7 @@ public class FetchPostFilter {
 	private float maxPrice;
 	private Set<String> keyWords;
 	private boolean mustBeValidated;
+	private String userSecureID;
 	
 	/**
 	 * Create a new parameter for fetching the post list<br><br>
@@ -32,6 +33,7 @@ public class FetchPostFilter {
 		this.maxPrice = builder.maxPrice;
 		this.order = builder.order;
 		this.mustBeValidated = builder.mustBeValidated;
+		this.userSecureID = builder.userSecureID;
 	}
 	
 	public int getCategoryID() {
@@ -52,6 +54,10 @@ public class FetchPostFilter {
 	
 	public FetchOrderEnum getOrder() {
 		return order;
+	}
+	
+	public String getUserSecureID() {
+		return userSecureID;
 	}
 	
 	public boolean mustBeValidated() {
@@ -78,6 +84,10 @@ public class FetchPostFilter {
 		return maxPrice != -1;
 	}
 	
+	public boolean isUserIDPresent() {
+		return userSecureID != null;
+	}
+	
 	public static FetchPostFilter.Builder builder() {
 		return new FetchPostFilter.Builder();
 	}
@@ -90,6 +100,7 @@ public class FetchPostFilter {
 		private float maxPrice = -1;
 		private Set<String> keyWords;
 		private boolean mustBeValidated = true;
+		private String userSecureID = null;
 		
 		private Builder() {
 			this.keyWords = new HashSet<>();
@@ -127,6 +138,11 @@ public class FetchPostFilter {
 		
 		public Builder mustBeValidated(boolean value) {
 			this.mustBeValidated = value;
+			return this;
+		}
+		
+		public Builder user(String userID) {
+			this.userSecureID = userID;
 			return this;
 		}
 		

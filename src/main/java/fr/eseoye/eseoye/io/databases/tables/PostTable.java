@@ -94,22 +94,18 @@ public class PostTable implements ITable {
 	}
 	
 //	public String modifyPost(String )
-
-	public Tuple<List<Post>, Integer> fetchShortPost(int postNumber, int pageNumber, FetchPostFilter parameters) {
-		return fetchShortPost(postNumber, pageNumber, null, parameters);
-	}
 	
-	public Tuple<List<Post>, Integer> fetchShortPost(int postNumber, int pageNumber, String userSecureID, FetchPostFilter parameters) {
+	public Tuple<List<Post>, Integer> fetchShortPost(int postNumber, int pageNumber, FetchPostFilter parameters) {
 		final List<Post> post = new ArrayList<>();
 		DatabaseRequest request = null;
 		
 		try {
 			request = new DatabaseRequest(factory, credentials);
 			
-			final Tuple<String, List<Object>> whereClause = generateWhereClausePost(userSecureID, parameters);
+			final Tuple<String, List<Object>> whereClause = generateWhereClausePost(parameters);
 			final String orderClause = generateOrderClausePost(parameters.getOrder());
 			
-			final ResultSetWrappingSqlRowSet res = request.getValuesWithCondition("SELECT "+getTableName()+".id AS post_id, "+getTableName()+".secure_id AS post_sid, "+getTableName()+".title AS post_title, "+USER_TABLE_NAME+".name AS userpost_name, "+USER_TABLE_NAME+".surname AS userpost_surname, "+getTableName()+".price AS post_price, "+CATEGORY_TABLE_NAME+".name AS category_name, "+POST_STATE_TABLE_NAME+".name AS poststate_name, "+getTableName()+".date AS post_date FROM "+getTableName()+" "+
+			final ResultSetWrappingSqlRowSet res = request.getValuesWithCondition("SELECT `"+getTableName()+".id` AS post_id, `"+getTableName()+".secure_id` AS post_sid, `"+getTableName()+".title` AS post_title, `"+USER_TABLE_NAME+".name` AS userpost_name, `"+USER_TABLE_NAME+".surname` AS userpost_surname, `"+getTableName()+".price` AS post_price, `"+CATEGORY_TABLE_NAME+".name` AS category_name, `"+POST_STATE_TABLE_NAME+".name` AS poststate_name, `"+getTableName()+".date` AS post_date FROM "+getTableName()+" "+
 							"INNER JOIN "+USER_TABLE_NAME+" ON "+getTableName()+".user = "+USER_TABLE_NAME+".id "+
 							"INNER JOIN "+CATEGORY_TABLE_NAME+" ON "+getTableName()+".category = "+CATEGORY_TABLE_NAME+".id "+
 							"INNER JOIN "+POST_STATE_TABLE_NAME+" ON "+getTableName()+".state = "+POST_STATE_TABLE_NAME+".id " +
@@ -160,11 +156,11 @@ public class PostTable implements ITable {
 		}
 	}
 
-	private Tuple<String, List<Object>> generateWhereClausePost(String userSecureID, FetchPostFilter parameters) {
+	private Tuple<String, List<Object>> generateWhereClausePost(FetchPostFilter parameters) {
 		final StringBuilder sb = new StringBuilder("WHERE ");
 		final List<Object> whereObj = new ArrayList<>();
 		
-		if(userSecureID != null) { sb.append(USER_TABLE_NAME+".secure_id=? AND "); whereObj.add(userSecureID); }
+		if(parameters.isUserIDPresent()) { sb.append(USER_TABLE_NAME+".secure_id=? AND "); whereObj.add(parameters.getUserSecureID()); }
 		if(parameters.isCategoryPresent()) { sb.append(CATEGORY_TABLE_NAME+".id=? AND "); whereObj.add(parameters.getCategoryID()); }
 		if(parameters.isStatePresent()) { sb.append(POST_STATE_TABLE_NAME+".id=? AND "); whereObj.add(parameters.getStateID()); }
 		if(parameters.isMaxPricePresent()) { sb.append(getTableName()+".price<=? AND "); whereObj.add(parameters.getMaxPrice()); }
@@ -181,7 +177,7 @@ public class PostTable implements ITable {
 		try {
 			request = new DatabaseRequest(factory, credentials);
 			
-			final ResultSetWrappingSqlRowSet res = request.getValuesWithCondition("SELECT "+getTableName()+".id AS post_id, "+getTableName()+".secure_id AS post_sid, "+getTableName()+".title AS post_title, "+getTableName()+".content AS post_content, "+USER_TABLE_NAME+".name AS userpost_name, "+USER_TABLE_NAME+".surname AS userpost_surname, "+getTableName()+".price AS post_price, "+CATEGORY_TABLE_NAME+".name AS category_name, "+POST_STATE_TABLE_NAME+".name AS poststate_name, "+getTableName()+".date AS p_date FROM "+getTableName()+" "+
+			final ResultSetWrappingSqlRowSet res = request.getValuesWithCondition("SELECT `"+getTableName()+".id` AS post_id, `"+getTableName()+".secure_id` AS post_sid, `"+getTableName()+".title` AS post_title, `"+getTableName()+".content` AS post_content, `"+USER_TABLE_NAME+".name` AS userpost_name, `"+USER_TABLE_NAME+".surname` AS userpost_surname, `"+getTableName()+".price` AS post_price, `"+CATEGORY_TABLE_NAME+".name` AS category_name, `"+POST_STATE_TABLE_NAME+".name` AS poststate_name, `"+getTableName()+".date` AS post_date FROM "+getTableName()+" "+
 					"INNER JOIN "+USER_TABLE_NAME+" ON "+getTableName()+".user = "+USER_TABLE_NAME+".id "+
 					"INNER JOIN "+CATEGORY_TABLE_NAME+" ON "+getTableName()+".category = "+CATEGORY_TABLE_NAME+".id "+
 					"INNER JOIN "+POST_STATE_TABLE_NAME+" ON "+getTableName()+".state = "+POST_STATE_TABLE_NAME+".id"+
