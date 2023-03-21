@@ -41,19 +41,17 @@ public abstract class AbstractFetchPost {
             request.setAttribute("order",   filters.getOrder());
         }
         if(request.getParameter("postPage") != null){
+            System.out.println("Changing page");
             //Change page
             int page = Integer.parseInt(request.getParameter("postPage"));
-            if(page < 1) page = 1; //make sure it's not negative
-            if(fetchPost(POST_PER_PAGE, page,filters,type).getValueB() < page  && page > 1){
+            if(page < 0) page = 0; //make sure it's not negative
+            if((fetchPost(POST_PER_PAGE, page,filters,type).getValueB()-1) < page  && page > 0){
                 page--;
             }
             fillRequest(request, POST_PER_PAGE, page , filters, type);
         }else if(request.getParameter("order") != null){
             //Change order
             throw new Exception("Not implemented yet");
-        }else if(request.getParameter("cat") != null || request.getParameter("state") != null) {
-            //Change category
-            fillRequest(request, POST_PER_PAGE, 1, filters, type);
         }else {
             //not supposed to happen, forward to the ListPosts.jsp
             throw new Exception("Nothing to do");
@@ -94,7 +92,6 @@ public abstract class AbstractFetchPost {
         System.out.println(fetchPost(nbPost, page , FetchPostFilter.builder().build(), type));
         Tuple<List<Post>,Integer> fromDB = fetchPost(nbPost, page , FetchPostFilter.builder().build(), type);
         List<Integer> nbPage = handleNBpage(fromDB.getValueB(), page);
-        System.out.println("Name of cat : "+fromDB.getValueA().get(0).getCategory().getName());
         request.setAttribute("posts", fromDB.getValueA());
         if(type == TypePost.CLASSIC){
             System.out.println("Classic");

@@ -94,7 +94,7 @@
             <button class="btn" onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${postPage-1}&cat=${cat}&state=${state}&price=${price}&order=${order}')"><span class="material-symbols-outlined">navigate_before</span></button>
             <c:forEach var="page" items="${nbPage}">
                 <button <c:choose>
-                    <c:when test="${postPage == page}">class="actual" style="cursor: default" </c:when>
+                    <c:when test="${postPage+1 == page}">class="actual" style="cursor: default" </c:when>
                     <c:otherwise>onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${page}&cat=${cat}&state=${state}&price=${price}&order=${order}')"</c:otherwise>
                 </c:choose>
                 >${page}</button>
