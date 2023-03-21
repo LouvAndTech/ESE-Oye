@@ -65,7 +65,7 @@
     <hr class="hrVertical">
     <div class="list">
         <br>
-        <h2>Annonce : Angers</h2>
+        <h2>Totalité des annonces :</h2>
         <div class="posts centerSectionElement">
             <c:forEach var="post" items="${posts}">
                 <hr>
