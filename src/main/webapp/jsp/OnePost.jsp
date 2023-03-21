@@ -64,6 +64,8 @@
         <hr>
         <h2>Description :</h2>
         <p>${post.content}</p>
+
+        <hr>
         <div class="user">
             <img class="imgPP" src="http://eseoye.elouan-lerissel.fr/blankPP.png" alt="">
             <div class="info">
