@@ -68,7 +68,7 @@
         <div class="posts centerSectionElement">
             <c:forEach var="post" items="${posts}">
                 <hr>
-                <div class="post" onclick="window.Request.sendGet('ese-oye?id=OnePost&postId=${post.id}')">
+                <div class="post" onclick="window.Request.sendGet('ese-oye?id=OnePost&postId=${post.secureId}')">
                     <img src="${post.firstImage}" alt="">
                     <div class="content">
                         <div class="header">

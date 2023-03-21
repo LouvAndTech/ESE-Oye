@@ -77,7 +77,7 @@ public abstract class AbstractFetchPost {
         request.setAttribute("nbPage", nbPage);
         request.setAttribute("categories", fetchCategories());
         request.setAttribute("states", fetchStates());
-        request.setAttribute("orders", fetchOrders(request));
+        request.setAttribute("orders", fetchOrders());
         request.setAttribute("postPage", page);
     }
 
@@ -94,13 +94,14 @@ public abstract class AbstractFetchPost {
         System.out.println(fetchPost(nbPost, page , FetchPostFilter.builder().build(), type));
         Tuple<List<Post>,Integer> fromDB = fetchPost(nbPost, page , FetchPostFilter.builder().build(), type);
         List<Integer> nbPage = handleNBpage(fromDB.getValueB(), page);
+        System.out.println("Name of cat : "+fromDB.getValueA().get(0).getCategory().getName());
         request.setAttribute("posts", fromDB.getValueA());
         if(type == TypePost.CLASSIC){
             System.out.println("Classic");
             System.out.println(fetchCategories());
             request.setAttribute("categories", fetchCategories());
             request.setAttribute("states", fetchStates());
-            request.setAttribute("orders", fetchOrders(request));
+            request.setAttribute("orders", fetchOrders());
         }
         request.setAttribute("nbPage", nbPage);
         request.setAttribute("postPage", page);
@@ -108,10 +109,9 @@ public abstract class AbstractFetchPost {
 
     /**
      * Fetch the posts from the database
-     * @param request
      * @return  a {@link List} of {@link FetchOrder} object
      */
-    protected List<FetchOrder> fetchOrders(HttpServletRequest request){
+    protected List<FetchOrder> fetchOrders(){
         List<FetchOrder> orders = new ArrayList<>();
         for (FetchPostFilter.FetchOrderEnum order : FetchPostFilter.FetchOrderEnum.values()){
             orders.add(order.getObject());
