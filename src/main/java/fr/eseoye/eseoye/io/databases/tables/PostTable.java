@@ -131,7 +131,7 @@ public class PostTable implements ITable {
 				post.add(new Post(res.getString("post_sid"), res.getString("post_title"), u, res.getInt("post_price"), res.getDate("post_date"), c, ps, postImages.get(0)));
 			}
 			
-			return new Tuple<>(post, (int)Math.floor(totalPostNumber/postNumber));
+			return new Tuple<>(post, (int)Math.ceil((double)totalPostNumber/postNumber));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			//TODO Handle exception
@@ -189,8 +189,8 @@ public class PostTable implements ITable {
 			
 			if(res.next()) {
 				final SimplifiedEntity u = new SimplifiedEntity(res.getString("userpost_name"), res.getString("userpost_surname"));
-				final Category c = new Category("category_name");
-				final PostState ps = new PostState("poststate_name");
+				final Category c = new Category(res.getString("category_name"));
+				final PostState ps = new PostState(res.getString("poststate_name"));
 				
 				final List<String> postImages = fetchPostImages(request, res.getInt("post_id"), res.getString("post_sid"), 4);
 				if(postImages.isEmpty()) postImages.add(SFTPHelper.getFormattedImageURL(ImageDirectory.ROOT, "", "1.jpg"));
