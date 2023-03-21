@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.sql.rowset.CachedRowSet;
+import org.springframework.jdbc.support.rowset.ResultSetWrappingSqlRowSet;
 
 import fr.eseoye.eseoye.beans.PostState;
 import fr.eseoye.eseoye.io.DatabaseFactory;
@@ -25,7 +25,7 @@ public class PostStateTable implements ITable {
 	public List<PostState> fetchAllState() {
 		final List<PostState> result = new ArrayList<>();
 		try {
-			CachedRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("*"));
+			final ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("*"));
 			while(res.next())
 				result.add(new PostState(res.getInt("id"), res.getString("name")));
 			

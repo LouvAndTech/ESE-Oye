@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.sql.rowset.CachedRowSet;
+import org.springframework.jdbc.support.rowset.ResultSetWrappingSqlRowSet;
 
 import com.hierynomus.sshj.userauth.keyprovider.bcrypt.BCrypt;
 
@@ -71,7 +71,7 @@ public class AdminTable implements ITable {
 			String[] loginParsed = login.split(".");
 			if(loginParsed.length != 2) return null;
 			
-			CachedRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("name","surname","password","secure_id"), "name=? AND surname=?", Arrays.asList(loginParsed[0], loginParsed[1]));
+			ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("name","surname","password","secure_id"), "name=? AND surname=?", Arrays.asList(loginParsed[0], loginParsed[1]));
 			boolean isFound = false;
 			while(!isFound && res.next()) 
 				isFound = BCrypt.checkpw(password, res.getString("password"));
@@ -87,7 +87,7 @@ public class AdminTable implements ITable {
 		final List<SimplifiedEntity> list = new ArrayList<>();
 		
 		try {
-			final CachedRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("secure_id","name","surname"));
+			final ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("secure_id","name","surname"));
 			while(res.next())
 				list.add(new SimplifiedEntity(res.getString("secure_id"), res.getString("name"), res.getString("surname")));
 		}catch(SQLException e) {
@@ -98,7 +98,7 @@ public class AdminTable implements ITable {
 	
 	public Tuple<String, String> getNameSurname(String adminSecureID) {
 		try {
-			CachedRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("name","surname"), "secure_id = ?", Arrays.asList(adminSecureID));
+			ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("name","surname"), "secure_id = ?", Arrays.asList(adminSecureID));
 			if(res.next())
 				return new Tuple<>(res.getString("name"), res.getString("surname"));
 		} catch (SQLException e) {
