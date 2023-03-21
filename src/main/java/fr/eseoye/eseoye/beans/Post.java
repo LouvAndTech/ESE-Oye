@@ -16,7 +16,7 @@ public class Post {
     protected PostState state;
     protected Category category;
 
-    public Post(String secureId, String title, SimplifiedEntity author, float price, Date date, Category category, PostState postState, String firstImage){
+    public Post(String secureId, String title, SimplifiedEntity author, float price, Date date, Category category, PostState postState, String firstImage) {
         this.secureId = secureId;
         this.title = title;
         this.author = author;
@@ -28,16 +28,16 @@ public class Post {
     }
 
     public String getFirstImage() {
-		return firstImage;
-	}
-    
+        return firstImage;
+    }
+
     public Category getCategory() {
-		return category;
-	}
+        return category;
+    }
 
     public PostState getState() {
-		return state;
-	}
+        return state;
+    }
 
     public String getSecureId() {
         return secureId;

@@ -1,10 +1,10 @@
-export class Request{
+export class Request {
     constructor(method, action) {
         this.form = document.createElement("form");
         this.form.method = method;
-        if(this.form.method === "get"){
+        if (this.form.method === "get") {
             this.getActionAnalyser(action);
-        }else{
+        } else {
             this.form.action = action;
         }
         this.form.style.display = "none";
@@ -24,7 +24,7 @@ export class Request{
      * Analyse the action and create the input for the get request
      * @param action
      */
-    getActionAnalyser(action){
+    getActionAnalyser(action) {
         let params = action.split("?")[1].split("&");
         for (let i = 0; i < params.length; i++) {
             let param = params[i].split("=");
@@ -40,15 +40,16 @@ export class Request{
      * Create a post request with the given action
      * @param action the action to send (written as : "controller?param=value&param2=value2&...&paramN=valueN&")
      */
-    static sendPost(action){
+    static sendPost(action) {
         new this("post", action).submit();
     }
+
     /**
      * Create a Get request with the given action
      * @param action the action to send (written as : "controller?param=value&param2=value2&...&paramN=valueN&")
      */
-    static sendGet(action){
-         new this("get", action).submit();
+    static sendGet(action) {
+        new this("get", action).submit();
     }
 }
 

@@ -20,9 +20,12 @@
     </c:when>
     <c:otherwise>
         <div class="btnAdminControl">
-            <a onclick="window.Request.sendPost('ese-oye?id=UserPanel&contentPage=AdminValidePost&postId=${postId}&action=delete')"><span class="material-symbols-outlined passSecu_low">cancel</span></a>
-            <a href="ese-oye?id=UserPanel&contentPage=AdminEditPost&postId=${postId}"><span class="material-symbols-outlined">edit</span></a>
-            <a onclick="window.Request.sendPost('ese-oye?id=UserPanel&contentPage=AdminValidePost&postId=${postId}&action=valid')"><span class="material-symbols-outlined passSecu_high">check_circle</span></a>
+            <a onclick="window.Request.sendPost('ese-oye?id=UserPanel&contentPage=AdminValidePost&postId=${postId}&action=delete')"><span
+                    class="material-symbols-outlined passSecu_low">cancel</span></a>
+            <a href="ese-oye?id=UserPanel&contentPage=AdminEditPost&postId=${postId}"><span
+                    class="material-symbols-outlined">edit</span></a>
+            <a onclick="window.Request.sendPost('ese-oye?id=UserPanel&contentPage=AdminValidePost&postId=${postId}&action=valid')"><span
+                    class="material-symbols-outlined passSecu_high">check_circle</span></a>
         </div>
         <div class="centerSectionElement">
             <div class="centerSectionElement">

@@ -1,23 +1,25 @@
 package fr.eseoye.eseoye;
 
 //Actions
+
 import fr.eseoye.eseoye.action.*;
 import fr.eseoye.eseoye.helpers.ConnectionHelper;
-import fr.eseoye.eseoye.io.DatabaseFactory;
 import fr.eseoye.eseoye.io.IOHandler;
 import fr.eseoye.eseoye.io.SFTPFactory;
 import fr.eseoye.eseoye.io.databases.DatabaseCredentials;
-import fr.eseoye.eseoye.io.databases.tables.PostTable;
 
-//Libraries
-import java.io.*;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
-import javax.servlet.ServletException;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
 
 @MultipartConfig(fileSizeThreshold = 1024 * 1024,
         maxFileSize = 1024 * 1024 * 5,
@@ -25,13 +27,13 @@ import javax.servlet.annotation.*;
 @WebServlet(name = "ese-oye", value = "/ese-oye")
 public class ESEOyeServlet extends HttpServlet {
 
-    private Map<String, Action> actionMap = new HashMap<>();
+    private final Map<String, Action> actionMap = new HashMap<>();
 
     /**
      * Function executed when a server is instanced
      */
     @Override
-    public void init(){
+    public void init() {
         try {
             SFTPFactory.createInstance(IOHandler.getInstance().getConfiguration().getSFTPCredentials());
             DatabaseCredentials dbCred = IOHandler.getInstance().getConfiguration().getDatabaseCredentials();
@@ -45,29 +47,28 @@ public class ESEOyeServlet extends HttpServlet {
 
             //Admin Part
             actionMap.put("AdminLogin", new AdminLogin());
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         System.out.println("INIT");
 
     }
 
-    /** Function executed when a client execute a Get request
+    /**
+     * Function executed when a client execute a Get request
      *
-     * @param request   an {@link HttpServletRequest} object that
-     *                  contains the request the client has made
-     *                  of the servlet
-     *
-     * @param response  an {@link HttpServletResponse} object that
-     *                  contains the response the servlet sends
-     *                  to the client
-     *
+     * @param request  an {@link HttpServletRequest} object that
+     *                 contains the request the client has made
+     *                 of the servlet
+     * @param response an {@link HttpServletResponse} object that
+     *                 contains the response the servlet sends
+     *                 to the client
      * @throws ServletException an {@link ServletException}
      * @throws IOException      an {@link IOException}
      */
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        if(ConnectionHelper.isConnected(request, response)) {
+        if (ConnectionHelper.isConnected(request, response)) {
             HttpSession session = request.getSession();
 
             //session.setAttribute("admin", true);
@@ -84,21 +85,21 @@ public class ESEOyeServlet extends HttpServlet {
     }
 
 
-    /** Function executed when a client execute a Post request
+    /**
+     * Function executed when a client execute a Post request
      *
-     * @param request   an {@link HttpServletRequest} object that
-     *                  contains the request the client has made
-     *                  of the servlet
-     * @param response  an {@link HttpServletResponse} object that
-     *                  contains the response the servlet sends
-     *                  to the client
-     *
+     * @param request  an {@link HttpServletRequest} object that
+     *                 contains the request the client has made
+     *                 of the servlet
+     * @param response an {@link HttpServletResponse} object that
+     *                 contains the response the servlet sends
+     *                 to the client
      * @throws ServletException an {@link ServletException}
      * @throws IOException      an {@link IOException}
      */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        if(ConnectionHelper.isConnected(request, response)) {
+        if (ConnectionHelper.isConnected(request, response)) {
             HttpSession session = request.getSession();
 
             //session.setAttribute("admin", true);

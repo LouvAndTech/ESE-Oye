@@ -3,24 +3,31 @@ const root = document.querySelector(":root");
 var loaded = false;
 
 
-var listColor = {"--maincolor":"blue", "--backcolor":"#fff", "--textcolor":"#000", "--border":"#444", "--iluminated":"#2661bf", "--lightback":"#eee"}
+var listColor = {
+    "--maincolor": "blue",
+    "--backcolor": "#fff",
+    "--textcolor": "#000",
+    "--border": "#444",
+    "--iluminated": "#2661bf",
+    "--lightback": "#eee"
+}
 
 
-if(document.cookie.split("; ").find((row) => row.startsWith("darkTheme"))?.split("=")[1] == "false"){
+if (document.cookie.split("; ").find((row) => row.startsWith("darkTheme"))?.split("=")[1] == "false") {
     changeThemeColor();
 }
 
-function dayDark(){
+function dayDark() {
     changeThemeColor();
     changeIconTheme();
-    document.cookie = 'darkTheme='+dark+'; path=/; max-age=2592000';
+    document.cookie = 'darkTheme=' + dark + '; path=/; max-age=2592000';
 }
 
-function changeThemeColor(){
-    if(loaded){
+function changeThemeColor() {
+    if (loaded) {
         changeIconTheme();
     }
-    dark=!dark;
+    dark = !dark;
     Object.keys(listColor).forEach(key => {
         const tempColor = listColor[key];
         listColor[key] = getComputedStyle(document.documentElement).getPropertyValue(key);
@@ -28,12 +35,12 @@ function changeThemeColor(){
     });
 }
 
-function changeIconTheme(){
+function changeIconTheme() {
     var icon = document.querySelector(".icon_dark_mode");
     icon.innerHTML = dark ? "dark_mode" : "light_mode";
 }
 
-window.onload = function(){
+window.onload = function () {
     loaded = true;
     changeIconTheme();
 }

@@ -1,21 +1,21 @@
-.addImg{
+.addImg {
   max-height: 21em;
 
-  .imgList{
+  .imgList {
     padding-top: 0.5em;
     padding-bottom: 0.5em;
     max-height: 19em;
     overflow-y: scroll;
 
-    img{
-        max-height: 17em;
-        width: auto;
-        margin-left: 0.5em;
+    img {
+      max-height: 17em;
+      width: auto;
+      margin-left: 0.5em;
     }
   }
 }
 
-.warning{
+.warning {
   display: none;
   color: red;
   font-size: 1.4em;

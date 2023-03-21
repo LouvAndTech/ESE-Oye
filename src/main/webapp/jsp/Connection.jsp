@@ -15,8 +15,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>connexion</title>
     <script type="module" src="${pageContext.request.contextPath}/js/request.js" defer></script>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css" />
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/Connexion.css" />
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/Connexion.css"/>
     <link rel="icon" href="${pageContext.request.contextPath}/img/noiiceLogo.ico" type="image/x-icon">
 </head>
 
@@ -35,7 +35,8 @@
             <br/><br/>
             <input class="btn fill" type="submit" value="Se connecter">
         </form>
-        <input class="btn fill" type="submit" value="pas encore inscrit ?" onclick="window.Request.sendGet('ese-oye?id=Inscription')">
+        <input class="btn fill" type="submit" value="pas encore inscrit ?"
+               onclick="window.Request.sendGet('ese-oye?id=Inscription')">
     </div>
 
 
@@ -43,7 +44,6 @@
 
     </div>
 </section>
-
 
 
 </body>

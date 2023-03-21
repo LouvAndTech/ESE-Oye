@@ -10,7 +10,7 @@
 <head>
     <%@include file="theme/Head.jsp" %>
     <title>connexion</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/Login.css" />
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/Login.css"/>
 </head>
 
 <section>
@@ -25,7 +25,6 @@
         </form>
     </div>
 </section>
-
 
 
 </body>

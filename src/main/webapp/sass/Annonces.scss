@@ -1,108 +1,110 @@
-section{
-    .tri{
-        max-width: 1000px;
-        margin: auto;
-        margin-top: 2em;
-    }
-
-    .posts{
-
-        .post{
-            display: flex;
-            margin: 1em;
-
-            img{
-                width: 15em;
-                height: 15em;
-                object-fit: cover;
-            }
-
-            .content{
-                padding: 1em;
-                width: 100%; 
-
-                .header{
-                    display: flex;
-                    height: 50%;
-
-                    h2:last-child{
-                        margin-left: auto;
-                    }
-                }
-
-                .footer{
-                    display: flex;
-                    height: 50%;
-
-                    .subtitle{
-                        text-align: right;
-                        margin-left: auto;
-                        opacity: 50%;
-
-                        p{
-                            width: 100%;
-                            &:first-child{
-                                margin-right: 1em;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        &:hover{
-            cursor: pointer;
-        }
-    }
-
-
-
-    .validBtn{
-        flex-direction: column;
-        display: flex;
-        a{
-            margin: auto;
-        }
-    }
-}
-
-.detail{
-    margin-left: 2em;
-}
-
-.buttonContainer{
-    display: flex;
-    vertical-align: middle;
+section {
+  .tri {
+    max-width: 1000px;
     margin: auto;
-    width: fit-content;
+    margin-top: 2em;
+  }
 
-    button{
-        background-color: transparent;
-        color: var(--textcolor);
-        border: none;
-        font-size: 1.5em;
-        width: 1.5em;
-        border-radius: 5px;
+  .posts {
 
-        &:hover{
-            cursor: pointer;
+    .post {
+      display: flex;
+      margin: 1em;
+
+      img {
+        width: 15em;
+        height: 15em;
+        object-fit: cover;
+      }
+
+      .content {
+        padding: 1em;
+        width: 100%;
+
+        .header {
+          display: flex;
+          height: 50%;
+
+          h2:last-child {
+            margin-left: auto;
+          }
         }
 
-        &.actual{
-            color: var(--backcolor);
-            background-color: var(--textcolor);
-        }
+        .footer {
+          display: flex;
+          height: 50%;
 
-        &.btn{
-            width: fit-content;
-            margin: 0;
+          .subtitle {
+            text-align: right;
+            margin-left: auto;
+            opacity: 50%;
+
+            p {
+              width: 100%;
+
+              &:first-child {
+                margin-right: 1em;
+              }
+            }
+          }
         }
+      }
     }
-    span{
-        font-size: 1.5em;
+
+    &:hover {
+      cursor: pointer;
     }
+  }
+
+
+  .validBtn {
+    flex-direction: column;
+    display: flex;
+
+    a {
+      margin: auto;
+    }
+  }
 }
 
-.detail{
-    margin-left: 2em;
+.detail {
+  margin-left: 2em;
+}
+
+.buttonContainer {
+  display: flex;
+  vertical-align: middle;
+  margin: auto;
+  width: fit-content;
+
+  button {
+    background-color: transparent;
+    color: var(--textcolor);
+    border: none;
+    font-size: 1.5em;
+    width: 1.5em;
+    border-radius: 5px;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    &.actual {
+      color: var(--backcolor);
+      background-color: var(--textcolor);
+    }
+
+    &.btn {
+      width: fit-content;
+      margin: 0;
+    }
+  }
+
+  span {
+    font-size: 1.5em;
+  }
+}
+
+.detail {
+  margin-left: 2em;
 }

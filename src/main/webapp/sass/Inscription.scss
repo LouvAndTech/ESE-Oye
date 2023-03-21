@@ -1,9 +1,10 @@
-.title{
+.title {
   width: 100%;
   border-bottom-color: #666666;
 
 }
-div{
+
+div {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -11,7 +12,7 @@ div{
 
   margin: auto;
 
-  h1{
+  h1 {
     font-size: 6em;
     font-weight: bold;
     color: #00adb5;
@@ -20,8 +21,7 @@ div{
   }
 
 
-
-  .container{
+  .container {
     height: fit-content;
     text-align: center;
     border: 2px solid grey;
@@ -35,11 +35,12 @@ div{
 
 }
 
-form{
+form {
   margin-left: 10px;
   margin-top: 10px;
 }
-input{
+
+input {
   justify-content: center;
   align-items: center;
   border-radius: 5px;

@@ -19,28 +19,27 @@ public class AdminAddUser implements Action {
 
     private final DatabaseCredentials dbCred;
 
-    public AdminAddUser(DatabaseCredentials dbCred){
+    public AdminAddUser(DatabaseCredentials dbCred) {
         this.dbCred = dbCred;
     }
 
 
     /**
      * Verify if the user already exist and create it if not
-     * @param request   an {@link HttpServletRequest} object that
-     *                  contains the request the client has made
-     *                  of the servlet
      *
-     * @param response  an {@link HttpServletResponse} object that
-     *                  contains the response the servlet sends
-     *                  to the client
-     *
+     * @param request  an {@link HttpServletRequest} object that
+     *                 contains the request the client has made
+     *                 of the servlet
+     * @param response an {@link HttpServletResponse} object that
+     *                 contains the response the servlet sends
+     *                 to the client
      * @throws ServletException
      * @throws IOException
      * @throws ParseException
      */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ParseException {
-        if(ConnectionHelper.isLockAdmin(request, response)) {
+        if (ConnectionHelper.isLockAdmin(request, response)) {
             Ternary resultMail = DatabaseFactory.getInstance().getTable(UserTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).isAccountCreationPossible(request.getParameter("mail"), request.getParameter("phone"));
             if (resultMail == Ternary.FALSE) {
                 request.setAttribute("error", "Mail or phone already used");
@@ -65,22 +64,20 @@ public class AdminAddUser implements Action {
 
     /**
      * Forward the request to the view
-     * @param request   an {@link HttpServletRequest} object that
-     *                  contains the request the client has made
-     *                  of the servlet
      *
-     * @param response  an {@link HttpServletResponse} object that
-     *                  contains the response the servlet sends
-     *                  to the client
-     *
-     * @param target    a string to define the view to forward
-     *
+     * @param request  an {@link HttpServletRequest} object that
+     *                 contains the request the client has made
+     *                 of the servlet
+     * @param response an {@link HttpServletResponse} object that
+     *                 contains the response the servlet sends
+     *                 to the client
+     * @param target   a string to define the view to forward
      * @throws ServletException
      * @throws IOException
      */
     @Override
     public void forward(HttpServletRequest request, HttpServletResponse response, String target) throws ServletException, IOException {
-        if(ConnectionHelper.isLockAdmin(request, response)) {
+        if (ConnectionHelper.isLockAdmin(request, response)) {
             System.out.println("Admin add user : forward");
             request.getRequestDispatcher("/jsp/UserPanel.jsp").forward(request, response);
         }

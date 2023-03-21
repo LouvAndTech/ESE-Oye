@@ -2,70 +2,72 @@ package fr.eseoye.eseoye.beans;
 
 public class SimplifiedEntity {
 
-	private String secureID;
-	
-	private String name, surname;
-	private String phone, mail;
+    private final String secureID;
 
-	private Boolean isAdmin, isLocked;
+    private final String name;
+    private final String surname;
+    private final String phone;
+    private final String mail;
 
-	public SimplifiedEntity(String secureID, String name, String surname, String phone, String mail) {
-		this.secureID = secureID;
-		this.name = name;
-		this.surname = surname;
-		this.phone = phone;
-		this.mail = mail;
-	}
-	
-	public SimplifiedEntity(String name, String surname, String phone, String mail) {
-		this(null, name, surname, phone, mail);
-	}
+    private Boolean isAdmin, isLocked;
 
-	public SimplifiedEntity(String name, String surname, String secureID, Boolean isAdmin, Boolean isLocked, String phone, String mail) {
-		this(secureID, name, surname , phone, mail);
-		this.isAdmin = isAdmin;
-		this.isLocked = isLocked;
-	}
+    public SimplifiedEntity(String secureID, String name, String surname, String phone, String mail) {
+        this.secureID = secureID;
+        this.name = name;
+        this.surname = surname;
+        this.phone = phone;
+        this.mail = mail;
+    }
+
+    public SimplifiedEntity(String name, String surname, String phone, String mail) {
+        this(null, name, surname, phone, mail);
+    }
+
+    public SimplifiedEntity(String name, String surname, String secureID, Boolean isAdmin, Boolean isLocked, String phone, String mail) {
+        this(secureID, name, surname, phone, mail);
+        this.isAdmin = isAdmin;
+        this.isLocked = isLocked;
+    }
 
 
-	public boolean isSecureIDPresent() {
-		return secureID != null;
-	}
-	
-	public String getSecureID() {
-		return secureID;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public String getSurname() {
-		return surname;
-	}
+    public boolean isSecureIDPresent() {
+        return secureID != null;
+    }
 
-	public Boolean getIsAdmin() {
-		return isAdmin;
-	}
+    public String getSecureID() {
+        return secureID;
+    }
 
-	public Boolean getIsLocked() {
-		return isLocked;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setIsAdmin(Boolean isAdmin) {
-		this.isAdmin = isAdmin;
-	}
+    public String getSurname() {
+        return surname;
+    }
 
-	public void setIsLocked(Boolean isLocked) {
-		this.isLocked = isLocked;
-	}
+    public Boolean getIsAdmin() {
+        return isAdmin;
+    }
 
-	public String getPhone() {
-		return phone;
-	}
+    public Boolean getIsLocked() {
+        return isLocked;
+    }
 
-	public String getMail() {
-		return mail;
-	}
+    public void setIsAdmin(Boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+
+    public void setIsLocked(Boolean isLocked) {
+        this.isLocked = isLocked;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getMail() {
+        return mail;
+    }
 
 }

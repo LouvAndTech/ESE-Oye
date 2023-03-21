@@ -1,302 +1,310 @@
 @use "variables" as *;
 
-html{
-    height: 100vh;
+html {
+  height: 100vh;
 }
 
-body{
-    margin: 0;
-    background-color: var(--backcolor);
-    color: var(--textcolor);
-    font-size: 14px;
-    height: 100vh;
+body {
+  margin: 0;
+  background-color: var(--backcolor);
+  color: var(--textcolor);
+  font-size: 14px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: all .5s;
+  overflow-x: hidden;
+}
+
+header {
+  .container {
     display: flex;
-    flex-direction: column;
-    transition: all .5s;
-    overflow-x: hidden;
-}
+    flex-direction: row;
+    justify-content: space-between;
+    line-height: 30px;
+    padding: 1em;
 
-header{
-    .container{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        line-height: 30px;
-        padding: 1em;
-
-        h1{
-            margin: auto 0;
-            height: fit-content;
-        }
-
-        .rightBtn{
-            display: inline-flex;
-
-            .darkMode{
-                margin: auto;
-                button{
-                    background-color: transparent;
-                    border: 0;
-                    color: var(--iluminated);
-
-                    &:hover{
-                        cursor: pointer;
-                    }
-                }
-            }
-        }
-    }
-}
-
-#mainContent{
-    display: flex;
-    flex: 1;
-}
-
-footer{
-    .align_right{
-        text-align: right;
-        padding-right: 5px;
-        display: block;
+    h1 {
+      margin: auto 0;
+      height: fit-content;
     }
 
-}
+    .rightBtn {
+      display: inline-flex;
 
-section{
-    flex: 1;
-}
+      .darkMode {
+        margin: auto;
 
-hr{
-    width: 90%;
-    border: none;
-    border-bottom: 2px solid var(--border);
-}
+        button {
+          background-color: transparent;
+          border: 0;
+          color: var(--iluminated);
 
-.hrVertical{
-    border: none;
-    border-left: 1px solid var(--border);
-    min-height: 100%;
-    max-height: 100vh;
-    width: 1px;
-    margin: 0 2em;
-}
-
-*:focus{
-    outline: none;
-}
-
-h2{
-    margin: 0;
-}
-
-h3{
-    margin: 0;
-}
-
-.centerSectionElement{
-    max-width: 1100px;
-    margin: auto;
-    width: 100%;
-}
-
-a{
-    color: var(--textcolor);
-    text-decoration: none;
-    margin: auto;
-    margin-right: 1em;
-    height: fit-content;
-    transition: all .5s;
-
-    &.active{
-        background-color: var(--textcolor);
-        color: var(--backcolor);
-        font-weight: bold;
-    }
-
-    &:hover:not(.active){
-        color: var(--iluminated);
-    }
-
-    &.aBtn{
-        background-color: var(--textcolor);
-        color: var(--backcolor);
-        padding: 0.05em 0.5em;
-        border-radius: 5px;
-        font-weight: bold;
-        border: 1px solid var(--textcolor);
-        transition: all .5s;
-
-        &:hover{
-            background-color: var(--backcolor);
-            color: var(--textcolor);
-            border: 1px solid var(--textcolor);
+          &:hover {
             cursor: pointer;
+          }
         }
+      }
     }
+  }
 }
 
-
-//different inputs
-select{
-    padding: .3em;
-    background-color: var(--ligthcolor);
-    border-radius: 5px;
-    border: none;
+#mainContent {
+  display: flex;
+  flex: 1;
 }
 
-.imgPP{
-    border-radius: 50%;
-    width: 8em;
-    height: 8em;
+footer {
+  .align_right {
+    text-align: right;
+    padding-right: 5px;
+    display: block;
+  }
+
 }
 
-.btn{
+section {
+  flex: 1;
+}
+
+hr {
+  width: 90%;
+  border: none;
+  border-bottom: 2px solid var(--border);
+}
+
+.hrVertical {
+  border: none;
+  border-left: 1px solid var(--border);
+  min-height: 100%;
+  max-height: 100vh;
+  width: 1px;
+  margin: 0 2em;
+}
+
+*:focus {
+  outline: none;
+}
+
+h2 {
+  margin: 0;
+}
+
+h3 {
+  margin: 0;
+}
+
+.centerSectionElement {
+  max-width: 1100px;
+  margin: auto;
+  width: 100%;
+}
+
+a {
+  color: var(--textcolor);
+  text-decoration: none;
+  margin: auto;
+  margin-right: 1em;
+  height: fit-content;
+  transition: all .5s;
+
+  &.active {
     background-color: var(--textcolor);
     color: var(--backcolor);
-    padding: 0.5em 0.5em;
+    font-weight: bold;
+  }
+
+  &:hover:not(.active) {
+    color: var(--iluminated);
+  }
+
+  &.aBtn {
+    background-color: var(--textcolor);
+    color: var(--backcolor);
+    padding: 0.05em 0.5em;
     border-radius: 5px;
     font-weight: bold;
     border: 1px solid var(--textcolor);
     transition: all .5s;
-    margin-top: 0.5em;
 
-    &:hover{
-        background-color: var(--backcolor);
-        color: var(--textcolor);
-        border: 1px solid var(--textcolor);
-        cursor: pointer;
+    &:hover {
+      background-color: var(--backcolor);
+      color: var(--textcolor);
+      border: 1px solid var(--textcolor);
+      cursor: pointer;
     }
-
-    &:disabled{
-        background-color: var(--disabled);
-        color: var(--disabledText);
-        border: 1px solid var(--disabled);
-        cursor: default;
-    }
+  }
 }
 
-section{
-    input:not([type="submit"]), .centerSectionElement > .textAreaCont textarea, .custom_select{
-        background: var(--lightback);
-        color: var(--textcolor);
-        border: none;
-        padding: .5em;
-        width: 20em;
-        margin-right: 1em;
-        border-bottom: 3px solid var(--iluminated);
 
-        &::-webkit-input-placeholder{
-            color: var(--iluminated);
-        }
-    }
-
-    .centerSectionElement > .textAreaCont{
-        width: auto;
-        padding: 1em 2em;
-
-        textarea{
-            width: 100%;
-            height: 20em;
-            resize: none;
-        }
-
-        .nbChar{
-            text-align: right;
-        }
-    }
-
-    .custom_select select{
-        display: none;
-    }
-    .cs_select{
-        display: flex;
-    }
-
-    .custom_select{
-        height: fit-content;
-        width: fit-content;
-        min-width: 10em;
-        text-align: left;
-        padding: 0;
-        cursor: pointer;
-
-        p{
-            height: fit-content;
-            margin: auto;
-            margin-left: 0;
-            padding: .5em;
-            white-space: nowrap;
-        }
-
-        .cs_select{
-            width: 100%;
-            border-bottom: 1.5px solid var(--iluminated);
-
-            span{
-                height: fit-content;
-                margin: auto 0;
-            }
-        }
-
-        .cs_container{
-            width: 100%;
-            position: relative;
-        }
-
-        .cs_option{
-            overflow: hidden;
-            width: 100%;
-            position: absolute;
-            background-color: var(--lightback);
-            transition: all .5s;
-            height: 0;
-            z-index: 0;
-            border-bottom: 1.5px solid var(--iluminated);
-
-            .cs_option_e{
-                border-top: 1px solid var(--border);
-                width: 100%;
-                height: 2.15em;
-
-                &:hover{
-                    background-color: var(--border);
-                }
-            }
-
-            &.openSelect{
-                box-shadow: 0px 5px 10px black;
-            }
-        }
-    }
-
-    .alignItemsRight{
-        display: flex;
-        justify-content: flex-end;
-        a{
-            margin: 0;
-        }
-    }
+//different inputs
+select {
+  padding: .3em;
+  background-color: var(--ligthcolor);
+  border-radius: 5px;
+  border: none;
 }
 
-.passSecu{
-    text-align: right;
-    margin: 0;
+.imgPP {
+  border-radius: 50%;
+  width: 8em;
+  height: 8em;
+}
+
+.btn {
+  background-color: var(--textcolor);
+  color: var(--backcolor);
+  padding: 0.5em 0.5em;
+  border-radius: 5px;
+  font-weight: bold;
+  border: 1px solid var(--textcolor);
+  transition: all .5s;
+  margin-top: 0.5em;
+
+  &:hover {
+    background-color: var(--backcolor);
+    color: var(--textcolor);
+    border: 1px solid var(--textcolor);
+    cursor: pointer;
+  }
+
+  &:disabled {
+    background-color: var(--disabled);
+    color: var(--disabledText);
+    border: 1px solid var(--disabled);
+    cursor: default;
+  }
+}
+
+section {
+  input:not([type="submit"]), .centerSectionElement > .textAreaCont textarea, .custom_select {
+    background: var(--lightback);
+    color: var(--textcolor);
+    border: none;
+    padding: .5em;
+    width: 20em;
     margin-right: 1em;
-    color: transparent
+    border-bottom: 3px solid var(--iluminated);
+
+    &::-webkit-input-placeholder {
+      color: var(--iluminated);
+    }
+  }
+
+  .centerSectionElement > .textAreaCont {
+    width: auto;
+    padding: 1em 2em;
+
+    textarea {
+      width: 100%;
+      height: 20em;
+      resize: none;
+    }
+
+    .nbChar {
+      text-align: right;
+    }
+  }
+
+  .custom_select select {
+    display: none;
+  }
+
+  .cs_select {
+    display: flex;
+  }
+
+  .custom_select {
+    height: fit-content;
+    width: fit-content;
+    min-width: 10em;
+    text-align: left;
+    padding: 0;
+    cursor: pointer;
+
+    p {
+      height: fit-content;
+      margin: auto;
+      margin-left: 0;
+      padding: .5em;
+      white-space: nowrap;
+    }
+
+    .cs_select {
+      width: 100%;
+      border-bottom: 1.5px solid var(--iluminated);
+
+      span {
+        height: fit-content;
+        margin: auto 0;
+      }
+    }
+
+    .cs_container {
+      width: 100%;
+      position: relative;
+    }
+
+    .cs_option {
+      overflow: hidden;
+      width: 100%;
+      position: absolute;
+      background-color: var(--lightback);
+      transition: all .5s;
+      height: 0;
+      z-index: 0;
+      border-bottom: 1.5px solid var(--iluminated);
+
+      .cs_option_e {
+        border-top: 1px solid var(--border);
+        width: 100%;
+        height: 2.15em;
+
+        &:hover {
+          background-color: var(--border);
+        }
+      }
+
+      &.openSelect {
+        box-shadow: 0px 5px 10px black;
+      }
+    }
+  }
+
+  .alignItemsRight {
+    display: flex;
+    justify-content: flex-end;
+
+    a {
+      margin: 0;
+    }
+  }
 }
-.passSecu_low{
-    color: red;
+
+.passSecu {
+  text-align: right;
+  margin: 0;
+  margin-right: 1em;
+  color: transparent
 }
-.passSecu_medium{
-    color: yellow;
+
+.passSecu_low {
+  color: red;
 }
-.passSecu_high{
-    color: green;
+
+.passSecu_medium {
+  color: yellow;
 }
-.desactiver{
-    color: var(--disabled);
+
+.passSecu_high {
+  color: green;
 }
-.activer{
-    color: var(--iluminated);
+
+.desactiver {
+  color: var(--disabled);
+}
+
+.activer {
+  color: var(--iluminated);
 }
 

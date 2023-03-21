@@ -24,7 +24,8 @@
         <c:choose>
             <c:when test="${adminState}">
                 <div class="alignItemsRight">
-                    <a onclick="window.Request.sendPost('ese-oye?id=UserPanel&contentPage=AdminValidePost&postId=${postId}&action=delete')" class="passSecu_low"><span class="material-symbols-outlined">delete</span></a>
+                    <a onclick="window.Request.sendPost('ese-oye?id=UserPanel&contentPage=AdminValidePost&postId=${postId}&action=delete')"
+                       class="passSecu_low"><span class="material-symbols-outlined">delete</span></a>
                 </div>
             </c:when>
         </c:choose>
@@ -35,9 +36,12 @@
         <div class="carrousel">
             <div class="backCarrousel">
                 <div class="backgroundCarrousel"></div>
-                <button class="closeBtn" onclick="closeCarrousel();"><span class="material-symbols-outlined">close</span></button>
-                <button class="btnRight" onclick="turnRight();"><span class="material-symbols-outlined">arrow_forward_ios</span></button>
-                <button class="btnLeft" onclick="turnLeft();"><span class="material-symbols-outlined">arrow_back_ios</span></button>
+                <button class="closeBtn" onclick="closeCarrousel();"><span
+                        class="material-symbols-outlined">close</span></button>
+                <button class="btnRight" onclick="turnRight();"><span class="material-symbols-outlined">arrow_forward_ios</span>
+                </button>
+                <button class="btnLeft" onclick="turnLeft();"><span
+                        class="material-symbols-outlined">arrow_back_ios</span></button>
                 <div class="shortBtn"></div>
             </div>
             <c:forEach var="image" items="${post.imageList}">

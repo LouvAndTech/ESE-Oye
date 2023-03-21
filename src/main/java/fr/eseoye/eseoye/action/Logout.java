@@ -8,18 +8,17 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 
-public class Logout implements Action{
+public class Logout implements Action {
 
     /**
      * Not supposed to be used so retunr to main page
-     * @param request   an {@link HttpServletRequest} object that
-     *                  contains the request the client has made
-     *                  of the servlet
      *
-     * @param response  an {@link HttpServletResponse} object that
-     *                  contains the response the servlet sends
-     *                  to the client
-     *
+     * @param request  an {@link HttpServletRequest} object that
+     *                 contains the request the client has made
+     *                 of the servlet
+     * @param response an {@link HttpServletResponse} object that
+     *                 contains the response the servlet sends
+     *                 to the client
      * @throws ServletException
      * @throws IOException
      * @throws ParseException
@@ -27,21 +26,19 @@ public class Logout implements Action{
      */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ParseException, SQLException {
-        response.sendRedirect(request.getContextPath()+"/ese-oye?id=ListPosts");
+        response.sendRedirect(request.getContextPath() + "/ese-oye?id=ListPosts");
     }
 
     /**
      * Logout the user and redirect to the home page.
-     * @param request   an {@link HttpServletRequest} object that
-     *                  contains the request the client has made
-     *                  of the servlet
      *
-     * @param response  an {@link HttpServletResponse} object that
-     *                  contains the response the servlet sends
-     *                  to the client
-     *
-     * @param target    a string to define the view to forward
-     *
+     * @param request  an {@link HttpServletRequest} object that
+     *                 contains the request the client has made
+     *                 of the servlet
+     * @param response an {@link HttpServletResponse} object that
+     *                 contains the response the servlet sends
+     *                 to the client
+     * @param target   a string to define the view to forward
      * @throws ServletException
      * @throws IOException
      */
@@ -53,6 +50,6 @@ public class Logout implements Action{
         session.setAttribute("admin", false);
         session.setAttribute("idUser", null);
 
-        response.sendRedirect(request.getContextPath()+"/ese-oye?id=ListPosts");
+        response.sendRedirect(request.getContextPath() + "/ese-oye?id=ListPosts");
     }
 }

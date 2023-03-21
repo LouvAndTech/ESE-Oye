@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class ListPost extends AbstractFetchPost implements Action{
+public class ListPost extends AbstractFetchPost implements Action {
 
     public ListPost(DatabaseCredentials dbCred) {
         super(dbCred);
@@ -15,22 +15,21 @@ public class ListPost extends AbstractFetchPost implements Action{
 
     /**
      * Handle the next and previous button
-     * @param request   an {@link HttpServletRequest} object that
-     *                  contains the request the client has made
-     *                  of the servlet
      *
-     * @param response  an {@link HttpServletResponse} object that
-     *                  contains the response the servlet sends
-     *                  to the client
-     *
+     * @param request  an {@link HttpServletRequest} object that
+     *                 contains the request the client has made
+     *                 of the servlet
+     * @param response an {@link HttpServletResponse} object that
+     *                 contains the response the servlet sends
+     *                 to the client
      * @throws ServletException an {@link ServletException}
      * @throws IOException      an {@link IOException}
      */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try{
+        try {
             handlePage(request, response, TypePost.CLASSIC);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             //If there is as errpr we forward to the ListPosts.jsp with the first 10 posts
             this.forward(request, response, "/jsp/ListPosts.jsp");
@@ -41,14 +40,13 @@ public class ListPost extends AbstractFetchPost implements Action{
 
     /**
      * Load the first 10 posts from the database before forwarding to the page
-     * @param request   an {@link HttpServletRequest} object that
-     *                  contains the request the client has made
-     *                  of the servlet
      *
-     * @param response  an {@link HttpServletResponse} object that
-     *                  contains the response the servlet sends
-     *                  to the client
-     *
+     * @param request  an {@link HttpServletRequest} object that
+     *                 contains the request the client has made
+     *                 of the servlet
+     * @param response an {@link HttpServletResponse} object that
+     *                 contains the response the servlet sends
+     *                 to the client
      * @throws ServletException an {@link ServletException}
      * @throws IOException      an {@link IOException}
      */

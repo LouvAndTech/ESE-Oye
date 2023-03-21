@@ -106,7 +106,9 @@
     </div>
 </section>
 <div class="buttonContainer">
-    <button class="btn" onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${postPage-1}&cat=${cat}&state=${state}&price=${price}&order=${order}&keywords=${keywords}&newPage=1')"><span class="material-symbols-outlined">navigate_before</span></button>
+    <button class="btn"
+            onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${postPage-1}&cat=${cat}&state=${state}&price=${price}&order=${order}&keywords=${keywords}&newPage=1')">
+        <span class="material-symbols-outlined">navigate_before</span></button>
     <c:forEach var="page" items="${nbPage}">
         <button <c:choose>
             <c:when test="${postPage+1 == page}">class="actual" style="cursor: default" </c:when>
@@ -114,7 +116,9 @@
         </c:choose>
         >${page}</button>
     </c:forEach>
-    <button class="btn" onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${postPage+1}&cat=${cat}&state=${state}&price=${price}&order=${order}&keywords=${keywords}&newPage=1')"><span class="material-symbols-outlined">navigate_next</span></button>
+    <button class="btn"
+            onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${postPage+1}&cat=${cat}&state=${state}&price=${price}&order=${order}&keywords=${keywords}&newPage=1')">
+        <span class="material-symbols-outlined">navigate_next</span></button>
 </div>
 <%@include file="theme/Footer.jsp" %>
 

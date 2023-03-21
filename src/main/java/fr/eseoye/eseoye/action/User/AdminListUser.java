@@ -15,34 +15,32 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class AdminListUser implements Action {
 
     private final DatabaseCredentials dbCred;
 
-    public AdminListUser(DatabaseCredentials dbCred){
+    public AdminListUser(DatabaseCredentials dbCred) {
         this.dbCred = dbCred;
     }
 
     /**
      * Manage the user by delete it, make it admin or lock it
-     * @param request   an {@link HttpServletRequest} object that
-     *                  contains the request the client has made
-     *                  of the servlet
      *
-     * @param response  an {@link HttpServletResponse} object that
-     *                  contains the response the servlet sends
-     *                  to the client
-     *
+     * @param request  an {@link HttpServletRequest} object that
+     *                 contains the request the client has made
+     *                 of the servlet
+     * @param response an {@link HttpServletResponse} object that
+     *                 contains the response the servlet sends
+     *                 to the client
      * @throws ServletException
      * @throws IOException
      * @throws SQLException
      */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-        if(ConnectionHelper.isLockAdmin(request, response)) {
+        if (ConnectionHelper.isLockAdmin(request, response)) {
             //todo : Has no use for now but mey never as any ... ?
             System.out.println("Admin list user : execute");
             if (request.getParameter("delete") != null) {
@@ -79,22 +77,20 @@ public class AdminListUser implements Action {
 
     /**
      * Forward the request to the view
-     * @param request   an {@link HttpServletRequest} object that
-     *                  contains the request the client has made
-     *                  of the servlet
      *
-     * @param response  an {@link HttpServletResponse} object that
-     *                  contains the response the servlet sends
-     *                  to the client
-     *
-     * @param target    a string to define the view to forward
-     *
+     * @param request  an {@link HttpServletRequest} object that
+     *                 contains the request the client has made
+     *                 of the servlet
+     * @param response an {@link HttpServletResponse} object that
+     *                 contains the response the servlet sends
+     *                 to the client
+     * @param target   a string to define the view to forward
      * @throws ServletException
      * @throws IOException
      */
     @Override
     public void forward(HttpServletRequest request, HttpServletResponse response, String target) throws ServletException, IOException {
-        if(ConnectionHelper.isLockAdmin(request, response)) {
+        if (ConnectionHelper.isLockAdmin(request, response)) {
             System.out.println("Admin list user : forward");
             loadUserList(request, response);
             request.getRequestDispatcher("/jsp/UserPanel.jsp").forward(request, response);
@@ -103,12 +99,13 @@ public class AdminListUser implements Action {
 
     /**
      * Load the list of user and add it to the request
+     *
      * @param request
      * @param response
      */
-    private void loadUserList(HttpServletRequest request, HttpServletResponse response){
+    private void loadUserList(HttpServletRequest request, HttpServletResponse response) {
         List<SimplifiedEntity> listUser = DatabaseFactory.getInstance().getTable(UserTable.class, dbCred).getUserList();
-        for(SimplifiedEntity user : listUser){
+        for (SimplifiedEntity user : listUser) {
             user.setIsAdmin(DatabaseFactory.getInstance().getTable(AdminTable.class, dbCred).isAnAdminSecureID(user.getSecureID()) == Ternary.TRUE);
             user.setIsLocked(DatabaseFactory.getInstance().getTable(UserTable.class, dbCred).isUserLocked(user.getSecureID()) == Ternary.TRUE);
         }

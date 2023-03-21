@@ -13,17 +13,18 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UserPanel implements Action{
+public class UserPanel implements Action {
     private static UserPanel instance = null;
-    private Map<String, Action> actionMap = new HashMap<>();
+    private final Map<String, Action> actionMap = new HashMap<>();
 
     private final DatabaseCredentials dbCred;
 
     /**
      * Private constructor because of singleton
+     *
      * @param dbCred
      */
-    private UserPanel(DatabaseCredentials dbCred){
+    private UserPanel(DatabaseCredentials dbCred) {
         this.dbCred = dbCred;
         //User Part
         actionMap.put("Account", new Account(this.dbCred));
@@ -37,8 +38,8 @@ public class UserPanel implements Action{
         actionMap.put("AdminEditPost", new AdminEditPost(this.dbCred));
     }
 
-    public static UserPanel getInstance(DatabaseCredentials dbCred){
-        if(instance == null){
+    public static UserPanel getInstance(DatabaseCredentials dbCred) {
+        if (instance == null) {
             instance = new UserPanel(dbCred);
         }
         return instance;
@@ -46,14 +47,13 @@ public class UserPanel implements Action{
 
     /**
      * Execute the action asked
-     * @param request   an {@link HttpServletRequest} object that
-     *                  contains the request the client has made
-     *                  of the servlet
      *
-     * @param response  an {@link HttpServletResponse} object that
-     *                  contains the response the servlet sends
-     *                  to the client
-     *
+     * @param request  an {@link HttpServletRequest} object that
+     *                 contains the request the client has made
+     *                 of the servlet
+     * @param response an {@link HttpServletResponse} object that
+     *                 contains the response the servlet sends
+     *                 to the client
      * @throws ServletException
      * @throws IOException
      * @throws ParseException
@@ -65,26 +65,24 @@ public class UserPanel implements Action{
         request.setAttribute("adminState", session.getAttribute("admin"));
 
         String id = request.getParameter("contentPage");
-        System.out.println("Execute : "+id);
-        if(id == null || !actionMap.containsKey(id)) {
-            id="Account";
+        System.out.println("Execute : " + id);
+        if (id == null || !actionMap.containsKey(id)) {
+            id = "Account";
         }
         request.setAttribute("contentPage", id);
-        actionMap.get(id).execute(request,response);
+        actionMap.get(id).execute(request, response);
     }
 
     /**
      * Forward to the page asked
-     * @param request   an {@link HttpServletRequest} object that
-     *                  contains the request the client has made
-     *                  of the servlet
      *
-     * @param response  an {@link HttpServletResponse} object that
-     *                  contains the response the servlet sends
-     *                  to the client
-     *
-     * @param target    a string to define the view to forward
-     *
+     * @param request  an {@link HttpServletRequest} object that
+     *                 contains the request the client has made
+     *                 of the servlet
+     * @param response an {@link HttpServletResponse} object that
+     *                 contains the response the servlet sends
+     *                 to the client
+     * @param target   a string to define the view to forward
      * @throws ServletException
      * @throws IOException
      */
@@ -96,11 +94,11 @@ public class UserPanel implements Action{
         request.setCharacterEncoding("UTF-8");
         String id = request.getParameter("contentPage");
         //System.out.println("Forward : "+id);
-        if(id == null || !actionMap.containsKey(id)) {
-            id="Account";
+        if (id == null || !actionMap.containsKey(id)) {
+            id = "Account";
         }
         request.setAttribute("contentPage", id);
-        actionMap.get(id).forward(request,response,"/jsp/UserPanel.jsp");
+        actionMap.get(id).forward(request, response, "/jsp/UserPanel.jsp");
 
 
     }

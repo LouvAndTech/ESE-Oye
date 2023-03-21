@@ -15,7 +15,8 @@
         <p>Ajouter un utilisateur</p>
     </div>
     <div class="end">
-        <a href="ese-oye?id=UserPanel&contentPage=AdminAddUser"><span class="material-symbols-outlined">add_circle</span></a>
+        <a href="ese-oye?id=UserPanel&contentPage=AdminAddUser"><span
+                class="material-symbols-outlined">add_circle</span></a>
     </div>
 </div>
 <% int i = 0; %>
@@ -27,9 +28,13 @@
         </div>
         <form class="end" action="ese-oye?id=UserPanel&contentPage=AdminListUser" method="post">
             <input type="hidden" name="secureID" value="${user.secureID}">
-            <button type="submit" name="admin"><span class="material-symbols-outlined ${user.isAdmin ? 'activer' : 'desactiver'}">admin_panel_settings</span></button>
-            <button type="submit" name="lock"><span class="material-symbols-outlined ${user.isLocked ? 'activer' : 'desactiver'}">lock</span></button>
-            <button type="submit" name="delete"><span class="material-symbols-outlined passSecu_low">delete</span></button>
+            <button type="submit" name="admin"><span
+                    class="material-symbols-outlined ${user.isAdmin ? 'activer' : 'desactiver'}">admin_panel_settings</span>
+            </button>
+            <button type="submit" name="lock"><span
+                    class="material-symbols-outlined ${user.isLocked ? 'activer' : 'desactiver'}">lock</span></button>
+            <button type="submit" name="delete"><span class="material-symbols-outlined passSecu_low">delete</span>
+            </button>
         </form>
     </div>
     <% i++; %>

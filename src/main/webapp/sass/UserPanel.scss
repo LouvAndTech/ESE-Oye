@@ -1,85 +1,92 @@
 
-nav{
-    display: flex;
-    width: fit-content;
-    flex-direction: column;
-    padding: 0 1em;
+nav {
+  display: flex;
+  width: fit-content;
+  flex-direction: column;
+  padding: 0 1em;
 
-    a{
-        margin: 0;
+  a {
+    margin: 0;
+    line-height: 2em;
+    padding: 0.5em;
+    border-radius: 5px;
+
+
+    &.deco_btn {
+      margin-top: auto;
+    }
+
+    span {
+      transform: translate(0, 30%);
+    }
+  }
+}
+
+section {
+  flex: 1;
+
+  form {
+    div {
+      width: fit-content;
+    }
+  }
+}
+
+.textBox {
+  width: fit-content;
+  display: block;
+
+  p {
+    width: fit-content;
+    margin-left: auto;
+  }
+}
+
+.hrVertical {
+  margin: auto 1em;
+  height: 90%;
+  min-height: auto;
+}
+
+.centerBtn {
+  width: auto;
+  text-align: center;
+
+  .btn {
+    padding: 1em 2em;
+  }
+}
+
+.ConfigUser {
+  display: flex;
+  margin-right: 1em;
+
+  p {
+    width: fit-content;
+  }
+
+  .end {
+    margin-left: auto;
+    display: flex;
+
+    button {
+      border: none;
+      background-color: transparent;
+      height: 100%;
+      display: block;
+
+      span {
         line-height: 2em;
-        padding: 0.5em;
-        border-radius: 5px;
+      }
 
-
-        &.deco_btn{
-            margin-top: auto;
-        }
-
-        span{
-            transform: translate(0, 30%);
-        }
+      &:hover span {
+        cursor: pointer;
+        color: var(--iluminated);
+      }
     }
-}
+  }
 
-section{
-    flex: 1;
-
-    form{
-        div{
-            width: fit-content;
-        }
-    }
-}
-
-.textBox{
-    width: fit-content;
-    display: block;
-    p{
-        width: fit-content;
-        margin-left: auto;
-    }
-}
-
-.hrVertical{
-    margin: auto 1em;
-    height: 90%;
-    min-height: auto;
-}
-
-.centerBtn{
-    width: auto;
-    text-align: center;
-
-    .btn{
-        padding: 1em 2em;
-    }
-}
-
-.ConfigUser{
-    display: flex;
-    margin-right: 1em;
-    p{
-        width: fit-content;
-    }
-    .end{
-        margin-left: auto;
-        display: flex;
-        button{
-            border: none;
-            background-color: transparent;
-            height: 100%;
-            display: block;
-            span{
-                line-height: 2em;
-            }
-            &:hover span{
-                cursor: pointer;
-                color: var(--iluminated);
-            }
-        }
-    }
-    &:hover{
-        background-color: var(--lightback);
-    }
+  &:hover {
+    background-color: var(--lightback);
+  }
 }

@@ -18,23 +18,25 @@ public abstract class AbstractNewPost {
 
     protected final DatabaseCredentials dbCred;
 
-    public AbstractNewPost(DatabaseCredentials dbCred){
+    public AbstractNewPost(DatabaseCredentials dbCred) {
         this.dbCred = dbCred;
     }
 
     /**
      * Method used to fill the request with the categories and states of the posts
+     *
      * @param request an {@link HttpServletRequest} object that contains the request the client has made on the AddPost page
      */
     protected void fillCategoriesStates(HttpServletRequest request) {
-        request.setAttribute("categories", DatabaseFactory.getInstance().getTable(PostCategoryTable.class, dbCred ).fetchAllCategory());
-        request.setAttribute("states",DatabaseFactory.getInstance().getTable(PostStateTable.class, dbCred ).fetchAllState());
+        request.setAttribute("categories", DatabaseFactory.getInstance().getTable(PostCategoryTable.class, dbCred).fetchAllCategory());
+        request.setAttribute("states", DatabaseFactory.getInstance().getTable(PostStateTable.class, dbCred).fetchAllState());
     }
 
     /**
      * Method used to get the images from the request
+     *
      * @param request an {@link HttpServletRequest} object
-     * @return  a list of {@link InputStream} containing the images of the new post
+     * @return a list of {@link InputStream} containing the images of the new post
      */
     public List<InputStream> getImagesFromPart(HttpServletRequest request) throws ServletException, IOException {
         return request.getParts().stream().filter(part -> part.getName().equals("image_drop")).map(part -> {
@@ -60,10 +62,11 @@ public abstract class AbstractNewPost {
 
         /**
          * Constructor of the class
+         *
          * @param request an {@link HttpServletRequest} object that contains the request the client has made on the AddPost page
-         * @param images a list of {@link InputStream} containing the images of the new post
+         * @param images  a list of {@link InputStream} containing the images of the new post
          */
-        public analysePost(HttpServletRequest request, List<InputStream> images){
+        public analysePost(HttpServletRequest request, List<InputStream> images) {
             this.title = request.getParameter("title");
             this.description = request.getParameter("description");
             this.price = Float.parseFloat(request.getParameter("price"));
@@ -72,15 +75,17 @@ public abstract class AbstractNewPost {
             this.images = images;
         }
 
-        public analysePost(HttpServletRequest request){
+        public analysePost(HttpServletRequest request) {
             new analysePost(request, null);
         }
+
         /**
          * Method to check if all the fields are filled
+         *
          * @throws IllegalArgumentException if a field is not filled
          */
-        public void isComplete() throws IllegalArgumentException{
-            if(title == null || description == null || price == null || category == null || state == null || images == null)
+        public void isComplete() throws IllegalArgumentException {
+            if (title == null || description == null || price == null || category == null || state == null || images == null)
                 throw new IllegalArgumentException("Tous les champs doivent être remplis");
         }
     }

@@ -8,20 +8,20 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="fr">
-    <head>
-        <%@include file="theme/Head.jsp" %>
-        <script src="${pageContext.request.contextPath}/js/main.js"></script>
-        <title>Template</title>
-    </head>
-    <body>
+<head>
+    <%@include file="theme/Head.jsp" %>
+    <script src="${pageContext.request.contextPath}/js/main.js"></script>
+    <title>Template</title>
+</head>
+<body>
 
-        <%@include file="theme/Header.jsp" %>
+<%@include file="theme/Header.jsp" %>
 
-        <section>
+<section>
 
-        </section>
+</section>
 
-        <%@include file="theme/Footer.jsp" %>
+<%@include file="theme/Footer.jsp" %>
 
-    </body>
+</body>
 </html>
