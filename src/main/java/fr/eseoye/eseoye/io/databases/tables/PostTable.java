@@ -320,6 +320,7 @@ public class PostTable implements ITable {
 			if(res.next()) id = res.getString("post_sid");
 			else id = "";
 		}catch(SQLException e) {
+			e.printStackTrace();
 			return null;
 		}finally {
 			if(request != null) {

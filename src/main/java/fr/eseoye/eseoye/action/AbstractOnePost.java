@@ -15,17 +15,20 @@ public abstract class AbstractOnePost {
         this.dbCred = dbCred;
     }
 
-    protected void fillPost(HttpServletRequest request) throws Exception{
-        String postId = request.getParameter("postId");
+    protected void fillPost(HttpServletRequest request , String postId , Format format) throws Exception{
         if(postId == null){
             throw new Exception("No post id given");
         }else if(postId.isEmpty()){
             throw new Exception("No valid post id given");
         }
-        PostComplete p = fetchPost(postId);
-        System.out.println(p.getSecureId());
+        PostComplete p = fetchPost(postId , format);
         request.setAttribute("postId", p.getSecureId());
         request.setAttribute("post", p);
+    }
+
+    protected void fillPost(HttpServletRequest request, Format format) throws Exception{
+        String postId = request.getParameter("postId");
+        fillPost(request, postId, format);
     }
 
     /**
@@ -33,10 +36,17 @@ public abstract class AbstractOnePost {
      * @param postId    the id of the post to fetch
      * @return          the post as a {@link PostComplete}
      */
-    private PostComplete fetchPost(String postId){
+    private PostComplete fetchPost(String postId, Format format){
         PostComplete p = DatabaseFactory.getInstance().getTable(PostTable.class, dbCred).fetchEntirePost(postId);
         System.out.println("postcomplete author secure ID : "+p.getAuthor().getSecureID());
-        p.setContent(p.getContent().replace("\n", "<br>"));
+        if(format == Format.HTML)
+            p.setContent(p.getContent().replace("\n", "<br>"));
+        else if (format == Format.TXT)
+            p.setContent(p.getContent().replace("<br>", "\n"));
         return p;
+    }
+
+    protected enum Format{
+        HTML, TXT
     }
 }

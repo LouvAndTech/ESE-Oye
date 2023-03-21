@@ -44,7 +44,7 @@ public class AdminEditPost extends AbstractOnePost implements Action {
     public void forward(HttpServletRequest request, HttpServletResponse response, String target) throws ServletException, IOException {
         System.out.println("AdminEditPost : forward");
         try{
-            fillPost(request);
+            fillPost(request, Format.TXT);
         }
         catch (Exception e){
             request.setAttribute("error", e.getMessage());

@@ -63,7 +63,7 @@ public class OnePost extends AbstractOnePost implements Action {
 
         System.out.println("OnePost");
         try{
-            fillPost(request);
+            fillPost(request,Format.HTML);
         }catch (Exception e){
             request.setAttribute("error", e.getMessage());
             e.printStackTrace();

@@ -41,7 +41,7 @@ public class AdminAddUser implements Action {
      */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ParseException {
-        Ternary resultMail = DatabaseFactory.getInstance().getTable(UserTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).isAccoundCreationPossible(request.getParameter("mail"), request.getParameter("phone"));
+        Ternary resultMail = DatabaseFactory.getInstance().getTable(UserTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).isAccountCreationPossible(request.getParameter("mail"), request.getParameter("phone"));
         if(resultMail == Ternary.FALSE) {
             request.setAttribute("error", "Mail or phone already used");
             request.getRequestDispatcher("/jsp/Inscription.jsp").forward(request,response);
