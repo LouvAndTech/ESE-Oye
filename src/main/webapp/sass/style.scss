@@ -93,7 +93,9 @@ footer{
     .align_right{
         text-align: right;
         padding-right: 5px;
+        display: block;
     }
+
 }
 
 section{
@@ -326,5 +328,11 @@ section{
 }
 .passSecu_high{
     color: green;
+}
+.desactiver{
+    color: var(--disabled);
+}
+.activer{
+    color: var(--iluminated);
 }
 

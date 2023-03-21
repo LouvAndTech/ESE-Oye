@@ -49,7 +49,7 @@
         <input type="submit" class="btn fill" value="Enregistrer" disabled>
     </form>
     <hr>
-    <h1>Supresion</h1>
+    <h1>Supression</h1>
     <form action="" method="post">
         <input type="submit" class="btn fill" value="Suprimer le compte">
     </form>

@@ -1,8 +1,6 @@
 package fr.eseoye.eseoye.action;
 
-import fr.eseoye.eseoye.action.User.Account;
-import fr.eseoye.eseoye.action.User.AddPosts;
-import fr.eseoye.eseoye.action.User.Posts;
+import fr.eseoye.eseoye.action.User.*;
 import fr.eseoye.eseoye.io.databases.DatabaseCredentials;
 
 import javax.servlet.ServletException;
@@ -10,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,9 +21,16 @@ public class UserPanel implements Action{
 
     private UserPanel(DatabaseCredentials dbCred){
         this.dbCred = dbCred;
+        //User Part
         actionMap.put("Account", new Account(this.dbCred));
         actionMap.put("Annonce", new Posts(this.dbCred));
         actionMap.put("AddAnnonce", new AddPosts(this.dbCred));
+
+        //Admin Part
+        actionMap.put("AdminListUser", new AdminListUser(this.dbCred));
+        actionMap.put("AdminValidePost", new AdminValidePost(this.dbCred));
+        actionMap.put("AdminAddUser", new AdminAddUser(this.dbCred));
+        actionMap.put("AdminEditPost", new AdminEditPost(this.dbCred));
     }
 
     public static UserPanel getInstance(DatabaseCredentials dbCred){
@@ -34,7 +41,7 @@ public class UserPanel implements Action{
     }
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ParseException, SQLException {
         HttpSession session = request.getSession();
         request.setAttribute("adminState", session.getAttribute("admin"));
 

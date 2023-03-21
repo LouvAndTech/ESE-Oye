@@ -10,6 +10,8 @@ import fr.eseoye.eseoye.io.databases.tables.PostTable;
 
 //Libraries
 import java.io.*;
+import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.ServletException;
@@ -37,6 +39,9 @@ public class ESEOyeServlet extends HttpServlet {
             actionMap.put("OnePost", new OnePost(dbCred));
             actionMap.put("UserProfile", new UserProfile(dbCred));
             actionMap.put("UserPanel", UserPanel.getInstance(dbCred));
+
+            //Admin Part
+            actionMap.put("AdminLogin", new AdminLogin());
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -61,7 +66,7 @@ public class ESEOyeServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
         if (session.getAttribute("admin") == null) {
-            session.setAttribute("admin", false);
+            session.setAttribute("admin", true);
             session.setAttribute("idUser", "1");
         }
 
@@ -90,7 +95,7 @@ public class ESEOyeServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
         if (session.getAttribute("admin") == null) {
-            session.setAttribute("admin", false);
+            session.setAttribute("admin", true);
             session.setAttribute("idUser", "1");
         }
 
@@ -99,6 +104,12 @@ public class ESEOyeServlet extends HttpServlet {
         if(id == null || !actionMap.containsKey(id)) {
             id="Index";
         }
-        actionMap.get(id).execute(request,response);
+        try {
+            actionMap.get(id).execute(request,response);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

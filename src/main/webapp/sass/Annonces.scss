@@ -85,6 +85,14 @@ section{
             font-size: 1.5em;
         }
     }
+
+    .validBtn{
+        flex-direction: column;
+        display: flex;
+        a{
+            margin: auto;
+        }
+    }
 }
 
 .detail{

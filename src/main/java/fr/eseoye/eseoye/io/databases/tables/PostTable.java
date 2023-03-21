@@ -96,18 +96,18 @@ public class PostTable implements ITable {
 	public boolean deletePost(SFTPConnection sftp, String postSecureID) {
 		try {
 			sftp.removePostImageFolder(postSecureID);
-			
+
 			new DatabaseRequest(factory, credentials, true).deleteValues(getTableName(), "secure_id=?", Arrays.asList(new Tuple<>(postSecureID, Types.VARCHAR)));
 			return true;
 		} catch (SQLException | IOException e) {
 			return false;
 		}
 	}
-	
+
 	public boolean validatePost(String postSecureID) {
 		return this.setValidationStatus(postSecureID, false);
 	}
-	
+
 	public boolean setValidationStatus(String postSecureID, boolean newStatus) {
 		try {
 			new DatabaseRequest(factory, credentials, true).updateValues(getTableName(), Arrays.asList("lock"), Arrays.asList(newStatus), "secure_id=?", Arrays.asList(new Tuple<>(postSecureID, Types.VARCHAR)));
@@ -116,12 +116,12 @@ public class PostTable implements ITable {
 			return false;
 		}
 	}
-	
+
 //	public String modifyPost(String postSecureID, @Nullable String newTitle, @Nullable String newContent) {
 //		try {
-//			
+//
 //		}catch(SQLException e) {
-//			
+//
 //		}
 //	}
 	
@@ -134,23 +134,27 @@ public class PostTable implements ITable {
 			
 			final Tuple<String, List<Tuple<Object, Integer>>> whereClause = generateWhereClausePost(parameters);
 			final String orderClause = generateOrderClausePost(parameters.getOrder());
+<<<<<<<<< Temporary merge branch 1
+
+			final CachedRowSet res = request.getValuesWithCondition("SELECT "+getTableName()+".id AS p_id, "+getTableName()+".secure_id AS p_sid, "+getTableName()+".title AS p_title, "+USER_TABLE_NAME+".name u_name, "+USER_TABLE_NAME+".surname u_surname, "+getTableName()+".price AS p_price, "+CATEGORY_TABLE_NAME+".name AS c_name, "+POST_STATE_TABLE_NAME+".name AS ps_name, "+getTableName()+".date AS p_date FROM "+getTableName()+" "+
+=========
 			
 			final String sqlRequestBody = "INNER JOIN "+USER_TABLE_NAME+" ON "+getTableName()+".user = "+USER_TABLE_NAME+".id "+
 					"INNER JOIN "+CATEGORY_TABLE_NAME+" ON "+getTableName()+".category = "+CATEGORY_TABLE_NAME+".id "+
 					"INNER JOIN "+POST_STATE_TABLE_NAME+" ON "+getTableName()+".state = "+POST_STATE_TABLE_NAME+".id "+
 					(whereClause.getValueB().isEmpty() ? "" : "WHERE "+whereClause.getValueA()+" ");
-					
+
 			final ResultSetWrappingSqlRowSet res = request.getValuesWithCondition("SELECT "+getTableName()+".id AS post_id, "+getTableName()+".secure_id AS post_sid, "+getTableName()+".title AS post_title, "+getTableName()+".lock AS post_lock, "+USER_TABLE_NAME+".secure_id AS userpost_sid, "+USER_TABLE_NAME+".name AS userpost_name, "+USER_TABLE_NAME+".surname AS userpost_surname, "+getTableName()+".price AS post_price, "+CATEGORY_TABLE_NAME+".name AS category_name, "+POST_STATE_TABLE_NAME+".name AS poststate_name, "+getTableName()+".date AS post_date FROM "+getTableName()+" "+
 							sqlRequestBody+" "+
 							orderClause+" "+
 							"LIMIT "+postNumber+" OFFSET "+(pageNumber*postNumber)+";", whereClause.getValueB());
-			
+
 			final ResultSetWrappingSqlRowSet requestTotalPostNumber = request.getValuesWithCondition("SELECT COUNT(Post.id) AS count FROM Post "
 							+sqlRequestBody, whereClause.getValueB());
 			if(!requestTotalPostNumber.next()) throw new SQLException();
 			final int totalPostNumber = requestTotalPostNumber.getInt("count");
-			
-			while(res.next()) {				
+
+			while(res.next()) {
 				final SimplifiedEntity u = new SimplifiedEntity(res.getString("userpost_name"), res.getString("userpost_surname"));
 				final Category c = new Category(res.getString("category_name"));
 				final PostState ps = new PostState(res.getString("poststate_name"));
@@ -263,12 +267,12 @@ public class PostTable implements ITable {
 	
 	private List<String> generatePostImagesURL(String postSecureID, List<String> imageSecureID){
 		final List<String> res = new ArrayList<>();
-		
+
 		for(String id : imageSecureID) res.add(SFTPHelper.getFormattedImageURL(ImageDirectory.POST, postSecureID, id));
-		
+
 		return res;
 	}
-	
+
 	@Override
 	public String getTableName() {
 		return "Post";
