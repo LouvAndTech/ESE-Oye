@@ -21,7 +21,7 @@ public class RequestHelper {
 	
 	public static String convertArgumentsToUpdateFields(List<String> keys) {
 		final StringBuilder sb = new StringBuilder();
-		for(int i = 0; i < keys.size(); i++) sb.append(keys.get(i)+"=?, ");
+		for(int i = 0; i < keys.size(); i++) sb.append("`"+keys.get(i)+"`=?, ");
 		sb.setLength(sb.length()-2);
 		return sb.toString();
 	}
