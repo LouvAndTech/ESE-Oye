@@ -108,9 +108,9 @@ public class PostTable implements ITable {
 							"INNER JOIN "+USER_TABLE_NAME+" ON "+getTableName()+".user = "+USER_TABLE_NAME+".id "+
 							"INNER JOIN "+CATEGORY_TABLE_NAME+" ON "+getTableName()+".category = "+CATEGORY_TABLE_NAME+".id "+
 							"INNER JOIN "+POST_STATE_TABLE_NAME+" ON "+getTableName()+".state = "+POST_STATE_TABLE_NAME+".id " +
-							(whereClause.getValueB().isEmpty() ? "" : whereClause.getValueA()+" ")+
-							orderClause+
-							" LIMIT "+postNumber+" OFFSET "+(pageNumber*postNumber)+";", whereClause.getValueB());
+							(whereClause.getValueB().isEmpty() ? "" : "WHERE "+whereClause.getValueA()+" ")+
+							orderClause+" "+
+							"LIMIT "+postNumber+" OFFSET "+(pageNumber*postNumber)+";", whereClause.getValueB());
 			
 			while(res.next()) {
 			
