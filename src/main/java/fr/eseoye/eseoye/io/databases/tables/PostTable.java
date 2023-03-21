@@ -119,7 +119,7 @@ public class PostTable implements ITable {
 				final PostState ps = new PostState(res.getInt("poststate_id"), res.getString("poststate_name"));
 				
 				final List<String> postImages = fetchPostImages(request, res.getInt("post_id"), res.getString("post_sid"), 1);
-				if(postImages.isEmpty()) postImages.add(SFTPHelper.getFormattedImageURL(ImageDirectory.ROOT, "", "1.jpg"));
+				if(postImages.isEmpty()) postImages.add(SFTPHelper.getFormattedImageURL(ImageDirectory.ROOT, "", "404"));
 				
 				post.add(new Post(res.getString("post_sid"), res.getString("post_title"), u, res.getInt("post_price"), res.getDate("post_date"), c, ps, postImages.get(0)));
 			}
