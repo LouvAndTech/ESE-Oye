@@ -256,7 +256,8 @@ public class UserTable implements ITable {
 	
 	public Ternary isAccoundCreationPossible(String mail, String phone) {
 		try {
-			return (new DatabaseRequest(factory, credentials, true).getValuesCount(getTableName(), Arrays.asList("mail","phone"), "mail=? AND phone=?", Arrays.asList(mail, phone)) != 0 ? Ternary.TRUE : Ternary.FALSE);
+			phone = phone.replace(" ", "");
+			return (new DatabaseRequest(factory, credentials, true).getValuesCount(getTableName(), Arrays.asList("mail","phone"), "(mail=? AND phone=?)", Arrays.asList(mail, phone)) != 0 ? Ternary.TRUE : Ternary.FALSE);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			//TODO Handle exception correctly
