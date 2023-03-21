@@ -15,6 +15,7 @@ import fr.eseoye.eseoye.exceptions.DataCreationException.CreationExceptionReason
 import fr.eseoye.eseoye.io.DatabaseFactory;
 import fr.eseoye.eseoye.io.databases.DatabaseCredentials;
 import fr.eseoye.eseoye.io.databases.request.DatabaseRequest;
+import fr.eseoye.eseoye.utils.Ternary;
 import fr.eseoye.eseoye.utils.Tuple;
 
 public class AdminTable implements ITable {
@@ -99,6 +100,16 @@ public class AdminTable implements ITable {
 			//TODO Handle exception correctly
 		}
 		return new Tuple<>();
+	}
+	
+	public Ternary isAnAdminSecureID(String secureID) {
+		try {
+			return new DatabaseRequest(factory, credentials, true).getValuesCount(secureID, Arrays.asList("secure_id"), "secure_id=?", Arrays.asList(secureID)) != 0 ? Ternary.TRUE : Ternary.FALSE;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return Ternary.UNDEFINED;
 	}
 
 	@Override
