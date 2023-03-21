@@ -3,6 +3,7 @@ package fr.eseoye.eseoye.io.databases.tables;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -51,7 +52,7 @@ public class PostTable implements ITable {
 		try {
 			request = new DatabaseRequest(factory, credentials);
 			
-			final ResultSetWrappingSqlRowSet requestUserDatabaseId = request.getValues(USER_TABLE_NAME, Arrays.asList("id"), "secure_id=?", Arrays.asList(userSecureID)); //Get the id of the user and store it for the creation of the post
+			final ResultSetWrappingSqlRowSet requestUserDatabaseId = request.getValues(USER_TABLE_NAME, Arrays.asList("id"), "secure_id=?", Arrays.asList(new Tuple<>(userSecureID, Types.VARCHAR))); //Get the id of the user and store it for the creation of the post
 			if(!requestUserDatabaseId.next()) throw new SQLException();
 			final int userDatabaseID = requestUserDatabaseId.getInt("id");
 			
@@ -101,7 +102,7 @@ public class PostTable implements ITable {
 		try {
 			request = new DatabaseRequest(factory, credentials);
 			
-			final Tuple<String, List<Object>> whereClause = generateWhereClausePost(parameters);
+			final Tuple<String, List<Tuple<Object, Integer>>> whereClause = generateWhereClausePost(parameters);
 			final String orderClause = generateOrderClausePost(parameters.getOrder());
 			
 			final ResultSetWrappingSqlRowSet res = request.getValuesWithCondition("SELECT "+getTableName()+".id AS post_id, "+getTableName()+".secure_id AS post_sid, "+getTableName()+".title AS post_title, "+getTableName()+".lock AS post_lock, "+USER_TABLE_NAME+".secure_id AS userpost_sid, "+USER_TABLE_NAME+".name AS userpost_name, "+USER_TABLE_NAME+".surname AS userpost_surname, "+getTableName()+".price AS post_price, "+CATEGORY_TABLE_NAME+".name AS category_name, "+POST_STATE_TABLE_NAME+".name AS poststate_name, "+getTableName()+".date AS post_date FROM "+getTableName()+" "+
@@ -155,15 +156,15 @@ public class PostTable implements ITable {
 		}
 	}
 
-	private Tuple<String, List<Object>> generateWhereClausePost(FetchPostFilter parameters) {
+	private Tuple<String, List<Tuple<Object, Integer>>> generateWhereClausePost(FetchPostFilter parameters) {
 		final StringBuilder sb = new StringBuilder("");
-		final List<Object> whereObj = new ArrayList<>();
+		final List<Tuple<Object, Integer>> whereObj = new ArrayList<>();
 		
-		if(parameters.isUserIDPresent()) { sb.append(USER_TABLE_NAME+".secure_id=? AND "); whereObj.add(parameters.getUserSecureID()); }
-		if(parameters.isCategoryPresent()) { sb.append(CATEGORY_TABLE_NAME+".id=? AND "); whereObj.add(parameters.getCategoryID()); }
-		if(parameters.isStatePresent()) { sb.append(POST_STATE_TABLE_NAME+".id=? AND "); whereObj.add(parameters.getStateID()); }
-		if(parameters.isMaxPricePresent()) { sb.append(getTableName()+".price<=? AND "); whereObj.add(parameters.getMaxPrice()); }
-		if(parameters.mustBeValidated()) { sb.append(getTableName()+".lock=? AND "); whereObj.add(0); }
+		if(parameters.isUserIDPresent()) { sb.append(USER_TABLE_NAME+".secure_id=? AND "); whereObj.add(new Tuple<>(parameters.getUserSecureID(), Types.VARCHAR)); }
+		if(parameters.isCategoryPresent()) { sb.append(CATEGORY_TABLE_NAME+".id=? AND "); whereObj.add(new Tuple<>(parameters.getCategoryID(), Types.INTEGER)); }
+		if(parameters.isStatePresent()) { sb.append(POST_STATE_TABLE_NAME+".id=? AND "); whereObj.add(new Tuple<>(parameters.getStateID(), Types.INTEGER)); }
+		if(parameters.isMaxPricePresent()) { sb.append(getTableName()+".price<=? AND "); whereObj.add(new Tuple<>(parameters.getMaxPrice(), Types.DECIMAL)); }
+		if(parameters.mustBeValidated()) { sb.append(getTableName()+".lock=? AND "); whereObj.add(new Tuple<>(0, Types.BOOLEAN)); }
 		sb.setLength(sb.length()-5);
 		
 		return new Tuple<>(sb.toString(), whereObj);
@@ -180,7 +181,7 @@ public class PostTable implements ITable {
 					"INNER JOIN "+USER_TABLE_NAME+" ON "+getTableName()+".user = "+USER_TABLE_NAME+".id "+
 					"INNER JOIN "+CATEGORY_TABLE_NAME+" ON "+getTableName()+".category = "+CATEGORY_TABLE_NAME+".id "+
 					"INNER JOIN "+POST_STATE_TABLE_NAME+" ON "+getTableName()+".state = "+POST_STATE_TABLE_NAME+".id "+
-					"WHERE "+getTableName()+".secure_id=?", Arrays.asList(postID));
+					"WHERE "+getTableName()+".secure_id=?", Arrays.asList(new Tuple<>(postID, Types.VARCHAR)));
 			
 			if(res.next()) {
 				final SimplifiedEntity u = new SimplifiedEntity(res.getString("userpost_name"), res.getString("userpost_surname"));
@@ -211,7 +212,7 @@ public class PostTable implements ITable {
 	private List<String> fetchPostImages(DatabaseRequest req, int postDatabaseID, String postSecureID, int limit) {
 		final List<String> postImages = new ArrayList<>();
 		try {
-			final ResultSetWrappingSqlRowSet res = req.getValues(POST_IMG_TABLE_NAME, Arrays.asList("secure_id"), "post=?", Arrays.asList(postDatabaseID));
+			final ResultSetWrappingSqlRowSet res = req.getValues(POST_IMG_TABLE_NAME, Arrays.asList("secure_id"), "post=?", Arrays.asList(new Tuple<>(postDatabaseID, Types.INTEGER)));
 			
 			int index = 0;
 			while(res.next() && index < limit) {
