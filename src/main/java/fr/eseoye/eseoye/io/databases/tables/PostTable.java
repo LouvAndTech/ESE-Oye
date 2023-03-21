@@ -65,7 +65,7 @@ public class PostTable implements ITable {
 			
 			final String postSecureId = SecurityHelper.generateSecureID(System.currentTimeMillis(), lastPostID, SecurityHelper.SECURE_ID_LENGTH); //Generate the new secure id for the post
 			
-			request.insertValues(getTableName(), Arrays.asList("title","content","price","category","user","state","lock", "date", "secure_id"), Arrays.asList(title, content, price, categoryID, userDatabaseID, stateID, 1, new Date(System.currentTimeMillis()), postSecureId));
+			request.insertValues(getTableName(), Arrays.asList("title", "content", "price", "category", "user", "state", "lock", "date", "secure_id"), Arrays.asList(title, content, price, categoryID, userDatabaseID, stateID, true, new Date(System.currentTimeMillis()), postSecureId));
 			
 			final CachedRowSet requestPostDatabaseID = request.getValues("SELECT LAST_INSERT_ID() AS lid;"); //Get the id for the fresh created post
 			if(!requestPostDatabaseID.next()) throw new SQLException();
@@ -132,6 +132,7 @@ public class PostTable implements ITable {
 			
 			return new Tuple<>(post, (int)Math.floor(totalPostNumber/postNumber));
 		} catch (SQLException e) {
+			e.printStackTrace();
 			//TODO Handle exception
 			return null;
 		}finally {
