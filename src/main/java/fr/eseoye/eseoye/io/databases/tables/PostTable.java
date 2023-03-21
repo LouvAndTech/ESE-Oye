@@ -314,7 +314,7 @@ public class PostTable implements ITable {
 		try {
 			request = new DatabaseRequest(factory, credentials);
 			
-			final ResultSetWrappingSqlRowSet res = request.getValuesWithCondition("SELECT secure_id AS post_sid, lock FROM "+getTableName()+" "+
+			final ResultSetWrappingSqlRowSet res = request.getValuesWithCondition("SELECT secure_id AS post_sid, `lock` FROM "+getTableName()+" "+
 					"WHERE "+getTableName()+".lock=? ORDER BY "+getTableName()+".id DESC", Arrays.asList(new Tuple<>(true, Types.BOOLEAN)));
 		
 			if(res.next()) id = res.getString("post_sid");
