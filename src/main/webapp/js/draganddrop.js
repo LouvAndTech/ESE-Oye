@@ -35,7 +35,7 @@ function newImage(files){
         }else if(resp==='moreImage'){
             message.innerHTML = "Vous êtes limité à 5 images par annonce"
         }else if(resp==='tooBig'){
-            message.innerHTML = "L'une des images fait plus de 8Mo"
+            message.innerHTML = "L'une des images fait plus de 4Mo"
         }
         document.querySelector("#image_drop").style.backgroundImage = ""
         message.style.display = "block";
