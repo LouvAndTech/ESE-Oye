@@ -62,6 +62,7 @@ public class MariaDBImplementation extends DatabaseImplementation {
 	public ResultSet getValues(Connection connection, String table, List<String> fields, String condition, List<Object> valuesCondition) throws SQLException {
 		//TODO check condition size and valuesCondition size ?
 		PreparedStatement statement = connection.prepareStatement("SELECT "+convertListToDatabaseFields(fields)+" FROM "+table+" WHERE "+condition+";");
+		System.out.println("SELECT "+convertListToDatabaseFields(fields)+" FROM "+table+" WHERE "+condition+";");
 		for(int i = 0; i < valuesCondition.size(); i++) statement.setObject(i+1, valuesCondition.get(i));
 		
 		return statement.executeQuery();

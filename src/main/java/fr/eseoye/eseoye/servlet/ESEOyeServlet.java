@@ -10,6 +10,7 @@ import fr.eseoye.eseoye.io.databases.tables.PostTable;
 
 //Libraries
 import java.io.*;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
@@ -105,6 +106,8 @@ public class ESEOyeServlet extends HttpServlet {
         try {
             actionMap.get(id).execute(request,response);
         } catch (ParseException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }

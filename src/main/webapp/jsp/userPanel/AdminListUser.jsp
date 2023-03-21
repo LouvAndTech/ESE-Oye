@@ -18,6 +18,7 @@
         <a href="ese-oye?id=UserPanel&contentPage=AdminAddUser"><span class="material-symbols-outlined">add_circle</span></a>
     </div>
 </div>
+<% int i = 0; %>
 <c:forEach var="user" items="${listUser}">
     <hr>
     <div class="post ConfigUser">
@@ -31,4 +32,5 @@
             <button type="submit" name="delete"><span class="material-symbols-outlined passSecu_low">delete</span></button>
         </form>
     </div>
+    <% i++; %>
 </c:forEach>
