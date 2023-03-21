@@ -32,27 +32,5 @@ public abstract class DatabaseImplementation {
 	
 	public abstract void deleteValues(Connection connection, String table, String condition, List<Tuple<Object, Integer>> valuesCondition) throws SQLException;
 	
-	protected String generateRequestEmptyValues(int valuesListSize) {
-		final StringBuilder sb = new StringBuilder();
-		for(int i = 0; i < valuesListSize; i++) sb.append("?, ");
-		sb.setLength(sb.length()-2);
-		return sb.toString();
-	}
-	
-	protected String convertListToDatabaseFields(List<String> values) {
-		if(values.size() == 1) return values.get(0);
-		final StringBuilder sb = new StringBuilder();
-		values.forEach(v -> sb.append("`"+v+"`, "));
-		sb.setLength(sb.length()-2);
-		return sb.toString();
-	}
-	
-	protected String convertArgumentsToUpdateFields(List<String> keys) {
-		final StringBuilder sb = new StringBuilder();
-		for(int i = 0; i < keys.size(); i++) sb.append(keys.get(i)+"=?, ");
-		sb.setLength(sb.length()-2);
-		return sb.toString();
-	}
-	
 	public abstract DatabaseType getDBType();
 }

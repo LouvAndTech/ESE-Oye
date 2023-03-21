@@ -64,7 +64,7 @@ public class AdminTable implements ITable {
 	
 	public String checkAdminConnection(String login, String password) {
 		try {
-			String[] loginParsed = login.split(".");
+			String[] loginParsed = login.split("[.]");
 			if(loginParsed.length != 2) return null;
 			
 			ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("name","surname","password","secure_id"), "name=? AND surname=?", Arrays.asList(new Tuple<>(loginParsed[0], Types.VARCHAR), new Tuple<>(loginParsed[1], Types.VARCHAR)));
