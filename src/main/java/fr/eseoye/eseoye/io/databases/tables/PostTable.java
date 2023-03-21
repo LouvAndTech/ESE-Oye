@@ -154,7 +154,7 @@ public class PostTable implements ITable {
 	 */
 	public boolean setValidationStatus(String postSecureID, boolean newStatus) {
 		try {
-			new DatabaseRequest(factory, credentials, true).updateValues(getTableName(), Arrays.asList("lock"), Arrays.asList(newStatus), "secure_id=?", Arrays.asList(new Tuple<>(postSecureID, Types.VARCHAR)));
+			new DatabaseRequest(factory, credentials, true).updateValues(getTableName(), Arrays.asList("lock"), Arrays.asList(newStatus), "`secure_id`=?", Arrays.asList(new Tuple<>(postSecureID, Types.VARCHAR)));
 			return true;
 		}catch(SQLException e) {
 			return false;
