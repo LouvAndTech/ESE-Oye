@@ -60,7 +60,7 @@ function heavyTest (fileList){
 
     //If one of the images is more than 8MB
     for (let i=0;i < fileList.length; i++){
-        if(fileList[i].size > 8*(10**6)){
+        if(fileList[i].size > 4*(10**6)){
             return 'tooBig'
         }
     }

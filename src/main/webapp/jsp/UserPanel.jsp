@@ -34,7 +34,6 @@
         <hr>
         <a href="?id=UserPanel&contentPage=AdminListUser" ${contentPage == "AdminListUser" ? 'class="active"' : ''}><span class="material-symbols-outlined">manage_accounts</span> Gestion des utilisateurs</a>
         <a href="?id=UserPanel&contentPage=AdminValidePost" ${contentPage == "AdminValidePost" ? 'class="active"' : ''}><span class="material-symbols-outlined">check</span> Annonces à valider</a>
-        <a href="?id=ListPosts"><span class="material-symbols-outlined">description</span> Gestion des annonces</a>
       </c:otherwise>
     </c:choose>
     <hr>

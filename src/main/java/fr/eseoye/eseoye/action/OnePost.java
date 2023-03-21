@@ -40,7 +40,12 @@ public class OnePost extends AbstractOnePost implements Action {
      */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //todo : Has no use for now but mey never as any ... ?
+        try{
+            executeAction(request, response);
+        }catch (Exception e){
+            response.sendRedirect("/jsp/ListsPosts.jsp");
+        }
+        response.sendRedirect("/jsp/ListsPosts.jsp");
     }
 
     /**

@@ -2,10 +2,12 @@ package fr.eseoye.eseoye.action;
 
 import fr.eseoye.eseoye.beans.PostComplete;
 import fr.eseoye.eseoye.io.DatabaseFactory;
+import fr.eseoye.eseoye.io.SFTPFactory;
 import fr.eseoye.eseoye.io.databases.DatabaseCredentials;
 import fr.eseoye.eseoye.io.databases.tables.PostTable;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public abstract class AbstractOnePost {
 
@@ -44,6 +46,21 @@ public abstract class AbstractOnePost {
         else if (format == Format.TXT)
             p.setContent(p.getContent().replace("<br>", "\n"));
         return p;
+    }
+
+    protected void executeAction(HttpServletRequest request , HttpServletResponse response) throws Exception{
+        String action = request.getParameter("action");
+        System.out.println("Action : " + action);
+        if(action.equals("valid") || action.equals("delete")){
+            String postId = request.getParameter("postId");
+            System.out.println("Post ID : " + postId);
+            if(action.equals("valid"))
+                DatabaseFactory.getInstance().getTable(PostTable.class, dbCred).validatePost(postId);
+            else
+                DatabaseFactory.getInstance().getTable(PostTable.class, dbCred).deletePost(SFTPFactory.getInstance().createNewConnection(),postId);
+        }else{
+            throw new Exception("Action not found");
+        }
     }
 
     protected enum Format{

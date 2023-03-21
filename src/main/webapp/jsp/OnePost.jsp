@@ -12,6 +12,7 @@
     <%@include file="theme/Head.jsp" %>
     <script src="${pageContext.request.contextPath}/js/main.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Post.css">
+    <script type="module" src="${pageContext.request.contextPath}/js/request.js" defer></script>
     <title>Post</title>
 </head>
 <body>
@@ -23,8 +24,7 @@
         <c:choose>
             <c:when test="${adminState}">
                 <div class="alignItemsRight">
-                    <a href=""><span class="material-symbols-outlined">edit</span></a>
-                    <a href="" class="passSecu_low"><span class="material-symbols-outlined">delete</span></a>
+                    <a onclick="window.Request.sendPost('ese-oye?id=UserPanel&contentPage=AdminValidePost&postId=${postId}&action=delete')" class="passSecu_low"><span class="material-symbols-outlined">delete</span></a>
                 </div>
             </c:when>
         </c:choose>

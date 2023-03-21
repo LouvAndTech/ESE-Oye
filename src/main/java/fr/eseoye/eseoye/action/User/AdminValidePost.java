@@ -38,24 +38,11 @@ public class AdminValidePost extends AbstractOnePost implements Action {
      */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
-        System.out.println("Action : " + action);
-        try {
-            if(action.equals("valid") || action.equals("delete")){
-                String postId = request.getParameter("postId");
-                System.out.println("Post ID : " + postId);
-                if(action.equals("valid"))
-                    DatabaseFactory.getInstance().getTable(PostTable.class, dbCred).validatePost(postId);
-                else
-                    DatabaseFactory.getInstance().getTable(PostTable.class, dbCred).deletePost(SFTPFactory.getInstance().createNewConnection(),postId);
-            }else{
-                throw new Exception("Action not found");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        try{
+            executeAction(request, response);
+        }catch (Exception e){
             request.setAttribute("error", e.getMessage());
             request.getRequestDispatcher("/jsp/UserPanel.jsp").forward(request, response);
-            return;
         }
         this.forward(request, response, "/jsp/UserPanel.jsp");
     }
