@@ -137,6 +137,11 @@ public class FetchPostFilter {
 			return this;
 		}
 		
+		public Builder keyWords(String word) {
+			this.keyWords.add(word);
+			return this;
+		}
+		
 		public Builder mustBeValidated(boolean value) {
 			this.mustBeValidated = value;
 			return this;

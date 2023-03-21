@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.jdbc.support.rowset.ResultSetWrappingSqlRowSet;
 import org.springframework.lang.Nullable;
@@ -33,7 +34,7 @@ import fr.eseoye.eseoye.utils.Tuple;
 /**
  * Class handling all functions needed to interact with the Table <strong>Post</strong>
  * @author 278deco
- *
+ * @see fr.eseoye.eseoye.io.databases.tables.ITable
  */
 public class PostTable implements ITable {
 	
@@ -46,11 +47,29 @@ public class PostTable implements ITable {
 	private DatabaseFactory factory;
 	private DatabaseCredentials credentials;
 	
+	/**
+	 * Constructor for PostTable
+	 * @param factory the DatabaseFactory used by the table
+	 * @param credentials the credentials to the database
+	 */
 	public PostTable(DatabaseFactory factory, DatabaseCredentials credentials) {
 		this.factory = factory;
 		this.credentials = credentials;
 	}
 	
+	/**
+	 * Create a new post in the database and put the images in the SFTP server
+	 * @param sftpConnection a representation of an sftp connection 
+	 * @param userSecureID
+	 * @param title
+	 * @param content
+	 * @param price
+	 * @param categoryID
+	 * @param stateID
+	 * @param images
+	 * @return
+	 * @throws DataCreationException
+	 */
 	public String createNewPost(SFTPConnection sftpConnection, String userSecureID, String title, String content, float price, int categoryID, int stateID, List<InputStream> images) throws DataCreationException {
 		DatabaseRequest request = null;
 		
@@ -150,7 +169,7 @@ public class PostTable implements ITable {
 					(whereClause.getValueB().isEmpty() ? "" : "WHERE "+whereClause.getValueA()+" ");
 					
 			final ResultSetWrappingSqlRowSet res = request.getValuesWithCondition("SELECT "+getTableName()+".id AS post_id, "+getTableName()+".secure_id AS post_sid, "+getTableName()+".title AS post_title, "+getTableName()+".lock AS post_lock, "+USER_TABLE_NAME+".secure_id AS userpost_sid, "+USER_TABLE_NAME+".name AS userpost_name, "+USER_TABLE_NAME+".surname AS userpost_surname, "+getTableName()+".price AS post_price, "+CATEGORY_TABLE_NAME+".name AS category_name, "+POST_STATE_TABLE_NAME+".name AS poststate_name, "+getTableName()+".date AS post_date FROM "+getTableName()+" "+
-							sqlRequestBody+" "+
+							sqlRequestBody+
 							generateOrderClausePost(parameters.getOrder())+" "+
 							"LIMIT "+postNumber+" OFFSET "+(pageNumber*postNumber)+";", whereClause.getValueB());
 			
@@ -208,11 +227,28 @@ public class PostTable implements ITable {
 		if(parameters.isStatePresent()) { sb.append(POST_STATE_TABLE_NAME+".id=? AND "); whereObj.add(new Tuple<>(parameters.getStateID(), Types.INTEGER)); }
 		if(parameters.isMaxPricePresent()) { sb.append(getTableName()+".price<=? AND "); whereObj.add(new Tuple<>(parameters.getMaxPrice(), Types.DECIMAL)); }
 		if(parameters.mustBeValidated()) { sb.append(getTableName()+".lock=? AND "); whereObj.add(new Tuple<>(false, Types.BOOLEAN)); }
+		if(parameters.anyKeyWordsPresent()) { 
+			final Tuple<String, List<Tuple<Object, Integer>>> res = generateSearchEngine(parameters.getKeyWords());
+			sb.append(res.getValueA());
+			whereObj.addAll(res.getValueB());
+		}
 		sb.setLength(sb.length()-5);
 		
 		return new Tuple<>(sb.toString(), whereObj);
 	}
 
+	private Tuple<String, List<Tuple<Object, Integer>>> generateSearchEngine(Set<String> keyWords) {
+		final StringBuilder sb = new StringBuilder("");
+		final List<Tuple<Object, Integer>> searchObj = new ArrayList<>();
+		
+		for(String word : keyWords) {
+			sb.append(getTableName()+".title LIKE ? AND ");
+			searchObj.add(new Tuple<>(word, Types.VARCHAR));
+		}
+		
+		return new Tuple<>(sb.toString(), searchObj);
+	}
+	
 	public PostComplete fetchEntirePost(String postID) {
 		PostComplete pc = null;
 		DatabaseRequest request = null;
