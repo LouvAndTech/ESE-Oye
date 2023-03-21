@@ -43,8 +43,11 @@ public class UserTable implements ITable {
 		try {
 			request = new DatabaseRequest(factory, credentials);
 			
-			final int lastId = request.getValues("SELECT id FROM "+getTableName()+" ORDER BY id DESC LIMIT 1;").getInt("id");
-			final String secureId = SecurityHelper.generateSecureID(System.currentTimeMillis(), lastId, SecurityHelper.SECURE_ID_LENGTH);
+			final ResultSetWrappingSqlRowSet requestLastId = request.getValues("SELECT id FROM "+getTableName()+" ORDER BY id DESC LIMIT 1;");
+			int lastIdUser = 0;
+			if(requestLastId.next()) lastIdUser = requestLastId.getInt("id");
+			
+			final String secureId = SecurityHelper.generateSecureID(System.currentTimeMillis(), lastIdUser, SecurityHelper.SECURE_ID_LENGTH);
 			
 			request.insertValues(getTableName(), 
 					Arrays.asList("name","surname", "birth", "address", "phone", "mail", "password", "state", "secure_id"), 
