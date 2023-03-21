@@ -53,6 +53,12 @@
         <input type="date" name="bday" placeholder="date de naissance " required max="08/03/2005" id="mybday" onclick="btchange()">
 
       </label>
+        <br/><br/>
+      <label class="textBox">
+        <input type="adress" name="adresse" placeholder="adresse postale" required >
+      </label>
+
+
       <br/><br/>
       <label class="textBox">
         <input type="password" name="password" placeholder="mot de passe" required >

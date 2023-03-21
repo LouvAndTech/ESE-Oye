@@ -1,0 +1,405 @@
+@startuml
+class fr.eseoye.eseoye.io.DatabaseFactory {
+- {static} String SEPARATOR
+- {static} DatabaseFactory instance
++ {static} DatabaseFactory getInstance()
++ Connection getConnection(DatabaseCredentials)
++ E getTable(Class<E>,DatabaseCredentials)
+}
+class fr.eseoye.eseoye.action.OnePost {
++ void execute(HttpServletRequest,HttpServletResponse)
++ void forward(HttpServletRequest,HttpServletResponse,String)
+- PostComplete fetchPost(int)
+}
+enum fr.eseoye.eseoye.io.databases.DatabaseType {
++  MARIADB
+- String baseUrl
++ String getBaseUrl()
++ DatabaseImplementation getImplementation()
++ {static} DatabaseType of(String)
+}
+interface fr.eseoye.eseoye.io.databases.tables.ITable {
++ String getTableName()
+}
+abstract class fr.eseoye.eseoye.io.json.JSONFile {
+- {static} ObjectMapper FILES_MAPPER
+# Path path
+- Map<String,Object> dataMap
++ {abstract}void reviewFormat()
++ {abstract}void preSave()
++ void saveFile()
++ void reloadFile()
++ Path getFilePath()
+# HashMap<String,Object> getData()
+# HashMap<String,Object> getData(String)
+# void readFile()
+}
+class fr.eseoye.eseoye.io.databases.request.DatabaseRequest {
+- DatabaseImplementation dbImplementation
+- Connection dbConnection
+- DatabaseFactory factory
+- DatabaseCredentials credentials
+- boolean instantClose
++ void openConnection()
++ void insertValues(String,List<String>,List<Object>)
++ void insertValues(String,List<Object>)
++ void updateValues(String,List<String>,List<String>,String,List<Object>)
++ void updateValues(String,List<Object>)
++ CachedRowSet getValues(String,List<String>)
++ CachedRowSet getValues(String,List<String>,String,List<Object>)
++ CachedRowSet getValues(String)
++ CachedRowSet getValuesWithCondition(String,List<Object>)
++ int getValuesCount(String,List<String>)
++ int getValuesCount(String,List<String>,String,List<Object>)
++ void closeConnection()
+}
+class fr.eseoye.eseoye.beans.Category {
+- int id
+- String name
++ int getId()
++ String getName()
+}
+class fr.eseoye.eseoye.io.databases.implementation.MariaDBImplementation {
++ void insertValues(Connection,String,List<String>,List<Object>)
++ void insertValues(Connection,String,List<Object>)
++ void updateValues(Connection,String,List<String>,List<String>,String,List<Object>)
++ void updateValues(Connection,String,List<Object>)
++ ResultSet getValues(Connection,String,List<String>)
++ ResultSet getValues(Connection,String,List<String>,String,List<Object>)
++ ResultSet getValues(Connection,String)
++ ResultSet getValuesWithCondition(Connection,String,List<Object>)
++ int getValuesCount(Connection,String,List<String>)
++ int getValuesCount(Connection,String,List<String>,String,List<Object>)
++ DatabaseType getDBType()
+}
+class fr.eseoye.eseoye.io.databases.tables.PostTable {
+- {static} String USER_TABLE_NAME
+- {static} String CATEGORY_TABLE_NAME
+- {static} String POST_STATE_TABLE_NAME
+- {static} String POST_IMG_TABLE_NAME
+- DatabaseFactory factory
+- DatabaseCredentials credentials
++ String createNewPost(SFTPConnection,String,String,String,float,Category,PostState,List<InputStream>)
++ Tuple<List<Post>,Integer> fetchShortPost(int,int,FetchPostFilter)
++ Tuple<List<Post>,Integer> fetchShortPost(int,int,String,FetchPostFilter)
+- String generateOrderClausePost(FetchOrder)
+- Tuple<String,List<Object>> generateWhereClausePost(String,FetchPostFilter)
++ PostComplete fetchEntirePost(String)
+- List<String> fetchPostImages(DatabaseRequest,String,String,int)
++ String getTableName()
+}
+class fr.eseoye.eseoye.io.SFTPFactory {
+- {static} SFTPFactory instance
+- SFTPCredentials credentials
++ {static} SFTPFactory getInstance()
++ {static} SFTPFactory createInstance(SFTPCredentials)
++ SSHClient createSSHClient()
++ SFTPConnection createNewConnection()
+}
+class fr.eseoye.eseoye.action.Error404 {
++ void execute(HttpServletRequest,HttpServletResponse)
+}
+class fr.eseoye.eseoye.io.json.JSONAssertion {
++ {static} void assertInstanceof(Object,Class<?>,String)
++ {static} void assertInstanceof(Object,Class<?>)
++ {static} void assertTrue(boolean,String)
++ {static} void assertTrue(boolean)
++ {static} void assertTrue(BooleanSupplier,String)
++ {static} void assertTrue(BooleanSupplier)
++ {static} void assertNotNull(Object,String)
++ {static} void assertNotNull(Object)
+}
+class fr.eseoye.eseoye.exceptions.DataCreationException {
+- {static} long serialVersionUID
+- CreationExceptionReason reason
++ CreationExceptionReason getReason()
+}
+enum fr.eseoye.eseoye.exceptions.CreationExceptionReason {
++  FAILED_IMAGE_UPLOAD
++  FAILED_DB_CREATION
+}
+class fr.eseoye.eseoye.beans.PostComplete {
+- String content
+# List<String> imageList
++ List<String> getFullImageList()
++ List<String> getImageList()
++ String getContent()
+}
+class fr.eseoye.eseoye.beans.PostState {
+- int id
+- String name
++ int getId()
++ String getName()
+}
+class fr.eseoye.eseoye.io.databases.tables.PostStateTable {
+- DatabaseFactory factory
+- DatabaseCredentials credentials
++ List<PostState> fetchAllState()
++ String getTableName()
+}
+class fr.eseoye.eseoye.io.ftp.SFTPConnection {
+- {static} String ROOT_DIRECTORY
+- {static} String USER_DIRECTORY
+- {static} String POST_DIRECTORY
+- {static} String SEPARATOR
+- SFTPFactory factory
++ List<String> addNewPostImage(String,int,List<InputStream>)
++ String addNewUserImage(String,int,InputStream)
+}
+abstract class fr.eseoye.eseoye.io.databases.implementation.DatabaseImplementation {
++ {abstract}void insertValues(Connection,String,List<String>,List<Object>)
++ {abstract}void insertValues(Connection,String,List<Object>)
++ {abstract}void updateValues(Connection,String,List<String>,List<String>,String,List<Object>)
++ {abstract}void updateValues(Connection,String,List<Object>)
++ {abstract}ResultSet getValues(Connection,String,List<String>)
++ {abstract}ResultSet getValues(Connection,String,List<String>,String,List<Object>)
++ {abstract}ResultSet getValues(Connection,String)
++ {abstract}ResultSet getValuesWithCondition(Connection,String,List<Object>)
++ {abstract}int getValuesCount(Connection,String,List<String>)
++ {abstract}int getValuesCount(Connection,String,List<String>,String,List<Object>)
+# String generateRequestEmptyValues(int)
+# String convertListToDatabaseFields(List<String>)
+# String convertArgumentsToUpdateFields(List<String>,List<String>)
++ {abstract}DatabaseType getDBType()
+}
+class fr.eseoye.eseoye.io.ftp.SFTPCredentials {
+- String url
+- int port
++ String getUrl()
++ int getPort()
++ String getUsername()
++ String getPassword()
+}
+class fr.eseoye.eseoye.helpers.SFTPHelper {
++ {static} String getFormattedImageURL(ImageDirectory,String,String)
+}
+enum fr.eseoye.eseoye.helpers.ImageDirectory {
++  ROOT
++  USER
++  POST
+- String sftpName
++ String getSftpName()
+}
+class fr.eseoye.eseoye.action.UserPanel {
+- {static} UserPanel instance
+- Map<String,Action> actionMap
++ {static} UserPanel getInstance()
++ void execute(HttpServletRequest,HttpServletResponse)
++ void forward(HttpServletRequest,HttpServletResponse,String)
+}
+class fr.eseoye.eseoye.io.databases.tables.PostCategoryTable {
+- DatabaseFactory factory
+- DatabaseCredentials credentials
++ List<Category> fetchAllCategory()
++ String getTableName()
+}
+class fr.eseoye.eseoye.beans.SimplifiedUser {
+- String name
++ String getName()
++ String getSurname()
+}
+class fr.eseoye.eseoye.beans.User {
+- String id
+- String password
+- Date birth
+- String phone
+- String mail
+- String state
++ String getId()
++ String getPassword()
++ Date getBirth()
++ String getPhone()
++ String getMail()
++ String getState()
+}
+class fr.eseoye.eseoye.io.IOHandler {
+- {static} IOHandler instance
+- Path pathToSaveable
+- JSONConfiguration configuration
++ boolean saveAllFiles()
++ JSONConfiguration getConfiguration()
++ {static} IOHandler getInstance()
+}
+class fr.eseoye.eseoye.helpers.SecurityHelper {
++ {static} int IMG_FILE_LENGTH
++ {static} int SECURE_ID_LENGTH
++ {static} String generateSecureID(long,int,int)
+}
+enum fr.eseoye.eseoye.utils.Ternary {
++  TRUE
++  FALSE
++  UNDEFINED
+}
+class fr.eseoye.eseoye.servlet.ESEOyeServlet {
+- Map<String,Action> actionMap
++ void init()
++ void doGet(HttpServletRequest,HttpServletResponse)
++ void doPost(HttpServletRequest,HttpServletResponse)
+}
+interface fr.eseoye.eseoye.action.Action {
+~ void execute(HttpServletRequest,HttpServletResponse)
+~ void forward(HttpServletRequest,HttpServletResponse,String)
+}
+class fr.eseoye.eseoye.action.User.Posts {
++ void execute(HttpServletRequest,HttpServletResponse)
++ void forward(HttpServletRequest,HttpServletResponse,String)
+}
+class fr.eseoye.eseoye.action.User.AddPosts {
++ void execute(HttpServletRequest,HttpServletResponse)
++ void forward(HttpServletRequest,HttpServletResponse,String)
+}
+class fr.eseoye.eseoye.action.User.Account {
++ void execute(HttpServletRequest,HttpServletResponse)
++ void forward(HttpServletRequest,HttpServletResponse,String)
+}
+class fr.eseoye.eseoye.action.Inscription {
++ void execute(HttpServletRequest,HttpServletResponse)
+}
+class fr.eseoye.eseoye.beans.Admin {
+- String id
+- String name
+- String password
+- int rank
++ String getId()
++ String getName()
++ String getSurname()
++ String getPassword()
++ int getRank()
+}
+class fr.eseoye.eseoye.io.objects.FetchPostFilter {
+- int categoryID
+- FetchOrder order
+- float maxPrice
+- Set<String> keyWords
+- boolean mustBeValidated
++ int getCategoryID()
++ int getStateID()
++ Set<String> getKeyWords()
++ float getMaxPrice()
++ FetchOrder getOrder()
++ boolean mustBeValidated()
++ boolean isCategoryPresent()
++ boolean isStatePresent()
++ boolean isKeyWordsListEmpty()
++ boolean anyKeyWordsPresent()
++ boolean isMaxPricePresent()
+}
+enum fr.eseoye.eseoye.io.objects.FetchOrder {
++  PRICE_ASCENDING
++  PRICE_DESCENDING
++  DATE_ASCENDING
++  DATE_DESCENDING
+}
+class fr.eseoye.eseoye.io.databases.DatabaseCredentials {
+- String url
+- int port
+- DatabaseType type
+- String databaseName
++ String getFullUrl()
++ String getUrl()
++ int getPort()
++ String getUsername()
++ String getPassword()
++ String getDatabaseName()
++ DatabaseType getDatabaseType()
+}
+class fr.eseoye.eseoye.io.databases.tables.UserTable {
+- {static} String userImageTableName
+- DatabaseFactory factory
+- DatabaseCredentials credentials
++ String createUserAccount(String,String,String,Date,String,String)
++ String checkUserConnection(String,String)
++ void setImage(SFTPConnection,String,InputStream)
++ String getImage(String)
++ void setNameSurname(String,String,String)
++ Tuple<String,String> getNameSurname(String)
++ void setPassword(String,String)
++ String getPassword(String)
++ void setPhoneNumber(String,String)
++ String getPhoneNumber(String)
++ void setBirthDate(String,String)
++ Date getBirthDate(String)
++ void setMail(String,String)
++ String getMail(String)
++ Ternary isAccoundCreationPossible(String,String)
++ String getTableName()
+}
+class fr.eseoye.eseoye.action.ListPost {
++ void execute(HttpServletRequest,HttpServletResponse)
++ void forward(HttpServletRequest,HttpServletResponse,String)
+- List<Post> fetchPost(int,int)
+}
+class fr.eseoye.eseoye.exceptions.JSONAssertionException {
+- {static} long serialVersionUID
+}
+enum fr.eseoye.eseoye.io.objects.AssertionType {
++  NOT_EQUAL
++  NOT_NULL
++  INSTANCE_OF
+~ String name
++ String toString()
+}
+class fr.eseoye.eseoye.io.json.JSONConfiguration {
++ String getDatabaseURL()
++ DatabaseCredentials getDatabaseCredentials()
++ SFTPCredentials getSFTPCredentials()
++ void reviewFormat()
++ void preSave()
+}
+class fr.eseoye.eseoye.utils.Tuple {
+- A valueA
+- B valueB
++ A getValueA()
++ B getValueB()
++ String toString()
++ boolean equals(Object)
+- boolean equal(Tuple<?,?>)
+}
+class fr.eseoye.eseoye.action.Connexion {
++ void execute(HttpServletRequest,HttpServletResponse)
+}
+class fr.eseoye.eseoye.beans.Post {
+# String secureId
+# String title
+# float price
+# String firstImage
+# Date date
+# SimplifiedUser author
+# PostState state
+# Category category
++ String getFirstImage()
++ Category getCategory()
++ PostState getState()
++ String getSecureId()
++ String getTitle()
++ SimplifiedUser getAuthor()
++ float getPrice()
++ Date getDate()
+}
+class fr.eseoye.eseoye.action.Index {
++ void execute(HttpServletRequest,HttpServletResponse)
+}
+
+
+fr.eseoye.eseoye.action.Action <|.. fr.eseoye.eseoye.action.OnePost
+fr.eseoye.eseoye.io.databases.implementation.DatabaseImplementation <|-- fr.eseoye.eseoye.io.databases.implementation.MariaDBImplementation
+fr.eseoye.eseoye.io.databases.tables.ITable <|.. fr.eseoye.eseoye.io.databases.tables.PostTable
+fr.eseoye.eseoye.action.Action <|.. fr.eseoye.eseoye.action.Error404
+fr.eseoye.eseoye.exceptions.RuntimeException <|-- fr.eseoye.eseoye.exceptions.DataCreationException
+fr.eseoye.eseoye.beans.Post <|-- fr.eseoye.eseoye.beans.PostComplete
+fr.eseoye.eseoye.io.databases.tables.ITable <|.. fr.eseoye.eseoye.io.databases.tables.PostStateTable
+fr.eseoye.eseoye.action.Action <|.. fr.eseoye.eseoye.action.UserPanel
+fr.eseoye.eseoye.io.databases.tables.ITable <|.. fr.eseoye.eseoye.io.databases.tables.PostCategoryTable
+fr.eseoye.eseoye.beans.SimplifiedUser <|-- fr.eseoye.eseoye.beans.User
+fr.eseoye.eseoye.servlet.HttpServlet <|-- fr.eseoye.eseoye.servlet.ESEOyeServlet
+fr.eseoye.eseoye.action.Action <|.. fr.eseoye.eseoye.action.User.Posts
+fr.eseoye.eseoye.action.Action <|.. fr.eseoye.eseoye.action.User.AddPosts
+fr.eseoye.eseoye.action.Action <|.. fr.eseoye.eseoye.action.User.Account
+fr.eseoye.eseoye.action.Action <|.. fr.eseoye.eseoye.action.Inscription
+fr.eseoye.eseoye.io.databases.tables.ITable <|.. fr.eseoye.eseoye.io.databases.tables.UserTable
+fr.eseoye.eseoye.action.Action <|.. fr.eseoye.eseoye.action.ListPost
+fr.eseoye.eseoye.exceptions.RuntimeException <|-- fr.eseoye.eseoye.exceptions.JSONAssertionException
+fr.eseoye.eseoye.io.json.JSONFile <|-- fr.eseoye.eseoye.io.json.JSONConfiguration
+fr.eseoye.eseoye.action.Action <|.. fr.eseoye.eseoye.action.Connexion
+fr.eseoye.eseoye.action.Action <|.. fr.eseoye.eseoye.action.Index
+@enduml

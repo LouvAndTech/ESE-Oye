@@ -1,0 +1,19 @@
+@startuml
+class fr.eseoye.eseoye.action.User.Posts {
++ void execute(HttpServletRequest,HttpServletResponse)
++ void forward(HttpServletRequest,HttpServletResponse,String)
+}
+class fr.eseoye.eseoye.action.User.AddPosts {
++ void execute(HttpServletRequest,HttpServletResponse)
++ void forward(HttpServletRequest,HttpServletResponse,String)
+}
+class fr.eseoye.eseoye.action.User.Account {
++ void execute(HttpServletRequest,HttpServletResponse)
++ void forward(HttpServletRequest,HttpServletResponse,String)
+}
+
+
+fr.eseoye.eseoye.action.Action <|.. fr.eseoye.eseoye.action.User.Posts
+fr.eseoye.eseoye.action.Action <|.. fr.eseoye.eseoye.action.User.AddPosts
+fr.eseoye.eseoye.action.Action <|.. fr.eseoye.eseoye.action.User.Account
+@enduml

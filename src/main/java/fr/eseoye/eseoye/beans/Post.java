@@ -6,23 +6,18 @@ import java.sql.Date;
  * Used to store a simplified version of a post
  */
 public class Post {
-<<<<<<<<< Temporary merge branch 1
     protected String secureId;
     protected String title;    
-=========
-    protected String id;
-    protected String title;
-    protected User author;
->>>>>>>>> Temporary merge branch 2
+
     protected float price;
     protected String firstImage;
     
     protected Date date;
-    protected SimplifiedUser author;
+    protected SimplifiedEntity author;
     protected PostState state;
     protected Category category;
 
-    public Post(String secureId, String title, SimplifiedUser author, float price, Date date, Category category, PostState postState, String firstImage){
+    public Post(String secureId, String title, SimplifiedEntity author, float price, Date date, Category category, PostState postState, String firstImage){
         this.secureId = secureId;
         this.title = title;
         this.author = author;
@@ -53,7 +48,7 @@ public class Post {
         return title;
     }
 
-    public SimplifiedUser getAuthor() {
+    public SimplifiedEntity getAuthor() {
         return author;
     }
 
