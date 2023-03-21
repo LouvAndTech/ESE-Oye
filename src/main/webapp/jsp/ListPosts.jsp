@@ -77,9 +77,13 @@
                             <h2>${post.price}€</h2>
                         </div>
                         <div class="footer">
-                            <div class="cat">
+                            <div class="detail">
                                 <p>Catégorie :</p>
                                 <p>${post.category.name}</p>
+                            </div>
+                            <div class="detail">
+                                <p>État :</p>
+                                <p>${post.state.name}</p>
                             </div>
                             <div class="subtitle">
                                 <p class="author">${post.author.name} ${post.author.surname}</p>
