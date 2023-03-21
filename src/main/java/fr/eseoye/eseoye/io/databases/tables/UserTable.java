@@ -457,7 +457,7 @@ public class UserTable implements ITable {
 	 * @return a Ternary operator, if <strong>TRUE</strong> the account can be created else return <strong>FALSE</strong><br>
 	 * If the Ternary returned <strong>UNDEFINED</strong> an error has been raised within the database
 	 */
-	public Ternary isAccoundCreationPossible(String mail, String phone) {
+	public Ternary isAccountCreationPossible(String mail, String phone) {
 		try {
 			phone = phone.replace(" ", "");
 			return (new DatabaseRequest(factory, credentials, true).getValuesCount(getTableName(), Arrays.asList("mail","phone"), "(mail=? OR phone=?)", Arrays.asList(new Tuple<>(mail, Types.VARCHAR), new Tuple<>(phone, Types.VARCHAR))) == 0 ? Ternary.TRUE : Ternary.FALSE);

@@ -1,7 +1,6 @@
 package fr.eseoye.eseoye.beans;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,9 +16,8 @@ public class PostComplete extends Post {
         super(secureId, title, author, price, date, category, postState, firstImage);
         this.imageList = imageList;
         this.content = content;
-        
     }
-
+    
     /**
      * Get the list of image except the first image (or cover)
      * @return a list of URL
