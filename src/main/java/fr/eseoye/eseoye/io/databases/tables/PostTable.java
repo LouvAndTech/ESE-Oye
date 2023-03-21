@@ -109,7 +109,7 @@ public class PostTable implements ITable {
 							"INNER JOIN "+USER_TABLE_NAME+" ON "+getTableName()+".user = "+USER_TABLE_NAME+".id "+
 							"INNER JOIN "+CATEGORY_TABLE_NAME+" ON "+getTableName()+".category = "+CATEGORY_TABLE_NAME+".id "+
 							"INNER JOIN "+POST_STATE_TABLE_NAME+" ON "+getTableName()+".state = "+POST_STATE_TABLE_NAME+".id " +
-							whereClause.getValueA()+" "+
+							(whereClause.getValueB().isEmpty() ? "" : whereClause.getValueA()+" ")+
 							orderClause+
 							" LIMIT "+postNumber+" OFFSET "+(pageNumber*postNumber)+";", whereClause.getValueB());
 			
@@ -125,7 +125,7 @@ public class PostTable implements ITable {
 				post.add(new Post(res.getString("post_sid"), res.getString("post_title"), u, res.getInt("post_price"), res.getDate("post_date"), c, ps, postImages.get(0)));
 			}
 			
-			int totalPostNumber = request.getValuesCount(getTableName(), Arrays.asList("id"));
+			int totalPostNumber = request.getValuesCount(getTableName(), Arrays.asList("id"), whereClause.getValueA(), whereClause.getValueB());
 			
 			return new Tuple<>(post, (int)Math.floor(totalPostNumber/postNumber));
 		} catch (SQLException e) {
@@ -167,7 +167,7 @@ public class PostTable implements ITable {
 		if(parameters.mustBeValidated()) { sb.append(getTableName()+".lock=? AND "); whereObj.add(0); }
 		sb.setLength(sb.length()-5);
 		
-		return whereObj.size() != 0 ? new Tuple<>(sb.toString(), whereObj) : new Tuple<>("", whereObj);
+		return new Tuple<>(sb.toString(), whereObj);
 	}
 
 	public PostComplete fetchEntirePost(String postID) {
