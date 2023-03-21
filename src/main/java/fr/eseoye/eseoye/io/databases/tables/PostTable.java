@@ -105,6 +105,7 @@ public class PostTable implements ITable {
 			
 			return null;
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new DataCreationException(getClass(), CreationExceptionReason.FAILED_DB_CREATION);
 		} catch (IOException e) {
 			throw new DataCreationException(getClass(), CreationExceptionReason.FAILED_IMAGE_UPLOAD);

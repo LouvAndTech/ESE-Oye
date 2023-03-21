@@ -5,7 +5,9 @@ import fr.eseoye.eseoye.beans.User;
 import fr.eseoye.eseoye.io.DatabaseFactory;
 import fr.eseoye.eseoye.io.IOHandler;
 import fr.eseoye.eseoye.io.databases.DatabaseCredentials;
+import fr.eseoye.eseoye.io.databases.tables.AdminTable;
 import fr.eseoye.eseoye.io.databases.tables.UserTable;
+import fr.eseoye.eseoye.utils.Ternary;
 import org.mindrot.jbcrypt.BCrypt;
 
 import javax.servlet.ServletException;
@@ -53,7 +55,14 @@ public class Account implements Action {
         }else if (request.getParameter("passwordBtn") != null) {
             DatabaseFactory.getInstance().getTable(UserTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).setPassword(session.getAttribute("idUser").toString(), BCrypt.hashpw(request.getParameter("password"), BCrypt.gensalt()));
         }else if (request.getParameter("deleteBtn") != null) {
-            DatabaseFactory.getInstance().getTable(UserTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).deleteUserAccount(session.getAttribute("idUser").toString());
+            //DatabaseFactory.getInstance().getTable(UserTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).deleteUserAccount(session.getAttribute("idUser").toString());
+            Ternary daoRequest = DatabaseFactory.getInstance().getTable(AdminTable.class, dbCred).isAnAdminSecureID(session.getAttribute("idUser").toString());
+            if (daoRequest == Ternary.TRUE) {
+                DatabaseFactory.getInstance().getTable(AdminTable.class, dbCred).deleteAdminAccount(session.getAttribute("idUser").toString());
+            }
+            DatabaseFactory.getInstance().getTable(UserTable.class, dbCred).deleteUserAccount(session.getAttribute("idUser").toString());
+            response.sendRedirect(request.getContextPath()+"/ese-oye?id=Logout");
+            return;
         }
         request.setAttribute("user", getUserInformation(session));
         request.getRequestDispatcher("/jsp/UserPanel.jsp").forward(request,response);
