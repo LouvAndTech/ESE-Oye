@@ -1,5 +1,6 @@
 package fr.eseoye.eseoye.io.objects;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -161,6 +162,10 @@ public class FetchPostFilter {
 		private String name;
 		private FetchOrderEnum(String name) {
 			this.name = name;
+		}
+		
+		public static FetchOrderEnum of(String objname) {
+			return Arrays.asList(FetchOrderEnum.values()).stream().filter(n -> n.name.equalsIgnoreCase(objname)).findFirst().get();
 		}
 		
 		public FetchOrder getObject() {
