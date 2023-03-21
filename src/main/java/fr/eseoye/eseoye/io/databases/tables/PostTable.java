@@ -105,19 +105,22 @@ public class PostTable implements ITable {
 			final Tuple<String, List<Tuple<Object, Integer>>> whereClause = generateWhereClausePost(parameters);
 			final String orderClause = generateOrderClausePost(parameters.getOrder());
 			
-			final ResultSetWrappingSqlRowSet res = request.getValuesWithCondition("SELECT COUNT(Post.id) AS count, "+getTableName()+".id AS post_id, "+getTableName()+".secure_id AS post_sid, "+getTableName()+".title AS post_title, "+getTableName()+".lock AS post_lock, "+USER_TABLE_NAME+".secure_id AS userpost_sid, "+USER_TABLE_NAME+".name AS userpost_name, "+USER_TABLE_NAME+".surname AS userpost_surname, "+getTableName()+".price AS post_price, "+CATEGORY_TABLE_NAME+".name AS category_name, "+POST_STATE_TABLE_NAME+".name AS poststate_name, "+getTableName()+".date AS post_date FROM "+getTableName()+" "+
-							"INNER JOIN "+USER_TABLE_NAME+" ON "+getTableName()+".user = "+USER_TABLE_NAME+".id "+
-							"INNER JOIN "+CATEGORY_TABLE_NAME+" ON "+getTableName()+".category = "+CATEGORY_TABLE_NAME+".id "+
-							"INNER JOIN "+POST_STATE_TABLE_NAME+" ON "+getTableName()+".state = "+POST_STATE_TABLE_NAME+".id "+
-							(whereClause.getValueB().isEmpty() ? "" : "WHERE "+whereClause.getValueA()+" ")+
+			final String sqlRequestBody = "INNER JOIN "+USER_TABLE_NAME+" ON "+getTableName()+".user = "+USER_TABLE_NAME+".id "+
+					"INNER JOIN "+CATEGORY_TABLE_NAME+" ON "+getTableName()+".category = "+CATEGORY_TABLE_NAME+".id "+
+					"INNER JOIN "+POST_STATE_TABLE_NAME+" ON "+getTableName()+".state = "+POST_STATE_TABLE_NAME+".id "+
+					(whereClause.getValueB().isEmpty() ? "" : "WHERE "+whereClause.getValueA()+" ");
+					
+			final ResultSetWrappingSqlRowSet res = request.getValuesWithCondition("SELECT "+getTableName()+".id AS post_id, "+getTableName()+".secure_id AS post_sid, "+getTableName()+".title AS post_title, "+getTableName()+".lock AS post_lock, "+USER_TABLE_NAME+".secure_id AS userpost_sid, "+USER_TABLE_NAME+".name AS userpost_name, "+USER_TABLE_NAME+".surname AS userpost_surname, "+getTableName()+".price AS post_price, "+CATEGORY_TABLE_NAME+".name AS category_name, "+POST_STATE_TABLE_NAME+".name AS poststate_name, "+getTableName()+".date AS post_date FROM "+getTableName()+" "+
+							sqlRequestBody+" "+
 							orderClause+" "+
 							"LIMIT "+postNumber+" OFFSET "+(pageNumber*postNumber)+";", whereClause.getValueB());
 			
-			int totalPostNumber = -1;
+			final ResultSetWrappingSqlRowSet requestTotalPostNumber = request.getValuesWithCondition("SELECT COUNT(Post.id) AS count FROM Post"
+							+sqlRequestBody, whereClause.getValueB());
+			if(!requestTotalPostNumber.next()) throw new SQLException();
+			final int totalPostNumber = requestTotalPostNumber.getInt("count");
 			
-			while(res.next()) {
-				if(totalPostNumber == -1) totalPostNumber = res.getInt("count");
-				
+			while(res.next()) {				
 				final SimplifiedEntity u = new SimplifiedEntity(res.getString("userpost_name"), res.getString("userpost_surname"));
 				final Category c = new Category(res.getString("category_name"));
 				final PostState ps = new PostState(res.getString("poststate_name"));
@@ -165,7 +168,7 @@ public class PostTable implements ITable {
 		if(parameters.isCategoryPresent()) { sb.append(CATEGORY_TABLE_NAME+".id=? AND "); whereObj.add(new Tuple<>(parameters.getCategoryID(), Types.INTEGER)); }
 		if(parameters.isStatePresent()) { sb.append(POST_STATE_TABLE_NAME+".id=? AND "); whereObj.add(new Tuple<>(parameters.getStateID(), Types.INTEGER)); }
 		if(parameters.isMaxPricePresent()) { sb.append(getTableName()+".price<=? AND "); whereObj.add(new Tuple<>(parameters.getMaxPrice(), Types.DECIMAL)); }
-		if(parameters.mustBeValidated()) { sb.append(getTableName()+".lock=? AND "); whereObj.add(new Tuple<>(0, Types.BOOLEAN)); }
+		if(parameters.mustBeValidated()) { sb.append(getTableName()+".lock=? AND "); whereObj.add(new Tuple<>(false, Types.BOOLEAN)); }
 		sb.setLength(sb.length()-5);
 		
 		return new Tuple<>(sb.toString(), whereObj);

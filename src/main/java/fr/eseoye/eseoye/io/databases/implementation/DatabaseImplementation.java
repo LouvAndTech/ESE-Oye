@@ -25,7 +25,7 @@ public abstract class DatabaseImplementation {
 	public abstract ResultSet getValues(Connection connection, String sqlRequest) throws SQLException;
 	
 	public abstract ResultSet getValuesWithCondition(Connection connection, String sqlRequest, List<Tuple<Object, Integer>> valuesCondition) throws SQLException;
-	
+		
 	public abstract int getValuesCount(Connection connection, String table, List<String> values) throws SQLException;
 
 	public abstract int getValuesCount(Connection connection, String table, List<String> values, String condition, List<Tuple<Object, Integer>> valuesCondition) throws SQLException;
