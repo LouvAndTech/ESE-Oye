@@ -126,8 +126,8 @@ public class PostTable implements ITable {
 			}
 			
 			int totalPostNumber = request.getValuesCount(getTableName(), Arrays.asList("id", "lock"), whereClause.getValueA(), whereClause.getValueB());
-			
-			return new Tuple<>(post, (int)Math.floor(totalPostNumber/postNumber));
+			System.out.println("Total post number: "+totalPostNumber);
+			return new Tuple<>(post, (int)Math.ceil((double)totalPostNumber/postNumber));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			//TODO Handle exception

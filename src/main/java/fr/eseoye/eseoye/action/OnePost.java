@@ -71,7 +71,7 @@ public class OnePost implements Action{
             request.getRequestDispatcher("/jsp/OnePost.jsp").forward(request, response);
         }catch (Exception e){
             System.out.println("Error : " + e.getMessage());
-            this.forward(request, response, "/jsp/ListPosts.jsp");
+            request.getRequestDispatcher("/jsp/ListPosts.jsp").forward(request, response);
         }
     }
 

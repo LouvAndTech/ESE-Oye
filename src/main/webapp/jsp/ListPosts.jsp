@@ -58,6 +58,7 @@
             <p>Prix Max :</p>
             <input type="number" name="price" placeholder="Prix max" value="">
             <hr>
+            <input type="hidden" name="postPage" value="${postPage}">
             <button class="btn" type="submit">Appliquer</button>
         </form>
     </nav>
@@ -91,15 +92,15 @@
         </div>
 
         <div class="buttonContainer">
-            <button class="btn" onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${postPage-1}&cat=${cat}&state=${state}&price=${price}&order=${order}')"><span class="material-symbols-outlined">navigate_before</span></button>
+            <button class="btn" onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${postPage-1}&cat=${cat}&state=${state}&price=${price}&order=${order}&newPage=1')"><span class="material-symbols-outlined">navigate_before</span></button>
             <c:forEach var="page" items="${nbPage}">
                 <button <c:choose>
                     <c:when test="${postPage+1 == page}">class="actual" style="cursor: default" </c:when>
-                    <c:otherwise>onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${page}&cat=${cat}&state=${state}&price=${price}&order=${order}')"</c:otherwise>
+                    <c:otherwise>onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${page-1}&cat=${cat}&state=${state}&price=${price}&order=${order}&newPage=1')"</c:otherwise>
                 </c:choose>
                 >${page}</button>
             </c:forEach>
-            <button class="btn" onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${postPage+1}&cat=${cat}&state=${state}&price=${price}&order=${order}')"><span class="material-symbols-outlined">navigate_next</span></button>
+            <button class="btn" onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${postPage+1}&cat=${cat}&state=${state}&price=${price}&order=${order}&newPage=1')"><span class="material-symbols-outlined">navigate_next</span></button>
         </div>
     </div>
 </section>
