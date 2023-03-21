@@ -59,7 +59,10 @@ public abstract class AbstractFetchPost {
             request.setAttribute("state", filters.getStateID());
             request.setAttribute("price", filters.getMaxPrice());
             request.setAttribute("order", filters.getOrder());
-            request.setAttribute("keywords", filters.getOrder());
+            if(filters.getKeyWords() != null && !filters.getKeyWords().isEmpty())
+                request.setAttribute("keywords", filters.getKeyWords());
+            else
+                request.setAttribute("keywords", "");
             System.out.println("Filters Order: " + filters.getOrder());
         } else if (type == TypePost.USER) {
             filters = FetchPostFilter.builder().user(request.getParameter("targetUserId")).build();
@@ -245,13 +248,18 @@ public abstract class AbstractFetchPost {
             if (request.getParameter("state") != null && !request.getParameter("state").equals(""))
                 idState = Integer.parseInt(request.getParameter("state"));
             if (request.getParameter("price") != null && !request.getParameter("price").equals(""))
-                price = Integer.parseInt(request.getParameter("price"));
+                price = (int)Float.parseFloat(request.getParameter("price"));
             if (request.getParameter("tri") != null && !request.getParameter("tri").equals(""))
                 order = FetchPostFilter.FetchOrderEnum.of(request.getParameter("tri"));
             if (request.getParameter("keywords") != null && !request.getParameter("keywords").equals("")) {
                 String rep = request.getParameter("keywords");
                 keywords = rep.split(" ");
             }
+            System.out.println("===> Price : "+price);
+            for (String keyword : keywords){
+                System.out.println("===> Keyword : "+keyword);
+            }
+            System.out.println("===> Keywords : "+keywords);
             userId = request.getParameter("userId");
         } catch (Exception e) {
             e.printStackTrace();
