@@ -75,6 +75,20 @@ public class UserTable implements ITable {
 		}
 	}
 	
+	public Ternary isUserLocked(String userSecureID) {
+		try {
+			final ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("lock"), "secure_id=?", Arrays.asList(userSecureID));
+			return res.next() ? (res.getBoolean("lock") ? Ternary.TRUE : Ternary.FALSE) : Ternary.UNDEFINED; 
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return Ternary.UNDEFINED;
+		}
+	}
+	
+	public void manageLockForUser(String userSecureID, boolean newState) {
+		new DatabaseRequest(factory, credentials, true).updateValues(getTableName(), Arrays.asList("lock"), Arrays.asList(newState), "secure_id=?", Arrays.asList(userSecureID));
+	}
+	
 	public String checkUserConnection(String mail, String password) {
 		try {
 			ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("mail","password","secure_id"), "mail = ?", Arrays.asList(mail));
