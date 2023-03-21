@@ -37,7 +37,7 @@ import fr.eseoye.eseoye.utils.Tuple;
  * @see fr.eseoye.eseoye.io.databases.tables.ITable
  */
 public class PostTable implements ITable {
-
+	
 	//TODO Make the table name not hardcoded
 	private static final String USER_TABLE_NAME = "User";
 	private static final String CATEGORY_TABLE_NAME = "Post_Category";
@@ -60,15 +60,17 @@ public class PostTable implements ITable {
 	/**
 	 * Create a new post in the database and put the images in the SFTP server
 	 * @param sftpConnection a representation of an sftp connection 
-	 * @param userSecureID
-	 * @param title
-	 * @param content
-	 * @param price
-	 * @param categoryID
-	 * @param stateID
-	 * @param images
-	 * @return
+	 * @param userSecureID the secure ID of the user wanting to creation the post
+	 * @param title the title of the new post
+	 * @param content the content of the new post
+	 * @param price the price of the new post
+	 * @param categoryID the category of the new post
+	 * @param stateID the state of the new post
+	 * @param images a list of image for the post
+	 * @return the secure ID of the new post or null if it cannot be created
 	 * @throws DataCreationException
+	 * @see Category
+	 * @see PostState
 	 */
 	public String createNewPost(SFTPConnection sftpConnection, String userSecureID, String title, String content, float price, int categoryID, int stateID, List<InputStream> images) throws DataCreationException {
 		DatabaseRequest request = null;
@@ -117,21 +119,39 @@ public class PostTable implements ITable {
 		}
 	}
 	
+	/**
+	 * Delete a new post from the database
+	 * @param sftp sftpConnection a representation of an sftp connection 
+	 * @param postSecureID the secure ID of the post 
+	 * @return if the post has been correctly deleted
+	 */
 	public boolean deletePost(SFTPConnection sftp, String postSecureID) {
 		try {
 			sftp.removePostImageFolder(postSecureID);
-
+			
 			new DatabaseRequest(factory, credentials, true).deleteValues(getTableName(), "secure_id=?", Arrays.asList(new Tuple<>(postSecureID, Types.VARCHAR)));
 			return true;
 		} catch (SQLException | IOException e) {
 			return false;
 		}
 	}
-
+	
+	/**
+	 * Validate a post (remove the lock)
+	 * @param postSecureID the secure ID of the post
+	 * @return if the post has been correctly validated
+	 * @see PostTable#setValidationStatus(String, boolean)
+	 */
 	public boolean validatePost(String postSecureID) {
 		return this.setValidationStatus(postSecureID, false);
 	}
-
+	
+	/**
+	 * Set the validation status of a post (if the post locked or not)
+	 * @param postSecureID the secure ID of the post
+	 * @param newStatus the new status for the lock column of the post
+	 * @return if the post has correctly changed status
+	 */
 	public boolean setValidationStatus(String postSecureID, boolean newStatus) {
 		try {
 			new DatabaseRequest(factory, credentials, true).updateValues(getTableName(), Arrays.asList("lock"), Arrays.asList(newStatus), "secure_id=?", Arrays.asList(new Tuple<>(postSecureID, Types.VARCHAR)));
@@ -141,12 +161,20 @@ public class PostTable implements ITable {
 		}
 	}
 	
+	/**
+	 * Modify the title and the content of the post<br>
+	 * If one of the parameter if null the modification will not be applied to the corresponding field
+	 * @param postSecureID the secure ID of the post
+	 * @param newTitle the new title of the post to be applied
+	 * @param newContent the new content of the post to be applied
+	 * @return if the modification has been correctly made
+	 */
 	public boolean modifyPost(String postSecureID, @Nullable String newTitle, @Nullable String newContent) {
 		try {
 			List<String> fields = new ArrayList<>(); List<Object> values = new ArrayList<>();
 			if(newTitle != null) { fields.add("title"); values.add(newTitle); }
 			if(newContent != null) { fields.add("content"); values.add(newContent); }
-
+			
 			new DatabaseRequest(factory, credentials, true).updateValues(getTableName(), fields, values, "secure_id=?", Arrays.asList(new Tuple<>(postSecureID, Types.VARCHAR)));
 		}catch(SQLException e) {
 			return false;
@@ -154,6 +182,15 @@ public class PostTable implements ITable {
 		return true;
 	}
 	
+	/**
+	 * Fetch the post to the database and show them in a list<br>
+	 * Create an automatic paging
+	 * @param postNumber the number of post to be shown
+	 * @param pageNumber the index of the page viewed by the user
+	 * @param parameters the parameters used by the user
+	 * @see FetchPostFilter
+	 * @return a tuple contains the list of the post and the number of all post respecting the conditions
+	 */
 	public Tuple<List<Post>, Integer> fetchShortPost(int postNumber, int pageNumber, FetchPostFilter parameters) {
 		final List<Post> post = new ArrayList<>();
 		DatabaseRequest request = null;
@@ -162,7 +199,7 @@ public class PostTable implements ITable {
 			request = new DatabaseRequest(factory, credentials);
 			
 			final Tuple<String, List<Tuple<Object, Integer>>> whereClause = generateWhereClausePost(parameters);
-
+						
 			final String sqlRequestBody = "INNER JOIN "+USER_TABLE_NAME+" ON "+getTableName()+".user = "+USER_TABLE_NAME+".id "+
 					"INNER JOIN "+CATEGORY_TABLE_NAME+" ON "+getTableName()+".category = "+CATEGORY_TABLE_NAME+".id "+
 					"INNER JOIN "+POST_STATE_TABLE_NAME+" ON "+getTableName()+".state = "+POST_STATE_TABLE_NAME+".id "+
@@ -205,6 +242,12 @@ public class PostTable implements ITable {
 		}
 	}
 	
+	/**
+	 * Generate the clause order used by the SQL request
+	 * @param order the order wanted by the user
+	 * @return the formatted string
+	 * @see FetchOrderEnum
+	 */
 	private String generateOrderClausePost(FetchOrderEnum order) {
 		switch (order) {
 			case DATE_ASCENDING: 
@@ -218,6 +261,11 @@ public class PostTable implements ITable {
 		}
 	}
 
+	/**
+	 * Generate the "where clause" used by the sql request
+	 * @param parameters the parameters used by the user
+	 * @return a tuple containing the formatted sql string and list of parameter for the PreparedStatement
+	 */
 	private Tuple<String, List<Tuple<Object, Integer>>> generateWhereClausePost(FetchPostFilter parameters) {
 		final StringBuilder sb = new StringBuilder("");
 		final List<Tuple<Object, Integer>> whereObj = new ArrayList<>();
@@ -237,18 +285,28 @@ public class PostTable implements ITable {
 		return new Tuple<>(sb.toString(), whereObj);
 	}
 
+	/**
+	 * Generate the "search clause" (LIKE argument) used by the sql request
+	 * @param keyWords the list of key words provided by the user
+	 * @return a tuple containing the formatted sql string and list of parameter for the PreparedStatement
+	 */
 	private Tuple<String, List<Tuple<Object, Integer>>> generateSearchEngine(Set<String> keyWords) {
 		final StringBuilder sb = new StringBuilder("");
 		final List<Tuple<Object, Integer>> searchObj = new ArrayList<>();
 		
 		for(String word : keyWords) {
 			sb.append(getTableName()+".title LIKE ? AND ");
-			searchObj.add(new Tuple<>(word, Types.VARCHAR));
+			searchObj.add(new Tuple<>("%"+word+"%", Types.VARCHAR));
 		}
 		
 		return new Tuple<>(sb.toString(), searchObj);
 	}
 	
+	/**
+	 * Fetch an entire post and show all its values
+	 * @param postID the secureID of the post
+	 * @return the PostComplete beans representing the post
+	 */
 	public PostComplete fetchEntirePost(String postID) {
 		PostComplete pc = null;
 		DatabaseRequest request = null;
@@ -288,6 +346,14 @@ public class PostTable implements ITable {
 		return pc;
 	}
 	
+	/**
+	 * Fetch all images for a post
+	 * @param req the request to the database
+	 * @param postDatabaseID the id of the post stored in the database
+	 * @param postSecureID the secure ID of the post
+	 * @param limit the limit of image to be retrieved
+	 * @return a list of secure ID representing the images
+	 */
 	private List<String> fetchPostImages(DatabaseRequest req, int postDatabaseID, String postSecureID, int limit) {
 		final List<String> postImages = new ArrayList<>();
 		try {
@@ -306,14 +372,20 @@ public class PostTable implements ITable {
 		return postImages;
 	}
 	
+	/**
+	 * Generate the URL for the post images
+	 * @param postSecureID the post secure ID
+	 * @param imageSecureID the image secure ID
+	 * @return the list of images URL
+	 */
 	private List<String> generatePostImagesURL(String postSecureID, List<String> imageSecureID){
 		final List<String> res = new ArrayList<>();
-
+		
 		for(String id : imageSecureID) res.add(SFTPHelper.getFormattedImageURL(ImageDirectory.POST, postSecureID, id));
-
+		
 		return res;
 	}
-
+	
 	@Override
 	public String getTableName() {
 		return "Post";
