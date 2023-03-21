@@ -107,9 +107,7 @@ public class ESEOyeServlet extends HttpServlet {
         }
         try {
             actionMap.get(id).execute(request,response);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        } catch (SQLException e) {
+        } catch (ParseException | SQLException e) {
             throw new RuntimeException(e);
         }
     }
