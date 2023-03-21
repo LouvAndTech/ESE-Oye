@@ -4,12 +4,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.sql.rowset.CachedRowSet;
 
 import com.hierynomus.sshj.userauth.keyprovider.bcrypt.BCrypt;
 
+import fr.eseoye.eseoye.beans.SimplifiedEntity;
 import fr.eseoye.eseoye.exceptions.DataCreationException;
 import fr.eseoye.eseoye.exceptions.DataCreationException.CreationExceptionReason;
 import fr.eseoye.eseoye.helpers.SFTPHelper;
@@ -24,7 +27,7 @@ import fr.eseoye.eseoye.utils.Tuple;
 
 public class UserTable implements ITable {
 
-	private static final String userImageTableName = "User_IMG";
+	private static final String USER_IMAGE_TABLE_NAME = "User_IMG";
 	
 	private DatabaseFactory factory;
 	private DatabaseCredentials credentials;
@@ -34,7 +37,7 @@ public class UserTable implements ITable {
 		this.credentials = credentials;
 	}
 	
-	public String createUserAccount(String name, String surname, String password, Date birth, String mail, String phone) throws DataCreationException {
+	public String createUserAccount(String name, String surname, String password, String address, Date birth, String mail, String phone) throws DataCreationException {
 		DatabaseRequest request = null;
 		
 		try {
@@ -44,8 +47,8 @@ public class UserTable implements ITable {
 			final String secureId = SecurityHelper.generateSecureID(System.currentTimeMillis(), lastId, SecurityHelper.SECURE_ID_LENGTH);
 			
 			request.insertValues(getTableName(), 
-					Arrays.asList("name","surname", "birth", "phone", "mail", "password", "state", "secure_id"), 
-					Arrays.asList(name, surname, birth, phone, mail, password, 1, secureId));
+					Arrays.asList("name","surname", "birth", "address", "phone", "mail", "password", "state", "secure_id"), 
+					Arrays.asList(name, surname, address, birth, phone, mail, password, 1, secureId));
 			
 			return secureId;
 		} catch (SQLException e) {
@@ -61,9 +64,17 @@ public class UserTable implements ITable {
 		}
 	}
 	
-	public String checkUserConnection(String name, String password) {
+	public void deleteUserAccount(String userSecureID) {
 		try {
-			CachedRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("password","secure_id"), "password = ?", Arrays.asList(password));
+			new DatabaseRequest(factory, credentials, true).deleteValues(getTableName(), "secure_id=?", Arrays.asList(userSecureID));
+		} catch (SQLException e) {
+			//TODO Handle exception correctly
+		}
+	}
+	
+	public String checkUserConnection(String mail, String password) {
+		try {
+			CachedRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("mail","password","secure_id"), "mail = ?", Arrays.asList(mail));
 			boolean isFound = false;
 			while(!isFound && res.next()) 
 				isFound = BCrypt.checkpw(password, res.getString("password"));
@@ -75,16 +86,36 @@ public class UserTable implements ITable {
 		return null;
 	}
 	
+	public List<SimplifiedEntity> getUserList() {
+		final List<SimplifiedEntity> list = new ArrayList<>();
+		
+		try {
+			final CachedRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("secure_id","name","surname"));
+			while(res.next())
+				list.add(new SimplifiedEntity(res.getString("secure_id"), res.getString("name"), res.getString("surname")));
+		}catch(SQLException e) {
+			return null;
+		}
+		return list;
+	}
+	
 	public void setImage(SFTPConnection ftpConnection, String userSecureID, InputStream inputstream) {
 		DatabaseRequest request = null;
 		
 		try {
 			request = new DatabaseRequest(factory, credentials);
-			
 			final int userDatabaseId = request.getValues(getTableName(), Arrays.asList("id"), "secure_id = ?", Arrays.asList(userSecureID)).getInt("id"); //Get the id of the user and store it for the creation of the image
 			
-			final int lastId = request.getValues("SELECT id FROM "+userImageTableName+" ORDER BY id DESC LIMIT 1;").getInt("id"); //Get the last id for user image in the table
-						
+			String existingPicSecureID = null;
+			CachedRowSet requestExistingPic = request.getValues(USER_IMAGE_TABLE_NAME, Arrays.asList("id", "secure_id", "user"), "user=?", Arrays.asList(userDatabaseId));
+			if(requestExistingPic.next()) {
+				existingPicSecureID = requestExistingPic.getString("secure_id");	
+				request.deleteValues(USER_IMAGE_TABLE_NAME, "secure_id=?", Arrays.asList(existingPicSecureID));
+			}
+			
+			final int lastId = request.getValues("SELECT id FROM "+USER_IMAGE_TABLE_NAME+" ORDER BY id DESC LIMIT 1;").getInt("id"); //Get the last id for user image in the table
+			
+			if(existingPicSecureID != null) ftpConnection.removeUserImage(userSecureID, existingPicSecureID);
 			String imageID = ftpConnection.addNewUserImage(userSecureID, lastId, inputstream);
 			request.insertValues("User_IMG",Arrays.asList("user, secure_id"), Arrays.asList(userDatabaseId, imageID));
 			
@@ -111,7 +142,7 @@ public class UserTable implements ITable {
 			
 			final int userDatabaseId = request.getValues(getTableName(), Arrays.asList("id"), "secure_id = ", Arrays.asList(userSecureID)).getInt("id"); //Get the id of the user and store it to get the image
 
-			final CachedRowSet res = request.getValues(userImageTableName, Arrays.asList("secure_id"), "user = ?", Arrays.asList(userDatabaseId));
+			final CachedRowSet res = request.getValues(USER_IMAGE_TABLE_NAME, Arrays.asList("secure_id"), "user = ?", Arrays.asList(userDatabaseId));
 			if(res.next())
 				return SFTPHelper.getFormattedImageURL(ImageDirectory.USER, userSecureID, res.getString("secure_id"));
 		} catch (SQLException e) {
@@ -225,7 +256,8 @@ public class UserTable implements ITable {
 	
 	public Ternary isAccoundCreationPossible(String mail, String phone) {
 		try {
-			return (new DatabaseRequest(factory, credentials, true).getValuesCount(getTableName(), Arrays.asList("mail","phone"), "mail=? AND phone=?", Arrays.asList(mail, phone)) != 0 ? Ternary.TRUE : Ternary.FALSE);
+			phone = phone.replace(" ", "");
+			return (new DatabaseRequest(factory, credentials, true).getValuesCount(getTableName(), Arrays.asList("mail","phone"), "(mail=? AND phone=?)", Arrays.asList(mail, phone)) != 0 ? Ternary.TRUE : Ternary.FALSE);
 		} catch (SQLException e) {
 			//TODO Handle exception correctly
 		}
