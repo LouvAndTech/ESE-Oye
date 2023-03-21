@@ -25,6 +25,7 @@ public class AdminListUser implements Action {
         //todo : Has no use for now but mey never as any ... ?
         System.out.println("Admin list user : execute");
         if(request.getParameter("delete") != null){
+            DatabaseFactory.getInstance().getTable(UserTable.class, dbCred).deleteUserAccount(request.getParameter("secureID"));
             System.out.println("delete");
         } else if (request.getParameter("admin") != null){
             System.out.println("admin");

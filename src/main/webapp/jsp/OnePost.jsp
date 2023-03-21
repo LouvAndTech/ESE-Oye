@@ -65,7 +65,7 @@
         <h2>Description :</h2>
         <p>${post.content}</p>
         <div class="user">
-            <img class="imgPP" src="${pageContext.request.contextPath}/img/blankPP.png" alt="">
+            <img class="imgPP" src="http://eseoye.elouan-lerissel.fr/blankPP.png" alt="">
             <div class="info">
                 <p>${post.author.name} ${post.author.surname}</p>
                 <!--p>5 annonces</p-->
