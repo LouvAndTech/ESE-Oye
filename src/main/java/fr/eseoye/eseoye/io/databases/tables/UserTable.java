@@ -55,7 +55,6 @@ public class UserTable implements ITable {
 			
 			return secureId;
 		} catch (SQLException e) {
-			e.printStackTrace();
 			throw new DataCreationException(getClass(), CreationExceptionReason.FAILED_DB_CREATION);
 		}finally {
 			if(request != null) {
@@ -79,15 +78,21 @@ public class UserTable implements ITable {
 	public Ternary isUserLocked(String userSecureID) {
 		try {
 			final ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("secure_id","lock"), "secure_id=?", Arrays.asList(userSecureID));
-			return res.next() ? (res.getBoolean("lock") ? Ternary.TRUE : Ternary.FALSE) : Ternary.UNDEFINED; 
+			return res.next() ? (res.getInt("state") == 2 ? Ternary.TRUE : Ternary.FALSE) : Ternary.UNDEFINED; 
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return Ternary.UNDEFINED;
 		}
 	}
 	
-	public void manageLockForUser(String userSecureID, boolean newState) throws SQLException {
-		new DatabaseRequest(factory, credentials, true).updateValues(getTableName(), Arrays.asList("lock"), Arrays.asList(newState), "secure_id=?", Arrays.asList(userSecureID));
+	public void manageLockForUser(String userSecureID, boolean lockUser) {
+		try {
+			final int userState = lockUser ? 2 : 1; 
+			
+			new DatabaseRequest(factory, credentials, true).updateValues(getTableName(), Arrays.asList("state"), Arrays.asList(userState), "secure_id=?", Arrays.asList(userSecureID));
+		} catch (SQLException e) {
+			// TODO Handle error correctly
+		}
 	}
 	
 	public String checkUserConnection(String mail, String password) {
@@ -277,7 +282,6 @@ public class UserTable implements ITable {
 			phone = phone.replace(" ", "");
 			return (new DatabaseRequest(factory, credentials, true).getValuesCount(getTableName(), Arrays.asList("mail","phone"), "(mail=? AND phone=?)", Arrays.asList(mail, phone)) != 0 ? Ternary.TRUE : Ternary.FALSE);
 		} catch (SQLException e) {
-			e.printStackTrace();
 			//TODO Handle exception correctly
 		}
 		
