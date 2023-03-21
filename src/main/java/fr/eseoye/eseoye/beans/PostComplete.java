@@ -19,17 +19,7 @@ public class PostComplete extends Post {
         this.content = content;
         
     }
-    
-    /**
-     * Get the full list of image including the first image (or cover)
-     * @return a list of URL
-     */
-    public List<String> getFullImageList() {
-    	final List<String> res = new ArrayList<>(imageList);
-    	res.add(getFirstImage());
-		return res;
-	}
-    
+
     /**
      * Get the list of image except the first image (or cover)
      * @return a list of URL
