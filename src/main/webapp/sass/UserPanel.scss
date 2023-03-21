@@ -32,6 +32,15 @@ section{
     }
 }
 
+.textBox{
+    width: fit-content;
+    display: block;
+    p{
+        width: fit-content;
+        margin-left: auto;
+    }
+}
+
 .hrVertical{
     margin: auto 1em;
     height: 90%;

@@ -30,15 +30,10 @@ public class AdminAddUser implements Action {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ParseException {
         Ternary resultMail = DatabaseFactory.getInstance().getTable(UserTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).isAccoundCreationPossible(request.getParameter("mail"), request.getParameter("phone"));
         if(resultMail == Ternary.TRUE) {
-            request.setAttribute("error", "Mail already used");
+            request.setAttribute("error", "Mail or phone already used");
             request.getRequestDispatcher("/jsp/Inscription.jsp").forward(request,response);
 
         }else if(resultMail == Ternary.FALSE) {
-            /*
-            SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
-            java.util.Date date = sf.parse(request.getParameter("bday"));
-            java.sql.Date dateSql = new java.sql.Date(date.getTime());
-             */
             java.sql.Date dateSql = java.sql.Date.valueOf(request.getParameter("bday"));
             DatabaseFactory.getInstance().getTable(UserTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).createUserAccount(request.getParameter("name"),
                     request.getParameter("surname"),
@@ -47,7 +42,7 @@ public class AdminAddUser implements Action {
                     dateSql,
                     request.getParameter("mail"),
                     request.getParameter("phone"));
-
+            //response.sendRedirect(request.getContextPath()+"/ese-oye?id=UserPanel&contentPage=AdminListUser");
         }else if(resultMail == Ternary.UNDEFINED) {
 
         }

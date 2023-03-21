@@ -13,6 +13,8 @@ section{
 
             img{
                 width: 15em;
+                height: 15em;
+                object-fit: cover;
             }
 
             .content{
@@ -53,38 +55,7 @@ section{
         }
     }
 
-    .buttonContainer{
-        display: flex;
-        vertical-align: middle;
-        margin: auto;
-        width: fit-content;
 
-        button{
-            background-color: transparent;
-            color: var(--textcolor);
-            border: none;
-            font-size: 1.5em;
-            width: 1.5em;
-            border-radius: 5px;
-
-            &:hover{
-                cursor: pointer;
-            }
-
-            &.actual{
-                color: var(--backcolor);
-                background-color: var(--textcolor);
-            }
-
-            &.btn{
-                width: fit-content;
-                margin: 0;
-            }
-        }
-        span{
-            font-size: 1.5em;
-        }
-    }
 
     .validBtn{
         flex-direction: column;
@@ -92,6 +63,43 @@ section{
         a{
             margin: auto;
         }
+    }
+}
+
+.detail{
+    margin-left: 2em;
+}
+
+.buttonContainer{
+    display: flex;
+    vertical-align: middle;
+    margin: auto;
+    width: fit-content;
+
+    button{
+        background-color: transparent;
+        color: var(--textcolor);
+        border: none;
+        font-size: 1.5em;
+        width: 1.5em;
+        border-radius: 5px;
+
+        &:hover{
+            cursor: pointer;
+        }
+
+        &.actual{
+            color: var(--backcolor);
+            background-color: var(--textcolor);
+        }
+
+        &.btn{
+            width: fit-content;
+            margin: 0;
+        }
+    }
+    span{
+        font-size: 1.5em;
     }
 }
 
