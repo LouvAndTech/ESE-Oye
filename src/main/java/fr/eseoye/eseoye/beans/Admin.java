@@ -6,7 +6,7 @@ public class Admin extends SimplifiedEntity {
 	private int rank;
 	
 	public Admin(String secureID, String name, String surname, String password, int rank) {
-		super(secureID, name, surname);
+		super(secureID, name, surname, null, null);
 		this.password = password;
 		this.rank = rank;
 	}
