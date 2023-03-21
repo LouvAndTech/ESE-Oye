@@ -30,7 +30,7 @@ public class Posts extends AbstractFetchPost implements Action {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try{
-            handlePage(request, response, TypePost.PRIVATE);
+            handlePage(request, response, request.getSession().getAttribute("idUser").toString());
         }catch (Exception e){
             //If there is as errpr we forward to the ListPosts.jsp with the first 10 posts
             this.forward(request, response, "/jsp/UserPanel.jsp");
@@ -57,7 +57,7 @@ public class Posts extends AbstractFetchPost implements Action {
     @Override
     public void forward(HttpServletRequest request, HttpServletResponse response, String target) throws ServletException, IOException {
         try {
-            fillRequest(request, POST_PER_PAGE, 1, TypePost.PRIVATE);
+            fillRequest(request, POST_PER_PAGE, 1, request.getSession().getAttribute("idUser").toString());
         } catch (Exception ignored) {}
         request.getRequestDispatcher("/jsp/UserPanel.jsp").forward(request,response);
     }

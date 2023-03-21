@@ -54,7 +54,7 @@
             <hr class="hrVertical">
             <div class="state">
                 <p>Etat :</p>
-                <p>A servie [TODO]</p>
+                <p>${post.state.name}</p>
             </div>
             <div class="date">
                 <p>Mise en ligne :</p>
@@ -68,9 +68,8 @@
             <img class="imgPP" src="${pageContext.request.contextPath}/img/blankPP.png" alt="">
             <div class="info">
                 <p>${post.author.name} ${post.author.surname}</p>
-                <!--p>5 annonces</p-->
             </div>
-            <a href="" class="aBtn">Voir le profile</a>
+            <a href="ese-oye?id=UserProfile&targetUser=${post.author.secureID}" class="aBtn">Voir le profil</a>
         </div>
     </div>
 </section>
