@@ -67,7 +67,7 @@ public class ESEOyeServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
 
-        //session.setAttribute("admin", true);
+        session.setAttribute("admin", true);
         session.setAttribute("idUser", "1");
         request.setAttribute("adminState", session.getAttribute("admin"));
 
@@ -96,7 +96,7 @@ public class ESEOyeServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
 
-        //session.setAttribute("admin", true);
+        session.setAttribute("admin", true);
         session.setAttribute("idUser", "1");
         request.setAttribute("adminState", session.getAttribute("admin"));
 

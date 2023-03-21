@@ -1,12 +1,8 @@
 package fr.eseoye.eseoye.action.User;
 
+import fr.eseoye.eseoye.action.AbstractNewPost;
 import fr.eseoye.eseoye.action.Action;
-import fr.eseoye.eseoye.io.DatabaseFactory;
-import fr.eseoye.eseoye.io.IOHandler;
 import fr.eseoye.eseoye.io.databases.DatabaseCredentials;
-import fr.eseoye.eseoye.io.databases.tables.UserTable;
-import fr.eseoye.eseoye.utils.Ternary;
-import org.mindrot.jbcrypt.BCrypt;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

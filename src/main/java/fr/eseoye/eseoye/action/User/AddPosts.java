@@ -1,11 +1,10 @@
 package fr.eseoye.eseoye.action.User;
 
+import fr.eseoye.eseoye.action.AbstractNewPost;
 import fr.eseoye.eseoye.action.Action;
 import fr.eseoye.eseoye.io.DatabaseFactory;
 import fr.eseoye.eseoye.io.SFTPFactory;
 import fr.eseoye.eseoye.io.databases.DatabaseCredentials;
-import fr.eseoye.eseoye.io.databases.tables.PostCategoryTable;
-import fr.eseoye.eseoye.io.databases.tables.PostStateTable;
 import fr.eseoye.eseoye.io.databases.tables.PostTable;
 
 import javax.servlet.ServletException;

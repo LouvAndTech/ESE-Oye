@@ -1,4 +1,4 @@
-package fr.eseoye.eseoye.action.User;
+package fr.eseoye.eseoye.action;
 
 import fr.eseoye.eseoye.io.DatabaseFactory;
 import fr.eseoye.eseoye.io.databases.DatabaseCredentials;
@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-public class AbstractNewPost {
+public abstract class AbstractNewPost {
 
     protected final DatabaseCredentials dbCred;
 
