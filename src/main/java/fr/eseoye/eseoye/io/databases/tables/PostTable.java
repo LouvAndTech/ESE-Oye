@@ -2,6 +2,7 @@ package fr.eseoye.eseoye.io.databases.tables;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -112,7 +113,7 @@ public class PostTable implements ITable {
 							(whereClause.getValueB().isEmpty() ? "" : "WHERE "+whereClause.getValueA()+" ")+
 							orderClause+" "+
 							"LIMIT "+postNumber+" OFFSET "+(pageNumber*postNumber)+";", whereClause.getValueB());
-			
+
 			while(res.next()) {
 			
 				final SimplifiedEntity u = new SimplifiedEntity(res.getString("userpost_name"), res.getString("userpost_surname"));
@@ -187,7 +188,7 @@ public class PostTable implements ITable {
 				final SimplifiedEntity u = new SimplifiedEntity(res.getString("userpost_name"), res.getString("userpost_surname"));
 				final Category c = new Category("category_name");
 				final PostState ps = new PostState("poststate_name");
-				
+
 				final List<String> postImages = fetchPostImages(request, res.getInt("post_id"), res.getString("post_sid"), 4);
 				if(postImages.isEmpty()) postImages.add(SFTPHelper.getFormattedImageURL(ImageDirectory.ROOT, "", "1.jpg"));
 				

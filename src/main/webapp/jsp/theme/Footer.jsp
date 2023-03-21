@@ -8,5 +8,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <footer>
     <hr>
-    <p class="align_right">Copyright © 2023</p>
+    <a href="${pageContext.request.contextPath}/jsp/cgu.html" target="_blank" class="align_right">Copyright © 2023</a>
 </footer>

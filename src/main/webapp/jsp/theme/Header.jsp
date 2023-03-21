@@ -18,7 +18,14 @@
     </div>
     <div class="rightBtn">
       <a href="?id=UserPanel&contentPage=AddAnnonce" class="aBtn">Ajouter une annonce</a>
-      <a href="?id=UserPanel&contentPage=Account">Profil</a>
+      <c:choose>
+        <c:when test="${!adminState}">
+          <a href="?id=UserPanel&contentPage=Account">Profil</a>
+        </c:when>
+        <c:otherwise>
+          <a href="?id=UserPanel&contentPage=AdminListUser">Profil</a>
+        </c:otherwise>
+      </c:choose>
       <div class="darkMode">
         <button onclick="dayDark();"><span class="material-symbols-outlined icon_dark_mode">dark_mode</span></button>
       </div>
