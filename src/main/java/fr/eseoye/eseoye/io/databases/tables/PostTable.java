@@ -303,6 +303,38 @@ public class PostTable implements ITable {
 	}
 	
 	/**
+	 * Get the last locked post ID for an administrator
+	 * @return the secure ID of the post<br>
+	 * if no post was found return an empty string
+	 */
+	public String fetchLastLockedPostID() {
+		String id = null;
+		DatabaseRequest request = null;
+		
+		try {
+			request = new DatabaseRequest(factory, credentials);
+			
+			final ResultSetWrappingSqlRowSet res = request.getValuesWithCondition("SELECT secure_id AS post_sid, lock "+
+					"WHERE "+getTableName()+".lock=? ORDER BY "+getTableName()+".id DESC", Arrays.asList(new Tuple<>(true, Types.BOOLEAN)));
+		
+			if(res.next()) id = res.getString("post_sid");
+			else id = "";
+		}catch(SQLException e) {
+			return null;
+		}finally {
+			if(request != null) {
+				try {
+					request.closeConnection();
+				} catch (SQLException e) {
+					System.err.println("Couldn't close the database correctly "+e.getMessage());
+				}
+			}
+		}
+		
+		return id;
+	}
+	
+	/**
 	 * Fetch an entire post and show all its values
 	 * @param postID the secureID of the post
 	 * @return the PostComplete beans representing the post

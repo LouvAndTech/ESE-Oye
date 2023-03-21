@@ -26,7 +26,7 @@ public class Post {
         this.state = postState;
         this.firstImage = firstImage;
     }
-    
+
     public String getFirstImage() {
 		return firstImage;
 	}
