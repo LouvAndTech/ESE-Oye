@@ -51,7 +51,7 @@ public class UserTable implements ITable {
 			
 			request.insertValues(getTableName(), 
 					Arrays.asList("name","surname", "birth", "address", "phone", "mail", "password", "state", "secure_id"), 
-					Arrays.asList(name, surname, address, birth, phone, mail, password, 1, secureId));
+					Arrays.asList(name, surname, birth, address, phone, mail, password, 1, secureId));
 			
 			return secureId;
 		} catch (SQLException e) {

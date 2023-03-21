@@ -120,8 +120,8 @@ public class PostTable implements ITable {
 			while(res.next()) {
 			
 				final SimplifiedEntity u = new SimplifiedEntity(res.getString("userpost_name"), res.getString("userpost_surname"));
-				final Category c = new Category("category_name");
-				final PostState ps = new PostState("poststate_name");
+				final Category c = new Category(res.getString("category_name"));
+				final PostState ps = new PostState(res.getString("poststate_name"));
 				
 				final List<String> postImages = fetchPostImages(request, res.getInt("post_id"), res.getString("post_sid"), 1);
 				if(postImages.isEmpty()) postImages.add(SFTPHelper.getFormattedImageURL(ImageDirectory.ROOT, "", "1.jpg"));
@@ -168,7 +168,7 @@ public class PostTable implements ITable {
 		if(parameters.isCategoryPresent()) { sb.append(CATEGORY_TABLE_NAME+".id=? AND "); whereObj.add(parameters.getCategoryID()); }
 		if(parameters.isStatePresent()) { sb.append(POST_STATE_TABLE_NAME+".id=? AND "); whereObj.add(parameters.getStateID()); }
 		if(parameters.isMaxPricePresent()) { sb.append(getTableName()+".price<=? AND "); whereObj.add(parameters.getMaxPrice()); }
-		if(parameters.mustBeValidated()) { sb.append(getTableName()+".lock=? AND "); whereObj.add(0); }
+		if(parameters.mustBeValidated()) { sb.append(getTableName()+".lock=? AND "); whereObj.add(1); }
 		sb.setLength(sb.length()-5);
 		
 		return whereObj.size() != 0 ? new Tuple<>(sb.toString(), whereObj) : new Tuple<>("", whereObj);
