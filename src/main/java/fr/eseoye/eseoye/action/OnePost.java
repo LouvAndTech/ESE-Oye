@@ -81,8 +81,8 @@ public class OnePost implements Action{
      * @return          the post as a {@link PostComplete}
      */
     private PostComplete fetchPost(String postId){
-        System.out.println("Fetch One entiere post :");
-        System.out.println(DatabaseFactory.getInstance().getTable(PostTable.class, dbCred).fetchEntirePost(postId));
-        return DatabaseFactory.getInstance().getTable(PostTable.class, dbCred).fetchEntirePost(postId);
+        PostComplete p = DatabaseFactory.getInstance().getTable(PostTable.class, dbCred).fetchEntirePost(postId);
+        p.setContent(p.getContent().replace("\n", "<br>"));
+        return p;
     }
 }

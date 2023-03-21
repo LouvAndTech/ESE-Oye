@@ -54,7 +54,7 @@
             <hr class="hrVertical">
             <div class="state">
                 <p>Etat :</p>
-                <p>A servie [TODO]</p>
+                <p>${post.state.name}</p>
             </div>
             <div class="date">
                 <p>Mise en ligne :</p>
