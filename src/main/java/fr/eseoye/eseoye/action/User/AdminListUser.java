@@ -2,6 +2,7 @@ package fr.eseoye.eseoye.action.User;
 
 import fr.eseoye.eseoye.action.Action;
 import fr.eseoye.eseoye.beans.SimplifiedEntity;
+import fr.eseoye.eseoye.helpers.ConnectionHelper;
 import fr.eseoye.eseoye.io.DatabaseFactory;
 import fr.eseoye.eseoye.io.databases.DatabaseCredentials;
 import fr.eseoye.eseoye.io.databases.tables.AdminTable;
@@ -41,37 +42,39 @@ public class AdminListUser implements Action {
      */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-        //todo : Has no use for now but mey never as any ... ?
-        System.out.println("Admin list user : execute");
-        if(request.getParameter("delete") != null){
-            Ternary daoRequest = DatabaseFactory.getInstance().getTable(AdminTable.class, dbCred).isAnAdminSecureID(request.getParameter("secureID"));
-            if(daoRequest == Ternary.TRUE){
-                DatabaseFactory.getInstance().getTable(AdminTable.class, dbCred).deleteAdminAccount(request.getParameter("secureID"));
+        if(ConnectionHelper.isLockAdmin(request, response)) {
+            //todo : Has no use for now but mey never as any ... ?
+            System.out.println("Admin list user : execute");
+            if (request.getParameter("delete") != null) {
+                Ternary daoRequest = DatabaseFactory.getInstance().getTable(AdminTable.class, dbCred).isAnAdminSecureID(request.getParameter("secureID"));
+                if (daoRequest == Ternary.TRUE) {
+                    DatabaseFactory.getInstance().getTable(AdminTable.class, dbCred).deleteAdminAccount(request.getParameter("secureID"));
+                }
+                DatabaseFactory.getInstance().getTable(UserTable.class, dbCred).deleteUserAccount(request.getParameter("secureID"));
+            } else if (request.getParameter("admin") != null) {
+                Ternary daoRequest = DatabaseFactory.getInstance().getTable(AdminTable.class, dbCred).isAnAdminSecureID(request.getParameter("secureID"));
+                if (daoRequest == Ternary.TRUE) {
+                    DatabaseFactory.getInstance().getTable(AdminTable.class, dbCred).deleteAdminAccount(request.getParameter("secureID"));
+                } else if (daoRequest == Ternary.FALSE) {
+                    Tuple<String, String> nameSurname = DatabaseFactory.getInstance().getTable(UserTable.class, dbCred).getNameSurname(request.getParameter("secureID"));
+                    String password = DatabaseFactory.getInstance().getTable(UserTable.class, dbCred).getPassword(request.getParameter("secureID"));
+                    DatabaseFactory.getInstance().getTable(AdminTable.class, dbCred).createAdminAccount(request.getParameter("secureID"), nameSurname.getValueA(), nameSurname.getValueB(), password);
+                } else if (daoRequest == Ternary.UNDEFINED) {
+                    System.out.println("Error : AdminListUser : execute : isAnAdminSecureID : UNDEFINED");
+                }
+            } else if (request.getParameter("lock") != null) {
+                Ternary isLocked = DatabaseFactory.getInstance().getTable(UserTable.class, dbCred).isUserLocked(request.getParameter("secureID"));
+                if (isLocked == Ternary.TRUE) {
+                    DatabaseFactory.getInstance().getTable(UserTable.class, dbCred).manageLockForUser(request.getParameter("secureID"), false);
+                } else if (isLocked == Ternary.FALSE) {
+                    DatabaseFactory.getInstance().getTable(UserTable.class, dbCred).manageLockForUser(request.getParameter("secureID"), true);
+                } else if (isLocked == Ternary.UNDEFINED) {
+                    System.out.println("Error : AdminListUser : execute : isUserLocked : UNDEFINED");
+                }
             }
-            DatabaseFactory.getInstance().getTable(UserTable.class, dbCred).deleteUserAccount(request.getParameter("secureID"));
-        } else if (request.getParameter("admin") != null){
-            Ternary daoRequest = DatabaseFactory.getInstance().getTable(AdminTable.class, dbCred).isAnAdminSecureID(request.getParameter("secureID"));
-            if(daoRequest == Ternary.TRUE){
-                DatabaseFactory.getInstance().getTable(AdminTable.class, dbCred).deleteAdminAccount(request.getParameter("secureID"));
-            } else if(daoRequest == Ternary.FALSE){
-                Tuple<String, String> nameSurname = DatabaseFactory.getInstance().getTable(UserTable.class, dbCred).getNameSurname(request.getParameter("secureID"));
-                String password = DatabaseFactory.getInstance().getTable(UserTable.class, dbCred).getPassword(request.getParameter("secureID"));
-                DatabaseFactory.getInstance().getTable(AdminTable.class, dbCred).createAdminAccount(request.getParameter("secureID"), nameSurname.getValueA(), nameSurname.getValueB(), password);
-            } else if (daoRequest == Ternary.UNDEFINED) {
-                System.out.println("Error : AdminListUser : execute : isAnAdminSecureID : UNDEFINED");
-            }
-        } else if (request.getParameter("lock") != null){
-            Ternary isLocked = DatabaseFactory.getInstance().getTable(UserTable.class, dbCred).isUserLocked(request.getParameter("secureID"));
-            if(isLocked == Ternary.TRUE){
-                DatabaseFactory.getInstance().getTable(UserTable.class, dbCred).manageLockForUser(request.getParameter("secureID"), false);
-            } else if(isLocked == Ternary.FALSE){
-                DatabaseFactory.getInstance().getTable(UserTable.class, dbCred).manageLockForUser(request.getParameter("secureID"), true);
-            } else if (isLocked == Ternary.UNDEFINED) {
-                System.out.println("Error : AdminListUser : execute : isUserLocked : UNDEFINED");
-            }
+            loadUserList(request, response);
+            request.getRequestDispatcher("/jsp/UserPanel.jsp").forward(request, response);
         }
-        loadUserList(request, response);
-        request.getRequestDispatcher("/jsp/UserPanel.jsp").forward(request,response);
     }
 
     /**
@@ -91,9 +94,11 @@ public class AdminListUser implements Action {
      */
     @Override
     public void forward(HttpServletRequest request, HttpServletResponse response, String target) throws ServletException, IOException {
-        System.out.println("Admin list user : forward");
-        loadUserList(request, response);
-        request.getRequestDispatcher("/jsp/UserPanel.jsp").forward(request,response);
+        if(ConnectionHelper.isLockAdmin(request, response)) {
+            System.out.println("Admin list user : forward");
+            loadUserList(request, response);
+            request.getRequestDispatcher("/jsp/UserPanel.jsp").forward(request, response);
+        }
     }
 
     /**

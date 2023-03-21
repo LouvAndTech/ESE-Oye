@@ -1,6 +1,5 @@
 package fr.eseoye.eseoye.action.User;
 
-import fr.eseoye.eseoye.action.AbstractNewPost;
 import fr.eseoye.eseoye.action.AbstractOnePost;
 import fr.eseoye.eseoye.action.Action;
 import fr.eseoye.eseoye.io.DatabaseFactory;
