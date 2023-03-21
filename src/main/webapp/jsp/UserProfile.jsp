@@ -12,6 +12,11 @@
   <%@include file="theme/Head.jsp" %>
   <script src="${pageContext.request.contextPath}/js/main.js"></script>
   <title>Template</title>
+
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Annonces.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ListPosts.css">
+
+  <script type="module" src="${pageContext.request.contextPath}/js/request.js" defer></script>
 </head>
 <body>
 
