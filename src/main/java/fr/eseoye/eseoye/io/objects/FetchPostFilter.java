@@ -165,7 +165,7 @@ public class FetchPostFilter {
 		}
 		
 		public static FetchOrderEnum of(String objname) {
-			return Arrays.asList(FetchOrderEnum.values()).stream().filter(n -> n.name.equalsIgnoreCase(objname)).findFirst().get();
+			return Arrays.asList(FetchOrderEnum.values()).stream().filter(o -> o.name().equalsIgnoreCase(objname)).findFirst().get();
 		}
 		
 		public FetchOrder getObject() {
