@@ -4,9 +4,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.sql.rowset.CachedRowSet;
-import javax.sql.rowset.RowSetProvider;
-
 import org.springframework.jdbc.support.rowset.ResultSetWrappingSqlRowSet;
 
 import fr.eseoye.eseoye.io.DatabaseFactory;
@@ -56,7 +53,7 @@ public class DatabaseRequest {
 		if(instantClose) this.dbConnection.close();
 	}
 	
-	public void updateValues(String table, List<String> fields, List<String> values, String condition, List<Object> valuesCondition) throws SQLException {
+	public void updateValues(String table, List<String> fields, List<Object> values, String condition, List<Object> valuesCondition) throws SQLException {
 		if(this.dbConnection.isClosed()) throw new SQLException("Couldn't execute the method because no connection to the database was found.");
 		this.dbImplementation.updateValues(dbConnection, table, fields, values, condition, valuesCondition);
 		

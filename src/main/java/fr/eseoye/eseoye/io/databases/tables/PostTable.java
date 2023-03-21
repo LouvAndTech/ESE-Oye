@@ -167,7 +167,7 @@ public class PostTable implements ITable {
 		if(parameters.isCategoryPresent()) { sb.append(CATEGORY_TABLE_NAME+".id=? AND "); whereObj.add(parameters.getCategoryID()); }
 		if(parameters.isStatePresent()) { sb.append(POST_STATE_TABLE_NAME+".id=? AND "); whereObj.add(parameters.getStateID()); }
 		if(parameters.isMaxPricePresent()) { sb.append(getTableName()+".price<=? AND "); whereObj.add(parameters.getMaxPrice()); }
-		if(parameters.mustBeValidated()) { sb.append(getTableName()+".lock=? AND "); whereObj.add(1); }
+		if(parameters.mustBeValidated()) { sb.append(getTableName()+".lock=? AND "); whereObj.add(0); }
 		sb.setLength(sb.length()-5);
 		
 		return whereObj.size() != 0 ? new Tuple<>(sb.toString(), whereObj) : new Tuple<>("", whereObj);

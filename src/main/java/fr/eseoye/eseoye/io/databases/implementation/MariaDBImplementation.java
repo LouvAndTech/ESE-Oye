@@ -39,10 +39,10 @@ public class MariaDBImplementation extends DatabaseImplementation {
 	}
 
 	@Override
-	public void updateValues(Connection connection, String table, List<String> fields, List<String> values, String condition, List<Object> valuesCondition) throws SQLException {
+	public void updateValues(Connection connection, String table, List<String> fields, List<Object> values, String condition, List<Object> valuesCondition) throws SQLException {
 		PreparedStatement preparedStatement = connection
-				.prepareStatement("UPDATE "+table+" SET "+convertArgumentsToUpdateFields(fields, values)+" WHERE "+condition+";");
-			for(int i = 0; i < values.size(); i++) preparedStatement.setString(i+1, values.get(i));
+				.prepareStatement("UPDATE "+table+" SET "+convertArgumentsToUpdateFields(fields)+" WHERE "+condition+";");
+			for(int i = 0; i < values.size(); i++) preparedStatement.setObject(i+1, values.get(i));
 			for(int i = values.size(); i < values.size()+valuesCondition.size(); i++) preparedStatement.setObject(i+1, valuesCondition.get(i-values.size()));
 		preparedStatement.executeUpdate();
 	}
