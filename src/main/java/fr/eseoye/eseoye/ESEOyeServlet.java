@@ -1,4 +1,4 @@
-package fr.eseoye.eseoye.servlet;
+package fr.eseoye.eseoye;
 
 //Actions
 import fr.eseoye.eseoye.action.*;

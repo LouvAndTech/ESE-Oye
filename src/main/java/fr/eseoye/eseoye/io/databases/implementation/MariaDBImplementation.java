@@ -77,7 +77,10 @@ public class MariaDBImplementation extends DatabaseImplementation {
 	@Override
 	public ResultSet getValuesWithCondition(Connection connection, String sqlRequest, List<Object> valuesCondition) throws SQLException {
 		PreparedStatement statement = connection.prepareStatement(sqlRequest);
-		for(int i = 0; i < valuesCondition.size(); i++) statement.setObject(i+1, valuesCondition.get(i));
+		for(int i = 0; i < valuesCondition.size(); i++) {
+			if(valuesCondition.get(i) instanceof Integer) statement.setInt(i+1, (int)valuesCondition.get(i));
+			else statement.setObject(i+1, valuesCondition.get(i));
+		}
 		return statement.executeQuery();
 	}
 

@@ -37,6 +37,11 @@ dependencies {
 	
 	// https://mvnrepository.com/artifact/com.hierynomus/sshj
 	implementation group: 'com.hierynomus', name: 'sshj', version: '0.35.0'
+
+
+
+    // Test dependencies
+    testImplementation "org.mockito:mockito-core:3.+"
 	
 	// https://mvnrepository.com/artifact/org.springframework/spring-jdbc
 	implementation group: 'org.springframework', name: 'spring-jdbc', version: '6.0.6'

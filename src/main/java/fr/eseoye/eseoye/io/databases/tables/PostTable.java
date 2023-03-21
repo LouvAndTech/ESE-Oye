@@ -2,6 +2,7 @@ package fr.eseoye.eseoye.io.databases.tables;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -78,6 +79,7 @@ public class PostTable implements ITable {
 			
 			return null;
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new DataCreationException(getClass(), CreationExceptionReason.FAILED_DB_CREATION);
 		} catch (IOException e) {
 			throw new DataCreationException(getClass(), CreationExceptionReason.FAILED_IMAGE_UPLOAD);
@@ -104,14 +106,14 @@ public class PostTable implements ITable {
 			final Tuple<String, List<Object>> whereClause = generateWhereClausePost(parameters);
 			final String orderClause = generateOrderClausePost(parameters.getOrder());
 			
-			final ResultSetWrappingSqlRowSet res = request.getValuesWithCondition("SELECT `"+getTableName()+".id` AS post_id, `"+getTableName()+".secure_id` AS post_sid, `"+getTableName()+".title` AS post_title, `"+USER_TABLE_NAME+".name` AS userpost_name, `"+USER_TABLE_NAME+".surname` AS userpost_surname, `"+getTableName()+".price` AS post_price, `"+CATEGORY_TABLE_NAME+".name` AS category_name, `"+POST_STATE_TABLE_NAME+".name` AS poststate_name, `"+getTableName()+".date` AS post_date FROM "+getTableName()+" "+
+			final ResultSetWrappingSqlRowSet res = request.getValuesWithCondition("SELECT "+getTableName()+".id AS post_id, "+getTableName()+".secure_id AS post_sid, "+getTableName()+".title AS post_title, "+getTableName()+".lock AS post_lock, "+USER_TABLE_NAME+".secure_id AS userpost_sid, "+USER_TABLE_NAME+".name AS userpost_name, "+USER_TABLE_NAME+".surname AS userpost_surname, "+getTableName()+".price AS post_price, "+CATEGORY_TABLE_NAME+".name AS category_name, "+POST_STATE_TABLE_NAME+".name AS poststate_name, "+getTableName()+".date AS post_date FROM "+getTableName()+" "+
 							"INNER JOIN "+USER_TABLE_NAME+" ON "+getTableName()+".user = "+USER_TABLE_NAME+".id "+
 							"INNER JOIN "+CATEGORY_TABLE_NAME+" ON "+getTableName()+".category = "+CATEGORY_TABLE_NAME+".id "+
 							"INNER JOIN "+POST_STATE_TABLE_NAME+" ON "+getTableName()+".state = "+POST_STATE_TABLE_NAME+".id " +
-							whereClause.getValueA()+" "+
-							orderClause+
-							" LIMIT "+postNumber+" OFFSET "+(pageNumber*postNumber)+";", whereClause.getValueB());
-			
+							(whereClause.getValueB().isEmpty() ? "" : "WHERE "+whereClause.getValueA()+" ")+
+							orderClause+" "+
+							"LIMIT "+postNumber+" OFFSET "+(pageNumber*postNumber)+";", whereClause.getValueB());
+
 			while(res.next()) {
 			
 				final SimplifiedEntity u = new SimplifiedEntity(res.getString("userpost_name"), res.getString("userpost_surname"));
@@ -119,14 +121,14 @@ public class PostTable implements ITable {
 				final PostState ps = new PostState(res.getString("poststate_name"));
 				
 				final List<String> postImages = fetchPostImages(request, res.getInt("post_id"), res.getString("post_sid"), 1);
-				if(postImages.isEmpty()) postImages.add(SFTPHelper.getFormattedImageURL(ImageDirectory.ROOT, "", "1.jpg"));
+				if(postImages.isEmpty()) postImages.add(SFTPHelper.getFormattedImageURL(ImageDirectory.ROOT, "", "404"));
 				
 				post.add(new Post(res.getString("post_sid"), res.getString("post_title"), u, res.getInt("post_price"), res.getDate("post_date"), c, ps, postImages.get(0)));
 			}
 			
-			int totalPostNumber = request.getValuesCount(getTableName(), Arrays.asList("id"));
-			
-			return new Tuple<>(post, (int)Math.floor(totalPostNumber/postNumber));
+			int totalPostNumber = request.getValuesCount(getTableName(), Arrays.asList("id", "lock"), whereClause.getValueA(), whereClause.getValueB());
+			System.out.println("Total post number: "+totalPostNumber);
+			return new Tuple<>(post, (int)Math.ceil((double)totalPostNumber/postNumber));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			//TODO Handle exception
@@ -156,7 +158,7 @@ public class PostTable implements ITable {
 	}
 
 	private Tuple<String, List<Object>> generateWhereClausePost(FetchPostFilter parameters) {
-		final StringBuilder sb = new StringBuilder("WHERE ");
+		final StringBuilder sb = new StringBuilder("");
 		final List<Object> whereObj = new ArrayList<>();
 		
 		if(parameters.isUserIDPresent()) { sb.append(USER_TABLE_NAME+".secure_id=? AND "); whereObj.add(parameters.getUserSecureID()); }
@@ -166,7 +168,7 @@ public class PostTable implements ITable {
 		if(parameters.mustBeValidated()) { sb.append(getTableName()+".lock=? AND "); whereObj.add(0); }
 		sb.setLength(sb.length()-5);
 		
-		return whereObj.size() != 0 ? new Tuple<>(sb.toString(), whereObj) : new Tuple<>("", whereObj);
+		return new Tuple<>(sb.toString(), whereObj);
 	}
 
 	public PostComplete fetchEntirePost(String postID) {
@@ -176,17 +178,17 @@ public class PostTable implements ITable {
 		try {
 			request = new DatabaseRequest(factory, credentials);
 			
-			final ResultSetWrappingSqlRowSet res = request.getValuesWithCondition("SELECT `"+getTableName()+".id` AS post_id, `"+getTableName()+".secure_id` AS post_sid, `"+getTableName()+".title` AS post_title, `"+getTableName()+".content` AS post_content, `"+USER_TABLE_NAME+".name` AS userpost_name, `"+USER_TABLE_NAME+".surname` AS userpost_surname, `"+getTableName()+".price` AS post_price, `"+CATEGORY_TABLE_NAME+".name` AS category_name, `"+POST_STATE_TABLE_NAME+".name` AS poststate_name, `"+getTableName()+".date` AS post_date FROM "+getTableName()+" "+
+			final ResultSetWrappingSqlRowSet res = request.getValuesWithCondition("SELECT "+getTableName()+".id AS post_id, "+getTableName()+".secure_id AS post_sid, "+getTableName()+".title AS post_title, "+getTableName()+".content AS post_content, "+USER_TABLE_NAME+".name AS userpost_name, "+USER_TABLE_NAME+".surname AS userpost_surname, "+getTableName()+".price AS post_price, "+CATEGORY_TABLE_NAME+".name AS category_name, "+POST_STATE_TABLE_NAME+".name AS poststate_name, "+getTableName()+".date AS post_date FROM "+getTableName()+" "+
 					"INNER JOIN "+USER_TABLE_NAME+" ON "+getTableName()+".user = "+USER_TABLE_NAME+".id "+
 					"INNER JOIN "+CATEGORY_TABLE_NAME+" ON "+getTableName()+".category = "+CATEGORY_TABLE_NAME+".id "+
-					"INNER JOIN "+POST_STATE_TABLE_NAME+" ON "+getTableName()+".state = "+POST_STATE_TABLE_NAME+".id"+
+					"INNER JOIN "+POST_STATE_TABLE_NAME+" ON "+getTableName()+".state = "+POST_STATE_TABLE_NAME+".id "+
 					"WHERE "+getTableName()+".secure_id=?", Arrays.asList(postID));
 			
 			if(res.next()) {
 				final SimplifiedEntity u = new SimplifiedEntity(res.getString("userpost_name"), res.getString("userpost_surname"));
 				final Category c = new Category("category_name");
 				final PostState ps = new PostState("poststate_name");
-				
+
 				final List<String> postImages = fetchPostImages(request, res.getInt("post_id"), res.getString("post_sid"), 4);
 				if(postImages.isEmpty()) postImages.add(SFTPHelper.getFormattedImageURL(ImageDirectory.ROOT, "", "1.jpg"));
 				

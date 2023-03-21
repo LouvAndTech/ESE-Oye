@@ -25,35 +25,50 @@ public abstract class AbstractFetchPost {
     protected static final int POST_PER_PAGE = 10;
 
     /**
-     * Fetch the posts from the database in case of a change of page
+     * Method called by the servlet to process a post request on the PersonalPosts page.
      * @param request  an {@link HttpServletRequest} object that
      * @param response an {@link HttpServletResponse} object that
+     * @param userId  the id of the user
      * @throws Exception an {@link Exception}
      */
+    protected void handlePage(HttpServletRequest request, HttpServletResponse response, String userId) throws Exception {
+        request.setAttribute("userId", userId);
+        handlePage(request, response, TypePost.PRIVATE);
+    }
+        /**
+         * Fetch the posts from the database in case of a change of page
+         * @param request  an {@link HttpServletRequest} object that
+         * @param response an {@link HttpServletResponse} object that
+         * @throws Exception an {@link Exception}
+         */
     protected void handlePage(HttpServletRequest request, HttpServletResponse response, TypePost type) throws Exception {
         FetchPostFilter filters = null;
+        //Print out every parameters:
+        System.out.println("Parameters:");
+        for(String s : request.getParameterMap().keySet()){
+            System.out.println(s + " : " + request.getParameter(s));
+        }
         if(type == TypePost.CLASSIC){
             //If it's a classic post we check the filters
-            filters = checkFilters(request);
+            filters = fillFilters(request);
             request.setAttribute("cat",     filters.getCategoryID());
             request.setAttribute("state",   filters.getStateID());
             request.setAttribute("price",   filters.getMaxPrice());
             request.setAttribute("order",   filters.getOrder());
         }
-        if(request.getParameter("postPage") != null){
+        if(request.getParameter("newPage") != null && request.getParameter("newPage").matches("1")){
+            System.out.println("Changing page");
             //Change page
             int page = Integer.parseInt(request.getParameter("postPage"));
-            if(page < 1) page = 1; //make sure it's not negative
-            if(fetchPost(POST_PER_PAGE, page,filters,type).getValueB() < page  && page > 1){
+            if(page < 0) page = 0; //make sure it's not negative
+            if((fetchPost(POST_PER_PAGE, page,filters).getValueB()-1) < page  && page > 0){
                 page--;
             }
             fillRequest(request, POST_PER_PAGE, page , filters, type);
-        }else if(request.getParameter("order") != null){
-            //Change order
-            throw new Exception("Not implemented yet");
-        }else if(request.getParameter("cat") != null || request.getParameter("state") != null) {
-            //Change category
-            fillRequest(request, POST_PER_PAGE, 1, filters, type);
+        }else if(oneFilterExist(request)){
+            //Change filters
+            System.out.println("Changing filters");
+            fillRequest(request, POST_PER_PAGE, 0 , filters, type);
         }else {
             //not supposed to happen, forward to the ListPosts.jsp
             throw new Exception("Nothing to do");
@@ -70,14 +85,15 @@ public abstract class AbstractFetchPost {
      * @throws Exception an {@link Exception} of the error if any
      */
     protected void fillRequest (HttpServletRequest request,int nbPost, int page, FetchPostFilter filters, TypePost type) throws Exception{
-        Tuple<List<Post>,Integer> fromDB = fetchPost(nbPost, page , filters, type);
-        System.out.println(fromDB.getValueA().size());
+        Tuple<List<Post>,Integer> fromDB = fetchPost(nbPost, page , filters);
+        System.out.println("size of batch : " + fromDB.getValueA().size());
+        System.out.println("nb of page : " + fromDB.getValueB());
         List<Integer> nbPage = handleNBpage(fromDB.getValueB(), page);
         request.setAttribute("posts", fromDB.getValueA());
         request.setAttribute("nbPage", nbPage);
         request.setAttribute("categories", fetchCategories());
         request.setAttribute("states", fetchStates());
-        request.setAttribute("orders", fetchOrders(request));
+        request.setAttribute("orders", fetchOrders());
         request.setAttribute("postPage", page);
     }
 
@@ -86,32 +102,45 @@ public abstract class AbstractFetchPost {
      * @param request an {@link HttpServletRequest} object
      * @param nbPost the number of post to fetch
      * @param page the page numbers
-     * @param type a {@link TypePost} object
      * @throws Exception an {@link Exception} of the error if any
      */
-    protected void fillRequest (HttpServletRequest request,int nbPost, int page, TypePost type) throws Exception{
-        System.out.println(type);
-        System.out.println(fetchPost(nbPost, page , FetchPostFilter.builder().build(), type));
-        Tuple<List<Post>,Integer> fromDB = fetchPost(nbPost, page , FetchPostFilter.builder().build(), type);
+    protected void fillRequest (HttpServletRequest request,int nbPost, int page) throws Exception{
+        Tuple<List<Post>,Integer> fromDB = fetchPost(nbPost, page , FetchPostFilter.builder().build());
+        System.out.println("size of batch : " + fromDB.getValueA().size());
+        System.out.println("nb of page : " + fromDB.getValueB());
         List<Integer> nbPage = handleNBpage(fromDB.getValueB(), page);
         request.setAttribute("posts", fromDB.getValueA());
-        if(type == TypePost.CLASSIC){
-            System.out.println("Classic");
-            System.out.println(fetchCategories());
-            request.setAttribute("categories", fetchCategories());
-            request.setAttribute("states", fetchStates());
-            request.setAttribute("orders", fetchOrders(request));
-        }
+        request.setAttribute("categories", fetchCategories());
+        request.setAttribute("states", fetchStates());
+        request.setAttribute("orders", fetchOrders());
+        request.setAttribute("nbPage", nbPage);
+        request.setAttribute("postPage", page);
+    }
+
+    /**
+     * Fill a request with the posts and the number of page for a specific user
+     * @param request an {@link HttpServletRequest} object
+     * @param nbPost the number of post to fetch
+     * @param page the page numbers
+     * @param userId the id of the user
+     * @throws Exception an {@link Exception} of the error if any
+     */
+    protected void fillRequest (HttpServletRequest request,int nbPost, int page, String userId) throws Exception {
+        //todo add user id
+        Tuple<List<Post>, Integer> fromDB = fetchPost(nbPost, page, FetchPostFilter.builder().user(userId).build());
+        System.out.println("size of batch : " + fromDB.getValueA().size());
+        System.out.println("nb of page : " + fromDB.getValueB());
+        List<Integer> nbPage = handleNBpage(fromDB.getValueB(), page);
+        request.setAttribute("posts", fromDB.getValueA());
         request.setAttribute("nbPage", nbPage);
         request.setAttribute("postPage", page);
     }
 
     /**
      * Fetch the posts from the database
-     * @param request
      * @return  a {@link List} of {@link FetchOrder} object
      */
-    protected List<FetchOrder> fetchOrders(HttpServletRequest request){
+    protected List<FetchOrder> fetchOrders(){
         List<FetchOrder> orders = new ArrayList<>();
         for (FetchPostFilter.FetchOrderEnum order : FetchPostFilter.FetchOrderEnum.values()){
             orders.add(order.getObject());
@@ -125,7 +154,7 @@ public abstract class AbstractFetchPost {
      * @param page      the page number
      * @return          a list of {@link Post}
      */
-    protected Tuple<List<Post>,Integer> fetchPost(int nbPost, int page, FetchPostFilter filters,TypePost type){
+    protected Tuple<List<Post>,Integer> fetchPost(int nbPost, int page, FetchPostFilter filters){
         return DatabaseFactory.getInstance().getTable(PostTable.class, dbCred).fetchShortPost(nbPost, page,filters);
     }
 
@@ -188,17 +217,34 @@ public abstract class AbstractFetchPost {
      * @param request an {@link HttpServletRequest} object
      * @return a {@link FetchPostFilter} object filled with the request parameters
      */
-    protected FetchPostFilter checkFilters (HttpServletRequest request){
+    protected FetchPostFilter fillFilters(HttpServletRequest request){
         int idCategory, idState , price ;
         idCategory = idState = price = -1;
+        String userId = null;
         FetchPostFilter.FetchOrderEnum order = FetchPostFilter.FetchOrderEnum.DATE_DESCENDING;
         try {
             idCategory = Integer.parseInt(request.getParameter("cat"));
             idState = Integer.parseInt(request.getParameter("state"));
             price = Integer.parseInt(request.getParameter("price"));
             order = FetchPostFilter.FetchOrderEnum.valueOf(request.getParameter("order"));
+            userId = request.getParameter("userId");
         }catch (Exception ignored){}
-        return FetchPostFilter.builder().category(idCategory).state(idState).maxPrice(price).order(order).build();
+        return FetchPostFilter.builder().category(idCategory).state(idState).maxPrice(price).order(order).user(userId).build();
+    }
+
+    protected boolean oneFilterExist(HttpServletRequest request){
+        List<String> filtersName = new ArrayList<>(){{
+            add("cat");
+            add("state");
+            add("price");
+            add("order");
+        }};
+        for (String filter : filtersName){
+            if(request.getParameter(filter) != null){
+                return true;
+            }
+        }
+        return false;
     }
 
 
