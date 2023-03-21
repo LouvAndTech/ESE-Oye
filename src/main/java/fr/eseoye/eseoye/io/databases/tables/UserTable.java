@@ -77,7 +77,7 @@ public class UserTable implements ITable {
 	
 	public Ternary isUserLocked(String userSecureID) {
 		try {
-			final ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("secure_id","lock"), "secure_id=?", Arrays.asList(userSecureID));
+			final ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("secure_id","state"), "secure_id=?", Arrays.asList(userSecureID));
 			return res.next() ? (res.getInt("state") == 2 ? Ternary.TRUE : Ternary.FALSE) : Ternary.UNDEFINED; 
 		} catch (SQLException e) {
 			e.printStackTrace();
