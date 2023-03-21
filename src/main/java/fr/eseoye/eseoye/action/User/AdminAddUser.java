@@ -34,9 +34,12 @@ public class AdminAddUser implements Action {
             request.getRequestDispatcher("/jsp/Inscription.jsp").forward(request,response);
 
         }else if(resultMail == Ternary.FALSE) {
-            SimpleDateFormat sf = new SimpleDateFormat("dd-MM-yyyy;HH:mm:ss");
-            java.util.Date date = sf.parse(request.getParameter("date"));
+            /*
+            SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+            java.util.Date date = sf.parse(request.getParameter("bday"));
             java.sql.Date dateSql = new java.sql.Date(date.getTime());
+             */
+            java.sql.Date dateSql = java.sql.Date.valueOf(request.getParameter("bday"));
             DatabaseFactory.getInstance().getTable(UserTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).createUserAccount(request.getParameter("name"),
                     request.getParameter("surname"),
                     request.getParameter( BCrypt.hashpw(request.getParameter("password"), BCrypt.gensalt())),

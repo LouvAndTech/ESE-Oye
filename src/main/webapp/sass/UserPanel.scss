@@ -56,7 +56,9 @@ section{
     .end{
         margin-left: auto;
         display: flex;
-        a, input{
+        button{
+            border: none;
+            background-color: transparent;
             height: 100%;
             display: block;
             span{

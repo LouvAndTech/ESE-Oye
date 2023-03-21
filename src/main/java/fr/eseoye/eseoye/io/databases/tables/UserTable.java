@@ -52,6 +52,7 @@ public class UserTable implements ITable {
 			
 			return secureId;
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new DataCreationException(getClass(), CreationExceptionReason.FAILED_DB_CREATION);
 		}finally {
 			if(request != null) {
