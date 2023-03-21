@@ -10,19 +10,21 @@ public class User extends SimplifiedEntity {
 	private Date birth;
 	private String phone;
 	private String mail;
-	private String state;
+	private String address;
+	private int state;
 	
-	public User(String secureID, String name, String surname, String password, Date birth, String phone, String mail, String state) {
+	public User(String secureID, String name, String surname, String password, Date birth, String address, String phone, String mail, int state) {
 		super(secureID, name, surname);
 		this.secureID = secureID;
 		this.password = password;
 		this.birth = birth;
+		this.address = address;
 		this.phone = phone;
 		this.mail = mail;
 		this.state = state;
 	}
 	
-	public String getId() {
+	public String getSecureId() {
 		return secureID;
 	}
 	
@@ -34,6 +36,10 @@ public class User extends SimplifiedEntity {
 		return birth;
 	}
 	
+	public String getAddress() {
+		return address;
+	}
+	
 	public String getPhone() {
 		return phone;
 	}
@@ -42,7 +48,7 @@ public class User extends SimplifiedEntity {
 		return mail;
 	}
 	
-	public String getState() {
+	public int getState() {
 		return state;
 	}
 }

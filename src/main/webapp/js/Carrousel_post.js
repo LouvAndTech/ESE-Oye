@@ -6,14 +6,6 @@ var imgHeight = listImg[0].offsetHeight;
 var startPoint = 0;
 var isOpen = false;
 
-//set random image for the test
-
-listImg.forEach(img => {
-    img.src = "https://picsum.photos/640/480?random="+Math.floor(Math.random() * 100);
-});
-
-//fin code pour le test
-
 for(var i=0; i<listImg.length; i++){
     document.querySelector(".shortBtn").innerHTML += '<button class="btnShort" onclick="selectSpecImg('+i+');"><span class="material-symbols-outlined">radio_button_unchecked</span></button>';
     listImg[i].addEventListener("click", function(){

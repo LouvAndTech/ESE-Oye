@@ -11,7 +11,8 @@ textboxs.forEach(textbox => {
         nid = id > 0 ? id-1 : id;
         if(textbox.type == "password"){
             //password Security
-            btns[nid].disabled = 1;
+            if(btns.length > 1)
+                btns[nid].disabled = 1;
             passSecu.classList.remove("passSecu_low");
             passSecu.classList.remove("passSecu_high");
             if(textbox.value.length >= 8){
@@ -20,7 +21,8 @@ textboxs.forEach(textbox => {
                         if(textbox.value.match(/[0-9]/g)){
                             passSecu.classList.add("passSecu_high");
                             passSecu.innerHTML = "Le mdp est securiser";
-                            btns[nid].disabled = 0;
+                            if(btns.length > 1)
+                                btns[nid].disabled = 0;
                         }else{
                             passSecu.classList.add("passSecu_low");
                             passSecu.innerHTML = "Le mdp doit contenir des chiffres";
@@ -65,7 +67,12 @@ textboxs.forEach(textbox => {
             btns[nid].disabled = listText[id] == textbox.value || !textbox.value ? 1 : 0;
         }
     });
-
+    //add detection file
+    if(textbox.type == "file"){
+        textbox.addEventListener("change", (e) => {
+            document.querySelector("#btnImgPP").disabled = 0;
+        });
+    }
     //add space to the phone number
     if(textbox.type == "tel"){
         textbox.addEventListener('keyup', (e) => {

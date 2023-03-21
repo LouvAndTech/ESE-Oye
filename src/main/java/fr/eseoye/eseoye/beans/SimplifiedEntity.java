@@ -5,6 +5,7 @@ public class SimplifiedEntity {
 	private String secureID;
 	
 	private String name, surname;
+	private Boolean isAdmin, isLocked;
 	
 	public SimplifiedEntity(String secureID, String name, String surname) {
 		this.secureID = secureID;
@@ -14,6 +15,12 @@ public class SimplifiedEntity {
 	
 	public SimplifiedEntity(String name, String surname) {
 		this(null, name, surname);
+	}
+
+	public SimplifiedEntity(String name, String surname, String secureID, Boolean isAdmin, Boolean isLocked) {
+		this(secureID, name, surname);
+		this.isAdmin = isAdmin;
+		this.isLocked = isLocked;
 	}
 	
 	public boolean isSecureIDPresent() {
@@ -30,6 +37,22 @@ public class SimplifiedEntity {
 	
 	public String getSurname() {
 		return surname;
+	}
+
+	public Boolean getIsAdmin() {
+		return isAdmin;
+	}
+
+	public Boolean getIsLocked() {
+		return isLocked;
+	}
+
+	public void setIsAdmin(Boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+
+	public void setIsLocked(Boolean isLocked) {
+		this.isLocked = isLocked;
 	}
 	
 }

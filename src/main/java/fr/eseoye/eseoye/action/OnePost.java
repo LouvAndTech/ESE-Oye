@@ -37,8 +37,8 @@ public class OnePost implements Action{
      *                  contains the response the servlet sends
      *                  to the client
      *
-     * @throws ServletException
-     * @throws IOException
+     * @throws ServletException an {@link ServletException}
+     * @throws IOException     an {@link IOException}
      */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -71,7 +71,7 @@ public class OnePost implements Action{
             request.getRequestDispatcher("/jsp/OnePost.jsp").forward(request, response);
         }catch (Exception e){
             System.out.println("Error : " + e.getMessage());
-            this.forward(request, response, "/jsp/ListPosts.jsp");
+            request.getRequestDispatcher("/jsp/ListPosts.jsp").forward(request, response);
         }
     }
 
@@ -80,14 +80,10 @@ public class OnePost implements Action{
      * @param postId    the id of the post to fetch
      * @return          the post as a {@link PostComplete}
      */
-<<<<<<<<< Temporary merge branch 1
-    private PostComplete fetchPost(int postId){
-        //todo : Fetch the post from the database
-        //return new PostComplete("1", "Chair", new User(null, "Jean","Vend", "lol", new Date(2002,2,24), "0606060606", "j@j.j", "TierMonde"),1672, new Date(2020, 12, 12), "Description");
-        return null;
-=========
     private PostComplete fetchPost(String postId){
-        return DatabaseFactory.getInstance().getTable(PostTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).fetchEntirePost(postId);
->>>>>>>>> Temporary merge branch 2
+        PostComplete p = DatabaseFactory.getInstance().getTable(PostTable.class, dbCred).fetchEntirePost(postId);
+        System.out.println("postcomplete author secure ID : "+p.getAuthor().getSecureID());
+        p.setContent(p.getContent().replace("\n", "<br>"));
+        return p;
     }
 }

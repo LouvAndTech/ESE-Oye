@@ -1,5 +1,6 @@
 package fr.eseoye.eseoye.io.objects;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,6 +13,7 @@ public class FetchPostFilter {
 	private float maxPrice;
 	private Set<String> keyWords;
 	private boolean mustBeValidated;
+	private String userSecureID;
 	
 	/**
 	 * Create a new parameter for fetching the post list<br><br>
@@ -32,6 +34,7 @@ public class FetchPostFilter {
 		this.maxPrice = builder.maxPrice;
 		this.order = builder.order;
 		this.mustBeValidated = builder.mustBeValidated;
+		this.userSecureID = builder.userSecureID;
 	}
 	
 	public int getCategoryID() {
@@ -50,8 +53,14 @@ public class FetchPostFilter {
 		return maxPrice;
 	}
 	
-	public FetchOrderEnum getOrder() {
+	public FetchOrderEnum getOrder()
+	{
+		System.out.println("Order then: " + order);
 		return order;
+	}
+	
+	public String getUserSecureID() {
+		return userSecureID;
 	}
 	
 	public boolean mustBeValidated() {
@@ -78,6 +87,10 @@ public class FetchPostFilter {
 		return maxPrice != -1;
 	}
 	
+	public boolean isUserIDPresent() {
+		return userSecureID != null;
+	}
+	
 	public static FetchPostFilter.Builder builder() {
 		return new FetchPostFilter.Builder();
 	}
@@ -90,6 +103,7 @@ public class FetchPostFilter {
 		private float maxPrice = -1;
 		private Set<String> keyWords;
 		private boolean mustBeValidated = true;
+		private String userSecureID = null;
 		
 		private Builder() {
 			this.keyWords = new HashSet<>();
@@ -111,6 +125,7 @@ public class FetchPostFilter {
 		}
 		
 		public Builder order(FetchOrderEnum o) {
+			System.out.println("Order set to " + o.name());
 			this.order = o;
 			return this;
 		}
@@ -130,6 +145,11 @@ public class FetchPostFilter {
 			return this;
 		}
 		
+		public Builder user(String userID) {
+			this.userSecureID = userID;
+			return this;
+		}
+		
 		public FetchPostFilter build() {
 			return new FetchPostFilter(this);
 		}
@@ -145,6 +165,10 @@ public class FetchPostFilter {
 		private String name;
 		private FetchOrderEnum(String name) {
 			this.name = name;
+		}
+		
+		public static FetchOrderEnum of(String objname) {
+			return Arrays.asList(FetchOrderEnum.values()).stream().filter(o -> o.name().equalsIgnoreCase(objname)).findFirst().get();
 		}
 		
 		public FetchOrder getObject() {

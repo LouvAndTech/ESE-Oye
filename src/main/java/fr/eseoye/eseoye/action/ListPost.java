@@ -31,6 +31,7 @@ public class ListPost extends AbstractFetchPost implements Action{
         try{
             handlePage(request, response, TypePost.CLASSIC);
         }catch (Exception e){
+            e.printStackTrace();
             //If there is as errpr we forward to the ListPosts.jsp with the first 10 posts
             this.forward(request, response, "/jsp/ListPosts.jsp");
         }
@@ -55,7 +56,7 @@ public class ListPost extends AbstractFetchPost implements Action{
     public void forward(HttpServletRequest request, HttpServletResponse response, String target) throws ServletException, IOException {
         System.out.println("Forwarding to " + target);
         try {
-            fillRequest(request, POST_PER_PAGE, 0, TypePost.CLASSIC);
+            fillRequest(request, POST_PER_PAGE, 0);
         } catch (Exception e) {
             e.printStackTrace();
         }

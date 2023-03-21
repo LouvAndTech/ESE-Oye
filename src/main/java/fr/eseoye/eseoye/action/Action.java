@@ -2,6 +2,8 @@ package fr.eseoye.eseoye.action;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.sql.SQLException;
+import java.text.ParseException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +24,7 @@ public interface Action {
      * @throws ServletException an {@link ServletException}
      * @throws IOException      an {@link IOException}
      */
-    void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ParseException;
+    void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ParseException, SQLException;
 
     /** Execute the script link to a particular action.
      *
