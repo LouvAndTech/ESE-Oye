@@ -195,7 +195,7 @@ public class PostTable implements ITable {
 				final List<String> postImages = fetchPostImages(request, res.getInt("post_id"), res.getString("post_sid"), 4);
 				if(postImages.isEmpty()) postImages.add(SFTPHelper.getFormattedImageURL(ImageDirectory.ROOT, "", "1.jpg"));
 				
-				pc = new PostComplete(res.getString("post_sid"), res.getString("post_title"), u, res.getFloat("post_price"), res.getDate("post_date"), res.getString("post_content"), c, ps, postImages.get(0), postImages.subList(1, postImages.size()));
+				pc = new PostComplete(res.getString("post_sid"), res.getString("post_title"), u, res.getFloat("post_price"), res.getDate("post_date"), res.getString("post_content"), c, ps, postImages.get(0), postImages);
 			}
 		} catch (SQLException e) {
 			//TODO Handle exception
