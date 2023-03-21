@@ -18,6 +18,19 @@ public class UserProfile extends AbstractFetchPost implements Action{
         super(dbCred);
     }
 
+    /**
+     * handle change page
+     * @param request   an {@link HttpServletRequest} object that
+     *                  contains the request the client has made
+     *                  of the servlet
+     *
+     * @param response  an {@link HttpServletResponse} object that
+     *                  contains the response the servlet sends
+     *                  to the client
+     *
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try{
@@ -30,6 +43,21 @@ public class UserProfile extends AbstractFetchPost implements Action{
         }
     }
 
+    /**
+     * Forward to the target page UserProfil.jsp
+     * @param request   an {@link HttpServletRequest} object that
+     *                  contains the request the client has made
+     *                  of the servlet
+     *
+     * @param response  an {@link HttpServletResponse} object that
+     *                  contains the response the servlet sends
+     *                  to the client
+     *
+     * @param target    a string to define the view to forward
+     *
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     public void forward(HttpServletRequest request, HttpServletResponse response, String target) throws ServletException, IOException {
         String targetUserId = request.getParameter("targetUser");

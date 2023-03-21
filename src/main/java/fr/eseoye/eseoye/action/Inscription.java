@@ -20,6 +20,20 @@ public class Inscription implements Action{
         this.dbCred = dbCred;
     }
 
+    /**
+     * Execute the subscriptioin script.
+     * @param request   an {@link HttpServletRequest} object that
+     *                  contains the request the client has made
+     *                  of the servlet
+     *
+     * @param response  an {@link HttpServletResponse} object that
+     *                  contains the response the servlet sends
+     *                  to the client
+     *
+     * @throws ServletException
+     * @throws IOException
+     * @throws ParseException
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ParseException {
         Ternary resultMail = DatabaseFactory.getInstance().getTable(UserTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).isAccountCreationPossible(request.getParameter("mail"), request.getParameter("password"));
@@ -43,6 +57,21 @@ public class Inscription implements Action{
 
     }
 
+    /**
+     * Forward to the Subscription page
+     * @param request   an {@link HttpServletRequest} object that
+     *                  contains the request the client has made
+     *                  of the servlet
+     *
+     * @param response  an {@link HttpServletResponse} object that
+     *                  contains the response the servlet sends
+     *                  to the client
+     *
+     * @param target    a string to define the view to forward
+     *
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     public void forward(HttpServletRequest request, HttpServletResponse response, String target) throws ServletException, IOException {
         System.out.println("Admin add user : forward");

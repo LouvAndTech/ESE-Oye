@@ -4,12 +4,6 @@ import static fr.eseoye.eseoye.io.json.JSONAssertion.assertInstanceof;
 
 import java.util.HashMap;
 
-import fr.eseoye.eseoye.action.Index;
-import fr.eseoye.eseoye.action.ListPost;
-import fr.eseoye.eseoye.action.OnePost;
-import fr.eseoye.eseoye.action.UserPanel;
-import fr.eseoye.eseoye.io.IOHandler;
-import fr.eseoye.eseoye.io.SFTPFactory;
 import fr.eseoye.eseoye.io.databases.DatabaseCredentials;
 import fr.eseoye.eseoye.io.databases.DatabaseType;
 import fr.eseoye.eseoye.io.ftp.SFTPCredentials;

@@ -9,6 +9,9 @@ import fr.eseoye.eseoye.io.databases.tables.PostTable;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * This Abstract class is used as a base for every action that need to fetch a single post from the database
+ */
 public abstract class AbstractOnePost {
 
     protected final DatabaseCredentials dbCred;
@@ -17,6 +20,13 @@ public abstract class AbstractOnePost {
         this.dbCred = dbCred;
     }
 
+    /**
+     * Fill the request with the post
+     * @param request  an {@link HttpServletRequest} object
+     * @param postId    the id of the post to fetch
+     * @param format    the format of the description wanted
+     * @throws Exception    if the post id is null or empty
+     */
     protected void fillPost(HttpServletRequest request , String postId , Format format) throws Exception{
         if(postId == null){
             throw new Exception("No post id given");
@@ -28,6 +38,12 @@ public abstract class AbstractOnePost {
         request.setAttribute("post", p);
     }
 
+    /**
+     * Fill the request with the post if the posr ID is given in the request
+     * @param request an {@link HttpServletRequest} object
+     * @param format   the format of the description wanted
+     * @throws Exception   if the post id is null or empty
+     */
     protected void fillPost(HttpServletRequest request, Format format) throws Exception{
         String postId = request.getParameter("postId");
         fillPost(request, postId, format);
@@ -48,6 +64,12 @@ public abstract class AbstractOnePost {
         return p;
     }
 
+    /**
+     * Execute the action given in the request
+     * @param request an {@link HttpServletRequest} object
+     * @param response an {@link HttpServletResponse} object
+     * @throws Exception if the action is not found
+     */
     protected void executeAction(HttpServletRequest request , HttpServletResponse response) throws Exception{
         String action = request.getParameter("action");
         System.out.println("Action : " + action);
@@ -63,6 +85,9 @@ public abstract class AbstractOnePost {
         }
     }
 
+    /**
+     * Enum used to define the format of the description
+     */
     protected enum Format{
         HTML, TXT
     }

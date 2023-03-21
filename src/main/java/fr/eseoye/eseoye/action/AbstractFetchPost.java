@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * This Abstract class is used as a base for every action that need to fetch multiple post from the database
+ */
 public abstract class AbstractFetchPost {
 
     protected final DatabaseCredentials dbCred;

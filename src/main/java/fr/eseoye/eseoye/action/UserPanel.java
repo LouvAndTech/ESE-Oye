@@ -19,6 +19,10 @@ public class UserPanel implements Action{
 
     private final DatabaseCredentials dbCred;
 
+    /**
+     * Private constructor because of singleton
+     * @param dbCred
+     */
     private UserPanel(DatabaseCredentials dbCred){
         this.dbCred = dbCred;
         //User Part

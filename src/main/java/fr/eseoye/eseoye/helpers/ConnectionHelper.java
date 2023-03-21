@@ -19,6 +19,9 @@ public class ConnectionHelper {
     public static Boolean isConnected(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         String id = request.getParameter("id");
+        if (id == null) {
+            id = "Connection";
+        }
         if(session.getAttribute("idUser") == null && !(id.equals("Inscription") || id.equals("Connection") || id.equals("AdminLogin"))){
             response.sendRedirect(request.getRequestURI()+"?id=Connection");
             return false;

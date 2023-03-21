@@ -35,7 +35,6 @@ public class ESEOyeServlet extends HttpServlet {
         try {
             SFTPFactory.createInstance(IOHandler.getInstance().getConfiguration().getSFTPCredentials());
             DatabaseCredentials dbCred = IOHandler.getInstance().getConfiguration().getDatabaseCredentials();
-            actionMap.put("Index", new Index(dbCred));
             actionMap.put("ListPosts", new ListPost(dbCred));
             actionMap.put("OnePost", new OnePost(dbCred));
             actionMap.put("UserProfile", new UserProfile(dbCred));
@@ -78,7 +77,7 @@ public class ESEOyeServlet extends HttpServlet {
             String id = request.getParameter("id");
             System.out.println("doGet : " + id);
             if (id == null || !actionMap.containsKey(id)) {
-                id = "Index";
+                id = "Connection";
             }
             actionMap.get(id).forward(request, response, "/jsp/" + id + ".jsp");
         }
@@ -109,7 +108,7 @@ public class ESEOyeServlet extends HttpServlet {
             String id = request.getParameter("id");
             System.out.println("doPost : " + id);
             if (id == null || !actionMap.containsKey(id)) {
-                id = "Index";
+                id = "Connection";
             }
             try {
                 actionMap.get(id).execute(request, response);

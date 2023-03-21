@@ -18,6 +18,20 @@ public class AdminEditPost extends AbstractOnePost implements Action {
         super(dbCred);
     }
 
+    /**
+     * Method called by the servlet to process a post request on the AddPost page.
+     * @param request   an {@link HttpServletRequest} object that
+     *                  contains the request the client has made
+     *                  of the servlet
+     *
+     * @param response  an {@link HttpServletResponse} object that
+     *                  contains the response the servlet sends
+     *                  to the client
+     *
+     * @throws ServletException
+     * @throws IOException
+     * @throws ParseException
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ParseException {
         System.out.println("AdminEditPost : execute");
@@ -39,6 +53,21 @@ public class AdminEditPost extends AbstractOnePost implements Action {
         response.sendRedirect(request.getRequestURI()+"?id=UserPanel&contentPage=AdminValidePost");
     }
 
+    /**
+     * Method called by the servlet to process a get request on the AddPost page.
+     * @param request   an {@link HttpServletRequest} object that
+     *                  contains the request the client has made
+     *                  of the servlet
+     *
+     * @param response  an {@link HttpServletResponse} object that
+     *                  contains the response the servlet sends
+     *                  to the client
+     *
+     * @param target    a string to define the view to forward
+     *
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     public void forward(HttpServletRequest request, HttpServletResponse response, String target) throws ServletException, IOException {
         System.out.println("AdminEditPost : forward");

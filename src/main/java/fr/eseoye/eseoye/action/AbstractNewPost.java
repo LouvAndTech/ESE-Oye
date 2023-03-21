@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+/**
+ * This Abstract class is used as a base for every action that need to push new post to the database
+ */
 public abstract class AbstractNewPost {
 
     protected final DatabaseCredentials dbCred;
