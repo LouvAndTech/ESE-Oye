@@ -125,7 +125,7 @@ public class PostTable implements ITable {
 				post.add(new Post(res.getString("post_sid"), res.getString("post_title"), u, res.getInt("post_price"), res.getDate("post_date"), c, ps, postImages.get(0)));
 			}
 			
-			int totalPostNumber = request.getValuesCount(getTableName(), Arrays.asList("id"), whereClause.getValueA(), whereClause.getValueB());
+			int totalPostNumber = request.getValuesCount(getTableName(), Arrays.asList("id", "lock"), whereClause.getValueA(), whereClause.getValueB());
 			
 			return new Tuple<>(post, (int)Math.floor(totalPostNumber/postNumber));
 		} catch (SQLException e) {
