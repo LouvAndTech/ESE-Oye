@@ -116,8 +116,8 @@ public class PostTable implements ITable {
 			while(res.next()) {
 			
 				final SimplifiedEntity u = new SimplifiedEntity(res.getString("userpost_name"), res.getString("userpost_surname"));
-				final Category c = new Category(res.getInt("category_id"), res.getString("category_name"));
-				final PostState ps = new PostState(res.getInt("poststate_id"), res.getString("poststate_name"));
+				final Category c = new Category(res.getString("category_name"));
+				final PostState ps = new PostState(res.getString("poststate_name"));
 				
 				final List<String> postImages = fetchPostImages(request, res.getInt("post_id"), res.getString("post_sid"), 1);
 				if(postImages.isEmpty()) postImages.add(SFTPHelper.getFormattedImageURL(ImageDirectory.ROOT, "", "404"));
