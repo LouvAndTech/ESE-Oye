@@ -15,6 +15,9 @@
 <div class="container">
   <form action="ese-oye?id=UserPanel&contentPage=AdminEditPost" method="post" enctype='multipart/form-data'>
     <div class="centerSectionElement">
+      <c:if test="${!empty error}">
+        <p class="warning" style="display: block">${error}</p>
+      </c:if>
       <div class="header">
         <input type="text" name="title" placeholder="Titre" value="" required>
         <input type="number" name="price" placeholder="Prix" value="" required>

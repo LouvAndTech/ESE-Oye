@@ -14,23 +14,34 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.ParseException;
 
-public class AdminEditPost implements Action {
-
-    private final DatabaseCredentials dbCred;
+public class AdminEditPost extends AbstractNewPost implements Action {
 
     public AdminEditPost(DatabaseCredentials dbCred){
-        this.dbCred = dbCred;
+        super(dbCred);
     }
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ParseException {
         System.out.println("Admin add user : execute");
+        try{
+            analysePost p = new analysePost(request);
+            p.isComplete(); // throws exception if not complete
+
+            //todo : Push the changes into the DB
+        }
+        catch (Exception e){
+            request.setAttribute("error", e.getMessage());
+            e.printStackTrace();
+            forward(request, response, "/jsp/UserPanel.jsp");
+            return;
+        }
         request.getRequestDispatcher("/jsp/UserPanel.jsp").forward(request,response);
     }
 
     @Override
     public void forward(HttpServletRequest request, HttpServletResponse response, String target) throws ServletException, IOException {
         System.out.println("Admin add user : forward");
+        fillCategoriesStates(request);
         request.getRequestDispatcher("/jsp/UserPanel.jsp").forward(request,response);
     }
 }
