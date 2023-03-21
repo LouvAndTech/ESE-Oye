@@ -53,7 +53,9 @@ public class FetchPostFilter {
 		return maxPrice;
 	}
 	
-	public FetchOrderEnum getOrder() {
+	public FetchOrderEnum getOrder()
+	{
+		System.out.println("Order then: " + order);
 		return order;
 	}
 	
@@ -123,6 +125,7 @@ public class FetchPostFilter {
 		}
 		
 		public Builder order(FetchOrderEnum o) {
+			System.out.println("Order set to " + o.name());
 			this.order = o;
 			return this;
 		}

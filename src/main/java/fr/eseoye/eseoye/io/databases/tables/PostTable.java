@@ -187,6 +187,7 @@ public class PostTable implements ITable {
 	}
 	
 	private String generateOrderClausePost(FetchOrderEnum order) {
+		System.out.println("ORDER here: "+order);
 		switch (order) {
 			case DATE_ASCENDING: 
 				return "ORDER BY "+getTableName()+".id ASC";
