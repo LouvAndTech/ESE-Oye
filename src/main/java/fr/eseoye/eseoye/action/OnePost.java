@@ -43,9 +43,9 @@ public class OnePost extends AbstractOnePost implements Action {
         try{
             executeAction(request, response);
         }catch (Exception e){
-            response.sendRedirect("/jsp/ListsPosts.jsp");
+            response.sendRedirect("/ese-oye?id=ListPosts");
         }
-        response.sendRedirect("/jsp/ListsPosts.jsp");
+        response.sendRedirect("/ese-oye?id=ListPosts");
     }
 
     /**
