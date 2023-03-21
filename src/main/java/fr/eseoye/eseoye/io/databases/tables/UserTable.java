@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -69,7 +70,7 @@ public class UserTable implements ITable {
 	
 	public void deleteUserAccount(String userSecureID) {
 		try {
-			new DatabaseRequest(factory, credentials, true).deleteValues(getTableName(), "secure_id=?", Arrays.asList(userSecureID));
+			new DatabaseRequest(factory, credentials, true).deleteValues(getTableName(), "secure_id=?", Arrays.asList(new Tuple<>(userSecureID, Types.VARCHAR)));
 		} catch (SQLException e) {
 			//TODO Handle exception correctly
 		}
@@ -77,7 +78,7 @@ public class UserTable implements ITable {
 	
 	public Ternary isUserLocked(String userSecureID) {
 		try {
-			final ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("secure_id","state"), "secure_id=?", Arrays.asList(userSecureID));
+			final ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("secure_id","state"), "secure_id=?", Arrays.asList(new Tuple<>(userSecureID, Types.VARCHAR)));
 			return res.next() ? (res.getInt("state") == 2 ? Ternary.TRUE : Ternary.FALSE) : Ternary.UNDEFINED; 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -89,7 +90,7 @@ public class UserTable implements ITable {
 		try {
 			final int userState = lockUser ? 2 : 1; 
 			
-			new DatabaseRequest(factory, credentials, true).updateValues(getTableName(), Arrays.asList("state"), Arrays.asList(userState), "secure_id=?", Arrays.asList(userSecureID));
+			new DatabaseRequest(factory, credentials, true).updateValues(getTableName(), Arrays.asList("state"), Arrays.asList(userState), "secure_id=?", Arrays.asList(new Tuple<>(userSecureID, Types.VARCHAR)));
 		} catch (SQLException e) {
 			// TODO Handle error correctly
 		}
@@ -97,7 +98,7 @@ public class UserTable implements ITable {
 	
 	public String checkUserConnection(String mail, String password) {
 		try {
-			ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("mail","password","secure_id"), "mail = ?", Arrays.asList(mail));
+			ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("mail","password","secure_id"), "mail = ?", Arrays.asList(new Tuple<>(mail, Types.VARCHAR)));
 			boolean isFound = false;
 			while(!isFound && res.next()) 
 				isFound = BCrypt.checkpw(password, res.getString("password"));
@@ -127,13 +128,13 @@ public class UserTable implements ITable {
 		
 		try {
 			request = new DatabaseRequest(factory, credentials);
-			final int userDatabaseId = request.getValues(getTableName(), Arrays.asList("id"), "secure_id = ?", Arrays.asList(userSecureID)).getInt("id"); //Get the id of the user and store it for the creation of the image
+			final int userDatabaseId = request.getValues(getTableName(), Arrays.asList("id"), "secure_id = ?", Arrays.asList(new Tuple<>(userSecureID, Types.VARCHAR))).getInt("id"); //Get the id of the user and store it for the creation of the image
 			
 			String existingPicSecureID = null;
-			ResultSetWrappingSqlRowSet requestExistingPic = request.getValues(USER_IMAGE_TABLE_NAME, Arrays.asList("id", "secure_id", "user"), "user=?", Arrays.asList(userDatabaseId));
+			ResultSetWrappingSqlRowSet requestExistingPic = request.getValues(USER_IMAGE_TABLE_NAME, Arrays.asList("id", "secure_id", "user"), "user=?", Arrays.asList(new Tuple<>(userDatabaseId, Types.INTEGER)));
 			if(requestExistingPic.next()) {
 				existingPicSecureID = requestExistingPic.getString("secure_id");	
-				request.deleteValues(USER_IMAGE_TABLE_NAME, "secure_id=?", Arrays.asList(existingPicSecureID));
+				request.deleteValues(USER_IMAGE_TABLE_NAME, "secure_id=?", Arrays.asList(new Tuple<>(existingPicSecureID, Types.VARCHAR)));
 			}
 			
 			final int lastId = request.getValues("SELECT id FROM "+USER_IMAGE_TABLE_NAME+" ORDER BY id DESC LIMIT 1;").getInt("id"); //Get the last id for user image in the table
@@ -163,9 +164,9 @@ public class UserTable implements ITable {
 		try {
 			request = new DatabaseRequest(factory, credentials);
 			
-			final int userDatabaseId = request.getValues(getTableName(), Arrays.asList("id"), "secure_id = ", Arrays.asList(userSecureID)).getInt("id"); //Get the id of the user and store it to get the image
+			final int userDatabaseId = request.getValues(getTableName(), Arrays.asList("id"), "secure_id = ", Arrays.asList(new Tuple<>(userSecureID, Types.VARCHAR))).getInt("id"); //Get the id of the user and store it to get the image
 
-			final ResultSetWrappingSqlRowSet res = request.getValues(USER_IMAGE_TABLE_NAME, Arrays.asList("secure_id"), "user = ?", Arrays.asList(userDatabaseId));
+			final ResultSetWrappingSqlRowSet res = request.getValues(USER_IMAGE_TABLE_NAME, Arrays.asList("secure_id"), "user = ?", Arrays.asList(new Tuple<>(userDatabaseId, Types.INTEGER)));
 			if(res.next())
 				return SFTPHelper.getFormattedImageURL(ImageDirectory.USER, userSecureID, res.getString("secure_id"));
 		} catch (SQLException e) {
@@ -184,7 +185,7 @@ public class UserTable implements ITable {
 	
 	public void setNameSurname(String secureID, String newName, String newSurname) {
 		try {
-			new DatabaseRequest(factory, credentials, true).updateValues(getTableName(), Arrays.asList("name","surname"), Arrays.asList(newName, newSurname), "secure_id = ?", Arrays.asList(secureID));
+			new DatabaseRequest(factory, credentials, true).updateValues(getTableName(), Arrays.asList("name","surname"), Arrays.asList(newName, newSurname), "secure_id = ?", Arrays.asList(new Tuple<>(secureID, Types.VARCHAR)));
 		} catch (SQLException e) {
 			throw new DataCreationException(getClass(), CreationExceptionReason.FAILED_DB_CREATION);
 		}
@@ -192,7 +193,7 @@ public class UserTable implements ITable {
 	
 	public Tuple<String, String> getNameSurname(String secureID) {
 		try {
-			ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("name","surname"), "secure_id = ?", Arrays.asList(secureID));
+			ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("name","surname"), "secure_id = ?", Arrays.asList(new Tuple<>(secureID, Types.VARCHAR)));
 			if(res.next())
 				return new Tuple<>(res.getString("name"), res.getString("surname"));
 		} catch (SQLException e) {
@@ -203,7 +204,7 @@ public class UserTable implements ITable {
 	
 	public void setPassword(String secureID, String newPassword) {
 		try {
-			new DatabaseRequest(factory, credentials, true).updateValues(getTableName(), Arrays.asList("password"), Arrays.asList(newPassword), "secure_id = ?", Arrays.asList(secureID));
+			new DatabaseRequest(factory, credentials, true).updateValues(getTableName(), Arrays.asList("password"), Arrays.asList(newPassword), "secure_id = ?", Arrays.asList(new Tuple<>(secureID, Types.VARCHAR)));
 		} catch (SQLException e) {
 			throw new DataCreationException(getClass(), CreationExceptionReason.FAILED_DB_CREATION);
 		}
@@ -211,7 +212,7 @@ public class UserTable implements ITable {
 	
 	public String getPassword(String secureID) {
 		try {
-			ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("password"), "secure_id = ?", Arrays.asList(secureID));
+			ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("password"), "secure_id = ?", Arrays.asList(new Tuple<>(secureID, Types.VARCHAR)));
 			if(res.next())
 				return res.getString("password");
 		} catch (SQLException e) {
@@ -222,7 +223,7 @@ public class UserTable implements ITable {
 	
 	public void setPhoneNumber(String secureID, String newNumber) {
 		try {
-			 new DatabaseRequest(factory, credentials, true).updateValues(getTableName(), Arrays.asList("phone"), Arrays.asList(newNumber), "secure_id = ?", Arrays.asList(secureID));
+			 new DatabaseRequest(factory, credentials, true).updateValues(getTableName(), Arrays.asList("phone"), Arrays.asList(newNumber), "secure_id = ?", Arrays.asList(new Tuple<>(secureID, Types.VARCHAR)));
 		} catch (SQLException e) {
 			throw new DataCreationException(getClass(), CreationExceptionReason.FAILED_DB_CREATION);
 		}
@@ -230,7 +231,7 @@ public class UserTable implements ITable {
 	
 	public String getPhoneNumber(String secureID) {
 		try {
-			ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("phone"), "secure_id = ?", Arrays.asList(secureID));
+			ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("phone"), "secure_id = ?", Arrays.asList(new Tuple<>(secureID, Types.VARCHAR)));
 			if(res.next())
 				return res.getString("phone");
 		} catch (SQLException e) {
@@ -241,7 +242,7 @@ public class UserTable implements ITable {
 	
 	public void setBirthDate(String secureID, String newBirthDate) {
 		try {
-			 new DatabaseRequest(factory, credentials, true).updateValues(getTableName(), Arrays.asList("birth"), Arrays.asList(newBirthDate), "secure_id = ?", Arrays.asList(secureID));
+			 new DatabaseRequest(factory, credentials, true).updateValues(getTableName(), Arrays.asList("birth"), Arrays.asList(newBirthDate), "secure_id = ?", Arrays.asList(new Tuple<>(secureID, Types.VARCHAR)));
 		} catch (SQLException e) {
 			throw new DataCreationException(getClass(), CreationExceptionReason.FAILED_DB_CREATION);
 		}
@@ -249,7 +250,7 @@ public class UserTable implements ITable {
 
 	public Date getBirthDate(String secureID) {
 		try {
-			ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("birth"), "secure_id = ?", Arrays.asList(secureID));
+			ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("birth"), "secure_id = ?", Arrays.asList(new Tuple<>(secureID, Types.VARCHAR)));
 			if(res.next())
 				return res.getDate("birth");
 		} catch (SQLException e) {
@@ -260,7 +261,7 @@ public class UserTable implements ITable {
 	
 	public void setMail(String secureID, String newMail) {
 		try {
-			 new DatabaseRequest(factory, credentials, true).updateValues(getTableName(), Arrays.asList("mail"), Arrays.asList(newMail), "secure_id = ?", Arrays.asList(secureID));
+			 new DatabaseRequest(factory, credentials, true).updateValues(getTableName(), Arrays.asList("mail"), Arrays.asList(newMail), "secure_id = ?", Arrays.asList(new Tuple<>(secureID, Types.VARCHAR)));
 		} catch (SQLException e) {
 			throw new DataCreationException(getClass(), CreationExceptionReason.FAILED_DB_CREATION);
 		}
@@ -268,7 +269,7 @@ public class UserTable implements ITable {
 
 	public String getMail(String secureID) {
 		try {
-			ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("mail"), "secure_id = ?", Arrays.asList(secureID));
+			ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("mail"), "secure_id = ?", Arrays.asList(new Tuple<>(secureID, Types.VARCHAR)));
 			if(res.next()) 
 				return res.getString("mail");
 		} catch (SQLException e) {
@@ -280,7 +281,7 @@ public class UserTable implements ITable {
 	public Ternary isAccoundCreationPossible(String mail, String phone) {
 		try {
 			phone = phone.replace(" ", "");
-			return (new DatabaseRequest(factory, credentials, true).getValuesCount(getTableName(), Arrays.asList("mail","phone"), "(mail=? OR phone=?)", Arrays.asList(mail, phone)) != 0 ? Ternary.TRUE : Ternary.FALSE);
+			return (new DatabaseRequest(factory, credentials, true).getValuesCount(getTableName(), Arrays.asList("mail","phone"), "(mail=? OR phone=?)", Arrays.asList(new Tuple<>(mail, Types.VARCHAR), new Tuple<>(phone, Types.VARCHAR))) != 0 ? Ternary.TRUE : Ternary.FALSE);
 		} catch (SQLException e) {
 			//TODO Handle exception correctly
 		}

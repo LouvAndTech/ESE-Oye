@@ -1,6 +1,7 @@
 package fr.eseoye.eseoye.io.databases.tables;
 
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -54,7 +55,7 @@ public class AdminTable implements ITable {
 	
 	public boolean deleteAdminAccount(String adminSecureID) {
 		try {
-			new DatabaseRequest(factory, credentials, true).deleteValues(getTableName(), "secure_id=?", Arrays.asList(adminSecureID));
+			new DatabaseRequest(factory, credentials, true).deleteValues(getTableName(), "secure_id=?", Arrays.asList(new Tuple<>(adminSecureID, Types.VARCHAR)));
 			return true;
 		} catch (SQLException e) {
 			return false;
@@ -66,7 +67,7 @@ public class AdminTable implements ITable {
 			String[] loginParsed = login.split(".");
 			if(loginParsed.length != 2) return null;
 			
-			ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("name","surname","password","secure_id"), "name=? AND surname=?", Arrays.asList(loginParsed[0], loginParsed[1]));
+			ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("name","surname","password","secure_id"), "name=? AND surname=?", Arrays.asList(new Tuple<>(loginParsed[0], Types.VARCHAR), new Tuple<>(loginParsed[1], Types.VARCHAR)));
 			boolean isFound = false;
 			while(!isFound && res.next()) 
 				isFound = BCrypt.checkpw(password, res.getString("password"));
@@ -94,7 +95,7 @@ public class AdminTable implements ITable {
 	
 	public Tuple<String, String> getNameSurname(String adminSecureID) {
 		try {
-			ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("name","surname"), "secure_id = ?", Arrays.asList(adminSecureID));
+			ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("name","surname"), "secure_id = ?", Arrays.asList(new Tuple<>(adminSecureID, Types.VARCHAR)));
 			if(res.next())
 				return new Tuple<>(res.getString("name"), res.getString("surname"));
 		} catch (SQLException e) {
@@ -105,7 +106,7 @@ public class AdminTable implements ITable {
 	
 	public Ternary isAnAdminSecureID(String secureID) {
 		try {
-			return new DatabaseRequest(factory, credentials, true).getValuesCount(getTableName(), Arrays.asList("secure_id"), "secure_id=?", Arrays.asList(secureID)) != 0 ? Ternary.TRUE : Ternary.FALSE;
+			return new DatabaseRequest(factory, credentials, true).getValuesCount(getTableName(), Arrays.asList("secure_id"), "secure_id=?", Arrays.asList(new Tuple<>(secureID, Types.VARCHAR))) != 0 ? Ternary.TRUE : Ternary.FALSE;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
