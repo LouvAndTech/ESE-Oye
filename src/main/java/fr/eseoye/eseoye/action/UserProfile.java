@@ -20,7 +20,14 @@ public class UserProfile extends AbstractFetchPost implements Action{
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //Nothing to do
+        try{
+            super.handlePage(request, response,TypePost.USER);
+            fillName(request, request.getParameter("targetUserId"));
+            request.getRequestDispatcher("/jsp/UserProfile.jsp").forward(request, response);
+        }catch (Exception e){
+            e.printStackTrace();
+            request.getRequestDispatcher("/jsp/ListPosts.jsp").forward(request, response);
+        }
     }
 
     @Override
@@ -40,16 +47,30 @@ public class UserProfile extends AbstractFetchPost implements Action{
         }
     }
 
+    /**
+     * Fill the request with the posts of the user and his name
+     * @param request an {@link HttpServletRequest} object that contains the request
+     * @param targetUserId the id of the user
+     */
     private void fillBack(HttpServletRequest request, String targetUserId){
         try{
-            System.out.println("Filling request with targetUserId = " + targetUserId);
             super.fillRequest(request, POST_PER_PAGE, 0, targetUserId);
-            Tuple<String,String> rep = DatabaseFactory.getInstance().getTable(UserTable.class ,dbCred).getNameSurname(targetUserId);
-            System.out.println("Name : " + rep.getValueA() + " Surname : " + rep.getValueB());
-            request.setAttribute("targetName", rep.getValueA());
-            request.setAttribute("targetSurname", rep.getValueB());
+            fillName(request, targetUserId);
+            request.setAttribute("targetUserId", targetUserId);
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Fill the name and surname of the user
+     * @param request an {@link HttpServletRequest} object that contains the request
+     * @param targetUserId the id of the user
+     */
+    private void fillName(HttpServletRequest request, String targetUserId){
+        Tuple<String,String> rep = DatabaseFactory.getInstance().getTable(UserTable.class ,dbCred).getNameSurname(targetUserId);
+        request.setAttribute("targetName", rep.getValueA());
+        request.setAttribute("targetSurname", rep.getValueB());
+        request.setAttribute("targetUserId", targetUserId);
     }
 }

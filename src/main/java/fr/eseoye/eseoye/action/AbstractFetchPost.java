@@ -43,11 +43,6 @@ public abstract class AbstractFetchPost {
          */
     protected void handlePage(HttpServletRequest request, HttpServletResponse response, TypePost type) throws Exception {
         FetchPostFilter filters = null;
-        //Print out every parameters:
-        System.out.println("Parameters:");
-        for(String s : request.getParameterMap().keySet()){
-            System.out.println(s + " : " + request.getParameter(s));
-        }
         if(type == TypePost.CLASSIC){
             //If it's a classic post we check the filters
             filters = fillFilters(request);
@@ -55,6 +50,9 @@ public abstract class AbstractFetchPost {
             request.setAttribute("state",   filters.getStateID());
             request.setAttribute("price",   filters.getMaxPrice());
             request.setAttribute("order",   filters.getOrder());
+            System.out.println("Filters Order: " + filters.getOrder());
+        }else if(type == TypePost.USER){
+            filters = FetchPostFilter.builder().user(request.getParameter("targetUserId")).build();
         }
         if(request.getParameter("newPage") != null && request.getParameter("newPage").matches("1")){
             System.out.println("Changing page");
@@ -253,6 +251,6 @@ public abstract class AbstractFetchPost {
      *  - PRIVATE : fetch only the post of the current user (without the filters)
      */
     protected enum TypePost{
-        CLASSIC, PRIVATE
+        CLASSIC, PRIVATE, USER
     }
 }

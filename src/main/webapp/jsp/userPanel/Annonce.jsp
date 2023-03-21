@@ -49,8 +49,8 @@
             <button class="btn" onclick="window.Request.sendPost('ese-oye?id=UserPanel&contentPage=Annonce&postPage=${postPage-1}&newPage=1')"><span class="material-symbols-outlined">navigate_before</span></button>
             <c:forEach var="page" items="${nbPage}">
                 <button <c:choose>
-                    <c:when test="${postPage == page}">class="actual" style="cursor: default" </c:when>
-                    <c:otherwise>onclick="window.Request.sendPost('ese-oye?id=UserPanel&contentPage=Annonce&postPage=${page}&newPage=1')"</c:otherwise>
+                    <c:when test="${postPage+1 == page}">class="actual" style="cursor: default" </c:when>
+                    <c:otherwise>onclick="window.Request.sendPost('ese-oye?id=UserPanel&contentPage=Annonce&postPage=${page-1}&newPage=1')"</c:otherwise>
                 </c:choose>
                 >${page}</button>
             </c:forEach>

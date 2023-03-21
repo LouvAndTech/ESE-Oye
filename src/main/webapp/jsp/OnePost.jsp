@@ -68,7 +68,6 @@
             <img class="imgPP" src="${pageContext.request.contextPath}/img/blankPP.png" alt="">
             <div class="info">
                 <p>${post.author.name} ${post.author.surname}</p>
-                <!--p>5 annonces</p-->
             </div>
             <a href="ese-oye?id=UserProfile&targetUser=${post.author.secureID}" class="aBtn">Voir le profil</a>
         </div>
