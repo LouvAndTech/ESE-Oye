@@ -16,7 +16,7 @@ import java.util.List;
 
 public abstract class AbstractFetchPost {
 
-    private final DatabaseCredentials dbCred;
+    protected final DatabaseCredentials dbCred;
 
     public AbstractFetchPost(DatabaseCredentials dbCred){
         this.dbCred = dbCred;
@@ -126,7 +126,6 @@ public abstract class AbstractFetchPost {
      * @throws Exception an {@link Exception} of the error if any
      */
     protected void fillRequest (HttpServletRequest request,int nbPost, int page, String userId) throws Exception {
-        //todo add user id
         Tuple<List<Post>, Integer> fromDB = fetchPost(nbPost, page, FetchPostFilter.builder().user(userId).build());
         System.out.println("size of batch : " + fromDB.getValueA().size());
         System.out.println("nb of page : " + fromDB.getValueB());

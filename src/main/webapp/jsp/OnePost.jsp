@@ -70,7 +70,7 @@
                 <p>${post.author.name} ${post.author.surname}</p>
                 <!--p>5 annonces</p-->
             </div>
-            <a href="" class="aBtn">Voir le profile</a>
+            <a href="ese-oye?id=UserProfile&targetUser=${post.author.secureID}" class="aBtn">Voir le profil</a>
         </div>
     </div>
 </section>

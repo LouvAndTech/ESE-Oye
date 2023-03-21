@@ -35,6 +35,7 @@ public class ESEOyeServlet extends HttpServlet {
             actionMap.put("Index", new Index(dbCred));
             actionMap.put("ListPosts", new ListPost(dbCred));
             actionMap.put("OnePost", new OnePost(dbCred));
+            actionMap.put("UserProfile", new UserProfile(dbCred));
             actionMap.put("UserPanel", UserPanel.getInstance(dbCred));
         }catch (Exception e){
             e.printStackTrace();
