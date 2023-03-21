@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.sql.rowset.CachedRowSet;
+import org.springframework.jdbc.support.rowset.ResultSetWrappingSqlRowSet;
 
 import fr.eseoye.eseoye.beans.Category;
 import fr.eseoye.eseoye.io.DatabaseFactory;
@@ -25,7 +25,7 @@ public class PostCategoryTable implements ITable {
 	public List<Category> fetchAllCategory() {
 		final List<Category> result = new ArrayList<>();
 		try {
-			CachedRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("*"));
+			ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("*"));
 			while(res.next())
 				result.add(new Category(res.getInt("id"), res.getString("name")));
 			

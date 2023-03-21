@@ -7,6 +7,8 @@ import java.util.List;
 import javax.sql.rowset.CachedRowSet;
 import javax.sql.rowset.RowSetProvider;
 
+import org.springframework.jdbc.support.rowset.ResultSetWrappingSqlRowSet;
+
 import fr.eseoye.eseoye.io.DatabaseFactory;
 import fr.eseoye.eseoye.io.databases.DatabaseCredentials;
 import fr.eseoye.eseoye.io.databases.implementation.DatabaseImplementation;
@@ -68,41 +70,36 @@ public class DatabaseRequest {
 		if(instantClose) this.dbConnection.close();
 	}
 	
-	public CachedRowSet getValues(String table, List<String> fields) throws SQLException {
+	public ResultSetWrappingSqlRowSet getValues(String table, List<String> fields) throws SQLException {
 		if(this.dbConnection.isClosed()) throw new SQLException("Couldn't execute the method because no connection to the database was found.");
-		final CachedRowSet result = RowSetProvider.newFactory().createCachedRowSet();
-		result.populate(this.dbImplementation.getValues(dbConnection, table, fields));
+		final ResultSetWrappingSqlRowSet result = new ResultSetWrappingSqlRowSet(this.dbImplementation.getValues(dbConnection, table, fields));
 		
 		if(instantClose) this.dbConnection.close();
 		
 		return result;
 	}
 	
-	public CachedRowSet getValues(String table, List<String> fields, String condition, List<Object> valuesCondition) throws SQLException {
+	public ResultSetWrappingSqlRowSet getValues(String table, List<String> fields, String condition, List<Object> valuesCondition) throws SQLException {
 		if(this.dbConnection.isClosed()) throw new SQLException("Couldn't execute the method because no connection to the database was found.");
-		final CachedRowSet result = RowSetProvider.newFactory().createCachedRowSet();
-		result.populate(this.dbImplementation.getValues(dbConnection, table, fields, condition, valuesCondition));
+		final ResultSetWrappingSqlRowSet result = new ResultSetWrappingSqlRowSet(this.dbImplementation.getValues(dbConnection, table, fields, condition, valuesCondition));
 		
 		if(instantClose) this.dbConnection.close();
 		
 		return result;
 	}
 	
-	public CachedRowSet getValues(String sqlRequest) throws SQLException {
+	public ResultSetWrappingSqlRowSet getValues(String sqlRequest) throws SQLException {
 		if(this.dbConnection.isClosed()) throw new SQLException("Couldn't execute the method because no connection to the database was found.");
-		final CachedRowSet result = RowSetProvider.newFactory().createCachedRowSet();
-		result.populate(this.dbImplementation.getValues(dbConnection, sqlRequest));
+		final ResultSetWrappingSqlRowSet result = new ResultSetWrappingSqlRowSet(this.dbImplementation.getValues(dbConnection, sqlRequest));
 		
 		if(instantClose) this.dbConnection.close();
 		
 		return result;
 	}
 	
-	public CachedRowSet getValuesWithCondition(String sqlRequest, List<Object> valuesCondition) throws SQLException {
+	public ResultSetWrappingSqlRowSet getValuesWithCondition(String sqlRequest, List<Object> valuesCondition) throws SQLException {
 		if(this.dbConnection.isClosed()) throw new SQLException("Couldn't execute the method because no connection to the database was found.");
-		System.out.println(sqlRequest);
-		final CachedRowSet result = RowSetProvider.newFactory().createCachedRowSet();
-		result.populate(this.dbImplementation.getValuesWithCondition(dbConnection, sqlRequest, valuesCondition));
+		final ResultSetWrappingSqlRowSet result = new ResultSetWrappingSqlRowSet(this.dbImplementation.getValuesWithCondition(dbConnection, sqlRequest, valuesCondition));
 		
 		if(instantClose) this.dbConnection.close();
 		

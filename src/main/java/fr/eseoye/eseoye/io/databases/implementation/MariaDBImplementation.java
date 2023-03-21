@@ -23,7 +23,7 @@ public class MariaDBImplementation extends DatabaseImplementation {
 	@Override
 	public void insertValues(Connection connection, String table, List<String> fields, List<Object> values) throws SQLException {
 		PreparedStatement preparedStatement = connection
-				.prepareStatement("INSERT INTO "+table+" ("+convertListToDatabaseFields(fields)+") VALUES("+this.generateRequestEmptyValues(values.size())+");");
+				.prepareStatement("INSERT INTO "+table+" ("+convertListToDatabaseFields(fields)+") VALUES ("+this.generateRequestEmptyValues(values.size())+");");
 			for(int i = 0; i < values.size(); i++) preparedStatement.setObject(i+1, values.get(i));
 		preparedStatement.executeUpdate();
 	}

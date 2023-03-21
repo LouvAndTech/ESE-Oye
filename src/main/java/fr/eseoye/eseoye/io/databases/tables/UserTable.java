@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.sql.rowset.CachedRowSet;
+import org.springframework.jdbc.support.rowset.ResultSetWrappingSqlRowSet;
 
 import com.hierynomus.sshj.userauth.keyprovider.bcrypt.BCrypt;
 
@@ -43,8 +43,11 @@ public class UserTable implements ITable {
 		try {
 			request = new DatabaseRequest(factory, credentials);
 			
-			final int lastId = request.getValues("SELECT id FROM "+getTableName()+" ORDER BY id DESC LIMIT 1;").getInt("id");
-			final String secureId = SecurityHelper.generateSecureID(System.currentTimeMillis(), lastId, SecurityHelper.SECURE_ID_LENGTH);
+			final ResultSetWrappingSqlRowSet requestLastId = request.getValues("SELECT id FROM "+getTableName()+" ORDER BY id DESC LIMIT 1;");
+			int lastIdUser = 0;
+			if(requestLastId.next()) lastIdUser = requestLastId.getInt("id");
+			
+			final String secureId = SecurityHelper.generateSecureID(System.currentTimeMillis(), lastIdUser, SecurityHelper.SECURE_ID_LENGTH);
 			
 			request.insertValues(getTableName(), 
 					Arrays.asList("name","surname", "birth", "address", "phone", "mail", "password", "state", "secure_id"), 
@@ -75,7 +78,7 @@ public class UserTable implements ITable {
 	
 	public String checkUserConnection(String mail, String password) {
 		try {
-			CachedRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("mail","password","secure_id"), "mail = ?", Arrays.asList(mail));
+			ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("mail","password","secure_id"), "mail = ?", Arrays.asList(mail));
 			boolean isFound = false;
 			while(!isFound && res.next()) 
 				isFound = BCrypt.checkpw(password, res.getString("password"));
@@ -91,7 +94,7 @@ public class UserTable implements ITable {
 		final List<SimplifiedEntity> list = new ArrayList<>();
 		
 		try {
-			final CachedRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("secure_id","name","surname"));
+			final ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("secure_id","name","surname"));
 			while(res.next())
 				list.add(new SimplifiedEntity(res.getString("secure_id"), res.getString("name"), res.getString("surname")));
 		}catch(SQLException e) {
@@ -108,7 +111,7 @@ public class UserTable implements ITable {
 			final int userDatabaseId = request.getValues(getTableName(), Arrays.asList("id"), "secure_id = ?", Arrays.asList(userSecureID)).getInt("id"); //Get the id of the user and store it for the creation of the image
 			
 			String existingPicSecureID = null;
-			CachedRowSet requestExistingPic = request.getValues(USER_IMAGE_TABLE_NAME, Arrays.asList("id", "secure_id", "user"), "user=?", Arrays.asList(userDatabaseId));
+			ResultSetWrappingSqlRowSet requestExistingPic = request.getValues(USER_IMAGE_TABLE_NAME, Arrays.asList("id", "secure_id", "user"), "user=?", Arrays.asList(userDatabaseId));
 			if(requestExistingPic.next()) {
 				existingPicSecureID = requestExistingPic.getString("secure_id");	
 				request.deleteValues(USER_IMAGE_TABLE_NAME, "secure_id=?", Arrays.asList(existingPicSecureID));
@@ -143,7 +146,7 @@ public class UserTable implements ITable {
 			
 			final int userDatabaseId = request.getValues(getTableName(), Arrays.asList("id"), "secure_id = ", Arrays.asList(userSecureID)).getInt("id"); //Get the id of the user and store it to get the image
 
-			final CachedRowSet res = request.getValues(USER_IMAGE_TABLE_NAME, Arrays.asList("secure_id"), "user = ?", Arrays.asList(userDatabaseId));
+			final ResultSetWrappingSqlRowSet res = request.getValues(USER_IMAGE_TABLE_NAME, Arrays.asList("secure_id"), "user = ?", Arrays.asList(userDatabaseId));
 			if(res.next())
 				return SFTPHelper.getFormattedImageURL(ImageDirectory.USER, userSecureID, res.getString("secure_id"));
 		} catch (SQLException e) {
@@ -170,7 +173,7 @@ public class UserTable implements ITable {
 	
 	public Tuple<String, String> getNameSurname(String secureID) {
 		try {
-			CachedRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("name","surname"), "secure_id = ?", Arrays.asList(secureID));
+			ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("name","surname"), "secure_id = ?", Arrays.asList(secureID));
 			if(res.next())
 				return new Tuple<>(res.getString("name"), res.getString("surname"));
 		} catch (SQLException e) {
@@ -189,7 +192,7 @@ public class UserTable implements ITable {
 	
 	public String getPassword(String secureID) {
 		try {
-			CachedRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("password"), "secure_id = ?", Arrays.asList(secureID));
+			ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("password"), "secure_id = ?", Arrays.asList(secureID));
 			if(res.next())
 				return res.getString("password");
 		} catch (SQLException e) {
@@ -208,7 +211,7 @@ public class UserTable implements ITable {
 	
 	public String getPhoneNumber(String secureID) {
 		try {
-			CachedRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("phone"), "secure_id = ?", Arrays.asList(secureID));
+			ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("phone"), "secure_id = ?", Arrays.asList(secureID));
 			if(res.next())
 				return res.getString("phone");
 		} catch (SQLException e) {
@@ -227,7 +230,7 @@ public class UserTable implements ITable {
 
 	public Date getBirthDate(String secureID) {
 		try {
-			CachedRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("birth"), "secure_id = ?", Arrays.asList(secureID));
+			ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("birth"), "secure_id = ?", Arrays.asList(secureID));
 			if(res.next())
 				return res.getDate("birth");
 		} catch (SQLException e) {
@@ -246,7 +249,7 @@ public class UserTable implements ITable {
 
 	public String getMail(String secureID) {
 		try {
-			CachedRowSet res =  new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("mail"), "secure_id = ?", Arrays.asList(secureID));
+			ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("mail"), "secure_id = ?", Arrays.asList(secureID));
 			if(res.next()) 
 				return res.getString("mail");
 		} catch (SQLException e) {
