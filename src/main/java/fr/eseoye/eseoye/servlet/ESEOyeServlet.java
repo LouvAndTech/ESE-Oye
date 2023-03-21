@@ -29,7 +29,8 @@ public class ESEOyeServlet extends HttpServlet {
      */
     @Override
     public void init(){
-<<<<<<<<< Temporary merge branch 1
+        SFTPFactory.createInstance(IOHandler.getInstance().getConfiguration().getSFTPCredentials());
+        DatabaseCredentials dbCred = IOHandler.getInstance().getConfiguration().getDatabaseCredentials();
         actionMap.put("Index", new Index());
         actionMap.put("ListPosts", new ListPost());
         actionMap.put("OnePost", new OnePost());
@@ -37,18 +38,8 @@ public class ESEOyeServlet extends HttpServlet {
         actionMap.put("Inscription", new Inscription());
         actionMap.put("Connexion", new Connexion());
         actionMap.put("Error404", new Error404());
-=========
-        try {
-            SFTPFactory.createInstance(IOHandler.getInstance().getConfiguration().getSFTPCredentials());
-            DatabaseCredentials dbCred = IOHandler.getInstance().getConfiguration().getDatabaseCredentials();
-            actionMap.put("Index", new Index(dbCred));
-            actionMap.put("ListPosts", new ListPost(dbCred));
-            actionMap.put("OnePost", new OnePost(dbCred));
-            actionMap.put("UserPanel", UserPanel.getInstance(dbCred));
-        }catch (Exception e){
-            e.printStackTrace();
-        }
->>>>>>>>> Temporary merge branch 2
+
+
         System.out.println("INIT");
 
     }
