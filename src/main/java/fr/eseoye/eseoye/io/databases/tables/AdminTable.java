@@ -104,7 +104,7 @@ public class AdminTable implements ITable {
 	
 	public Ternary isAnAdminSecureID(String secureID) {
 		try {
-			return new DatabaseRequest(factory, credentials, true).getValuesCount(secureID, Arrays.asList("secure_id"), "secure_id=?", Arrays.asList(secureID)) != 0 ? Ternary.TRUE : Ternary.FALSE;
+			return new DatabaseRequest(factory, credentials, true).getValuesCount(getTableName(), Arrays.asList("secure_id"), "secure_id=?", Arrays.asList(secureID)) != 0 ? Ternary.TRUE : Ternary.FALSE;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
