@@ -43,6 +43,10 @@ dependencies {
     // Test dependencies
     testImplementation "org.mockito:mockito-core:3.+"
 	
+	// https://mvnrepository.com/artifact/org.springframework/spring-jdbc
+	implementation group: 'org.springframework', name: 'spring-jdbc', version: '6.0.6'
+	
+	
 }
 
 test {
