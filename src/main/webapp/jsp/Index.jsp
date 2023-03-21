@@ -39,7 +39,7 @@
                 <input type="submit" class="btn fill" value="pour ne rater aucunes annonces" onclick="window.Request.sendPost('ese-oye?id=Connexion')">
             </form>
             <form action="#" class="signup">
-                <input type="submit" class="btn fill" value="pour pouvoir poster des annonces"onclick="window.Request.sendPost('ese-oye?id=Inscription')">
+                <input type="submit" class="btn fill" value="pour pouvoir poster des annonces"onclick="window.Request.sendPost('ese-oye?id=xInscription')">
             </form>
         </div>
     </div>

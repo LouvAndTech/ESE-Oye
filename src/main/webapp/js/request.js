@@ -1,7 +1,3 @@
-<<<<<<<<< Temporary merge branch 1
-
-=========
->>>>>>>>> Temporary merge branch 2
 export class Request{
     constructor(method, action) {
         this.form = document.createElement("form");
