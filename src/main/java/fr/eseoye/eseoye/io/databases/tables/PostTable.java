@@ -115,7 +115,7 @@ public class PostTable implements ITable {
 							orderClause+" "+
 							"LIMIT "+postNumber+" OFFSET "+(pageNumber*postNumber)+";", whereClause.getValueB());
 			
-			final ResultSetWrappingSqlRowSet requestTotalPostNumber = request.getValuesWithCondition("SELECT COUNT(Post.id) AS count FROM Post"
+			final ResultSetWrappingSqlRowSet requestTotalPostNumber = request.getValuesWithCondition("SELECT COUNT(Post.id) AS count FROM Post "
 							+sqlRequestBody, whereClause.getValueB());
 			if(!requestTotalPostNumber.next()) throw new SQLException();
 			final int totalPostNumber = requestTotalPostNumber.getInt("count");
