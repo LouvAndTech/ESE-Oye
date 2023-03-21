@@ -4,6 +4,7 @@ import fr.eseoye.eseoye.io.DatabaseFactory;
 import fr.eseoye.eseoye.io.IOHandler;
 import fr.eseoye.eseoye.io.databases.DatabaseCredentials;
 import fr.eseoye.eseoye.io.databases.tables.UserTable;
+import fr.eseoye.eseoye.utils.Ternary;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +23,8 @@ public class Connection implements Action{
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ParseException {
         String isaccount = DatabaseFactory.getInstance().getTable(UserTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).checkUserConnection(request.getParameter("mail"), request.getParameter("password"));
-        if(isaccount== null){
+        Ternary isAccountLock = DatabaseFactory.getInstance().getTable(UserTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).isUserLocked(isaccount);
+        if(isaccount == null || isAccountLock == Ternary.TRUE){
             request.setAttribute("error", "Mail or password incorrect");
             request.getRequestDispatcher("/jsp/Connection.jsp").forward(request,response);
         }else{
