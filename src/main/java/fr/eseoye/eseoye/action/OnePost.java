@@ -19,12 +19,10 @@ import fr.eseoye.eseoye.beans.PostComplete;
 import fr.eseoye.eseoye.beans.User;
 import fr.eseoye.eseoye.io.databases.tables.PostTable;
 
-public class OnePost implements Action{
-
-    private final DatabaseCredentials dbCred;
+public class OnePost extends AbstractOnePost implements Action {
 
     public OnePost(DatabaseCredentials dbCred){
-        this.dbCred = dbCred;
+        super(dbCred);
     }
 
     /**
@@ -65,25 +63,15 @@ public class OnePost implements Action{
 
         System.out.println("OnePost");
         try{
-            String postId = request.getParameter("postId");
-            System.out.println("postId : "+postId);
-            request.setAttribute("post", fetchPost( postId ));
-            request.getRequestDispatcher("/jsp/OnePost.jsp").forward(request, response);
+            fillPost(request);
         }catch (Exception e){
-            System.out.println("Error : " + e.getMessage());
-            request.getRequestDispatcher("/jsp/ListPosts.jsp").forward(request, response);
+            request.setAttribute("error", e.getMessage());
+            e.printStackTrace();
+            request.getRequestDispatcher("/jsp/ListPosts.jsp").forward(request,response);
+            return;
         }
+        request.getRequestDispatcher("/jsp/OnePost.jsp").forward(request,response);
     }
 
-    /**
-     * Fetch the post from the database
-     * @param postId    the id of the post to fetch
-     * @return          the post as a {@link PostComplete}
-     */
-    private PostComplete fetchPost(String postId){
-        PostComplete p = DatabaseFactory.getInstance().getTable(PostTable.class, dbCred).fetchEntirePost(postId);
-        System.out.println("postcomplete author secure ID : "+p.getAuthor().getSecureID());
-        p.setContent(p.getContent().replace("\n", "<br>"));
-        return p;
-    }
+
 }
