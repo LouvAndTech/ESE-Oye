@@ -36,7 +36,7 @@ public class SFTPConnection {
 		try {
 			client= factory.createSSHClient();
 			sftp = client.newSFTPClient();
-				
+
 			sftp.mkdirs(SEPARATOR+ROOT_DIRECTORY+SEPARATOR+POST_DIRECTORY+SEPARATOR+postID+SEPARATOR);
 			
 			for(int i = 0; i < imagesList.size(); i++) {

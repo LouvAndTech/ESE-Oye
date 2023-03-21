@@ -32,6 +32,7 @@ public class SFTPFactory {
 	
 	public SSHClient createSSHClient() throws IOException {
 		final SSHClient client = new SSHClient();
+		client.setTimeout(120);
 		client.loadKnownHosts();
 		client.addHostKeyVerifier(new PromiscuousVerifier());
 		client.connect(credentials.getUrl(), credentials.getPort());
