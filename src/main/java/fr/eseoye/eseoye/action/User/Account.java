@@ -23,6 +23,19 @@ public class Account implements Action {
         this.dbCred = dbCred;
     }
 
+    /**
+     * In case of a GET request, edit the right user information
+     * @param request   an {@link HttpServletRequest} object that
+     *                  contains the request the client has made
+     *                  of the servlet
+     *
+     * @param response  an {@link HttpServletResponse} object that
+     *                  contains the response the servlet sends
+     *                  to the client
+     *
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("Account : execute");
@@ -46,6 +59,21 @@ public class Account implements Action {
         request.getRequestDispatcher("/jsp/UserPanel.jsp").forward(request,response);
     }
 
+    /**
+     * Set the different user information in the request
+     * @param request   an {@link HttpServletRequest} object that
+     *                  contains the request the client has made
+     *                  of the servlet
+     *
+     * @param response  an {@link HttpServletResponse} object that
+     *                  contains the response the servlet sends
+     *                  to the client
+     *
+     * @param target    a string to define the view to forward
+     *
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     public void forward(HttpServletRequest request, HttpServletResponse response, String target) throws ServletException, IOException {
         System.out.println("Account : forward");
@@ -54,6 +82,11 @@ public class Account implements Action {
         request.getRequestDispatcher("/jsp/UserPanel.jsp").forward(request,response);
     }
 
+    /**
+     * Get the user information from the database
+     * @param session
+     * @return
+     */
     private User getUserInformation(HttpSession session){
         return DatabaseFactory.getInstance().getTable(UserTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).getUser(session.getAttribute("idUser").toString());
     }

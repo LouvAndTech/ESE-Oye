@@ -25,6 +25,20 @@ public class AdminListUser implements Action {
         this.dbCred = dbCred;
     }
 
+    /**
+     * Manage the user by delete it, make it admin or lock it
+     * @param request   an {@link HttpServletRequest} object that
+     *                  contains the request the client has made
+     *                  of the servlet
+     *
+     * @param response  an {@link HttpServletResponse} object that
+     *                  contains the response the servlet sends
+     *                  to the client
+     *
+     * @throws ServletException
+     * @throws IOException
+     * @throws SQLException
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         //todo : Has no use for now but mey never as any ... ?
@@ -35,7 +49,6 @@ public class AdminListUser implements Action {
                 DatabaseFactory.getInstance().getTable(AdminTable.class, dbCred).deleteAdminAccount(request.getParameter("secureID"));
             }
             DatabaseFactory.getInstance().getTable(UserTable.class, dbCred).deleteUserAccount(request.getParameter("secureID"));
-            System.out.println("delete");
         } else if (request.getParameter("admin") != null){
             Ternary daoRequest = DatabaseFactory.getInstance().getTable(AdminTable.class, dbCred).isAnAdminSecureID(request.getParameter("secureID"));
             if(daoRequest == Ternary.TRUE){
@@ -43,7 +56,6 @@ public class AdminListUser implements Action {
             } else if(daoRequest == Ternary.FALSE){
                 Tuple<String, String> nameSurname = DatabaseFactory.getInstance().getTable(UserTable.class, dbCred).getNameSurname(request.getParameter("secureID"));
                 String password = DatabaseFactory.getInstance().getTable(UserTable.class, dbCred).getPassword(request.getParameter("secureID"));
-                System.out.println("------------ Password : "+password + " ------------ id : "+request.getParameter("secureID"));
                 DatabaseFactory.getInstance().getTable(AdminTable.class, dbCred).createAdminAccount(request.getParameter("secureID"), nameSurname.getValueA(), nameSurname.getValueB(), password);
             } else if (daoRequest == Ternary.UNDEFINED) {
                 System.out.println("Error : AdminListUser : execute : isAnAdminSecureID : UNDEFINED");
@@ -58,11 +70,25 @@ public class AdminListUser implements Action {
                 System.out.println("Error : AdminListUser : execute : isUserLocked : UNDEFINED");
             }
         }
-        System.out.println(request.getParameter("secureID"));
         loadUserList(request, response);
         request.getRequestDispatcher("/jsp/UserPanel.jsp").forward(request,response);
     }
 
+    /**
+     * Forward the request to the view
+     * @param request   an {@link HttpServletRequest} object that
+     *                  contains the request the client has made
+     *                  of the servlet
+     *
+     * @param response  an {@link HttpServletResponse} object that
+     *                  contains the response the servlet sends
+     *                  to the client
+     *
+     * @param target    a string to define the view to forward
+     *
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     public void forward(HttpServletRequest request, HttpServletResponse response, String target) throws ServletException, IOException {
         System.out.println("Admin list user : forward");
@@ -70,6 +96,11 @@ public class AdminListUser implements Action {
         request.getRequestDispatcher("/jsp/UserPanel.jsp").forward(request,response);
     }
 
+    /**
+     * Load the list of user and add it to the request
+     * @param request
+     * @param response
+     */
     private void loadUserList(HttpServletRequest request, HttpServletResponse response){
         List<SimplifiedEntity> listUser = DatabaseFactory.getInstance().getTable(UserTable.class, dbCred).getUserList();
         for(SimplifiedEntity user : listUser){
