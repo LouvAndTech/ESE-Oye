@@ -27,8 +27,8 @@
         </div>
         <form class="end" action="ese-oye?id=UserPanel&contentPage=AdminListUser" method="post">
             <input type="hidden" name="secureID" value="${user.secureID}">
-            <button type="submit" name="admin"><span class="material-symbols-outlined desactiver">admin_panel_settings</span></button>
-            <button type="submit" name="lock"><span class="material-symbols-outlined desactiver">lock</span></button>
+            <button type="submit" name="admin"><span class="material-symbols-outlined ${user.isAdmin ? 'activer' : 'desactiver'}">admin_panel_settings</span></button>
+            <button type="submit" name="lock"><span class="material-symbols-outlined ${user.isLocked ? 'activer' : 'desactiver'}">lock</span></button>
             <button type="submit" name="delete"><span class="material-symbols-outlined passSecu_low">delete</span></button>
         </form>
     </div>

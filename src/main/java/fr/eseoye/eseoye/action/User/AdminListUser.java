@@ -30,6 +30,10 @@ public class AdminListUser implements Action {
         //todo : Has no use for now but mey never as any ... ?
         System.out.println("Admin list user : execute");
         if(request.getParameter("delete") != null){
+            Ternary daoRequest = DatabaseFactory.getInstance().getTable(AdminTable.class, dbCred).isAnAdminSecureID(request.getParameter("secureID"));
+            if(daoRequest == Ternary.TRUE){
+                DatabaseFactory.getInstance().getTable(AdminTable.class, dbCred).deleteAdminAccount(request.getParameter("secureID"));
+            }
             DatabaseFactory.getInstance().getTable(UserTable.class, dbCred).deleteUserAccount(request.getParameter("secureID"));
             System.out.println("delete");
         } else if (request.getParameter("admin") != null){
@@ -39,6 +43,7 @@ public class AdminListUser implements Action {
             } else if(daoRequest == Ternary.FALSE){
                 Tuple<String, String> nameSurname = DatabaseFactory.getInstance().getTable(UserTable.class, dbCred).getNameSurname(request.getParameter("secureID"));
                 String password = DatabaseFactory.getInstance().getTable(UserTable.class, dbCred).getPassword(request.getParameter("secureID"));
+                System.out.println("------------ Password : "+password + " ------------ id : "+request.getParameter("secureID"));
                 DatabaseFactory.getInstance().getTable(AdminTable.class, dbCred).createAdminAccount(request.getParameter("secureID"), nameSurname.getValueA(), nameSurname.getValueB(), password);
             } else if (daoRequest == Ternary.UNDEFINED) {
                 System.out.println("Error : AdminListUser : execute : isAnAdminSecureID : UNDEFINED");

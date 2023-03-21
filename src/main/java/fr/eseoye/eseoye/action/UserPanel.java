@@ -30,6 +30,7 @@ public class UserPanel implements Action{
         actionMap.put("AdminListUser", new AdminListUser(this.dbCred));
         actionMap.put("AdminValidePost", new AdminValidePost(this.dbCred));
         actionMap.put("AdminAddUser", new AdminAddUser(this.dbCred));
+        actionMap.put("AdminEditPost", new AdminEditPost(this.dbCred));
     }
 
     public static UserPanel getInstance(DatabaseCredentials dbCred){

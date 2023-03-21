@@ -15,9 +15,9 @@
     </c:when>
     <c:otherwise>
         <div class="btnAdminControl">
-            <a><span class="material-symbols-outlined passSecu_low">cancel</span></a>
-            <a><span class="material-symbols-outlined">edit</span></a>
-            <a><span class="material-symbols-outlined passSecu_high">check_circle</span></a>
+            <a href="ese-oye?id=UserPanel&contentPage=AdminValidePost&idPost=${postID}&action=delete"><span class="material-symbols-outlined passSecu_low">cancel</span></a>
+            <a href="ese-oye?id=UserPanel&contentPage=AdminEditPost&idPost=${postID}"><span class="material-symbols-outlined">edit</span></a>
+            <a href="ese-oye?id=UserPanel&contentPage=AdminValidePost&idPost=${postID}&action=valid"><span class="material-symbols-outlined passSecu_high">check_circle</span></a>
             <p>Validation d'annonce</p>
         </div>
         <div class="header">

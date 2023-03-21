@@ -42,7 +42,7 @@ public class AdminAddUser implements Action {
             java.sql.Date dateSql = java.sql.Date.valueOf(request.getParameter("bday"));
             DatabaseFactory.getInstance().getTable(UserTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).createUserAccount(request.getParameter("name"),
                     request.getParameter("surname"),
-                    request.getParameter( BCrypt.hashpw(request.getParameter("password"), BCrypt.gensalt())),
+                    BCrypt.hashpw(request.getParameter("password"), BCrypt.gensalt()),
                     "Angers",
                     dateSql,
                     request.getParameter("mail"),

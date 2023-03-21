@@ -13,6 +13,7 @@ public class AdminLogin implements Action {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //todo : Has no use for now but mey never as any ... ?
         System.out.println("Admin Login : execute");
+        response.sendRedirect("/ese-oye?id=Account");
     }
 
     @Override

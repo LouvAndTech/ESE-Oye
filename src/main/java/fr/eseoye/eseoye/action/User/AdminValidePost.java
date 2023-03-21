@@ -32,6 +32,14 @@ public class AdminValidePost implements Action {
     @Override
     public void forward(HttpServletRequest request, HttpServletResponse response, String target) throws ServletException, IOException {
         System.out.println("Admin list user : forward");
+        if(request.getParameter("idPost") != null){
+            if(request.getParameter("action").equals("delete")){
+                // todo : delete post
+            } else if (request.getParameter("action").equals("valid")) {
+                //todo : valid post
+            }
+        }
+
         try{
             // todo : get older not validate annonce
             request.setAttribute("post", fetchPost( "6"));
