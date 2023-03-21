@@ -73,6 +73,7 @@ public class AdminTable implements ITable {
 				
 			return isFound ? res.getString("secure_id") : null;
 		} catch (SQLException e) {
+			e.printStackTrace();
 			//TODO Handle exception correctly
 		}
 		return null;
