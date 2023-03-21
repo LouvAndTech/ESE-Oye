@@ -39,11 +39,11 @@ public class AdminValidePost extends AbstractOnePost implements Action {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
+        System.out.println("Action : " + action);
         try {
             if(action.equals("valid") || action.equals("delete")){
                 String postId = request.getParameter("postId");
                 System.out.println("Post ID : " + postId);
-                System.out.println("Action : " + action);
                 if(action.equals("valid"))
                     DatabaseFactory.getInstance().getTable(PostTable.class, dbCred).validatePost(postId);
                 else
@@ -82,7 +82,6 @@ public class AdminValidePost extends AbstractOnePost implements Action {
         try{
             String secureId = DatabaseFactory.getInstance().getTable(PostTable.class, dbCred).fetchLastLockedPostID();
             System.out.println("Secure ID de la plus ancienne non validé : " + secureId);
-            secureId ="REVGR0BBQkNMTU5P";
             if (secureId.equals("")){
                 request.setAttribute("postId", "");
             }else {

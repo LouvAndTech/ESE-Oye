@@ -9,6 +9,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Post.css">
+<script type="module" src="${pageContext.request.contextPath}/js/request.js" defer></script>
+
 <c:if test="${!empty error}">
     <p class="warning" style="display: block">${error}</p>
 </c:if>
@@ -18,9 +20,9 @@
     </c:when>
     <c:otherwise>
         <div class="btnAdminControl">
-            <a href="ese-oye?id=UserPanel&contentPage=AdminValidePost&idPost=${postId}&action=delete"><span class="material-symbols-outlined passSecu_low">cancel</span></a>
+            <a onclick="window.Request.sendPost('ese-oye?id=UserPanel&contentPage=AdminValidePost&postId=${postId}&action=delete')"><span class="material-symbols-outlined passSecu_low">cancel</span></a>
             <a href="ese-oye?id=UserPanel&contentPage=AdminEditPost&postId=${postId}"><span class="material-symbols-outlined">edit</span></a>
-            <a href="ese-oye?id=UserPanel&contentPage=AdminValidePost&idPost=${postId}&action=valid"><span class="material-symbols-outlined passSecu_high">check_circle</span></a>
+            <a onclick="window.Request.sendPost('ese-oye?id=UserPanel&contentPage=AdminValidePost&postId=${postId}&action=valid')"><span class="material-symbols-outlined passSecu_high">check_circle</span></a>
         </div>
         <div class="centerSectionElement">
             <div class="centerSectionElement">

@@ -132,6 +132,7 @@ public class PostTable implements ITable {
 			new DatabaseRequest(factory, credentials, true).deleteValues(getTableName(), "secure_id=?", Arrays.asList(new Tuple<>(postSecureID, Types.VARCHAR)));
 			return true;
 		} catch (SQLException | IOException e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
@@ -157,6 +158,7 @@ public class PostTable implements ITable {
 			new DatabaseRequest(factory, credentials, true).updateValues(getTableName(), Arrays.asList("lock"), Arrays.asList(newStatus), "`secure_id`=?", Arrays.asList(new Tuple<>(postSecureID, Types.VARCHAR)));
 			return true;
 		}catch(SQLException e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
