@@ -38,6 +38,7 @@ public class ESEOyeServlet extends HttpServlet {
             actionMap.put("ListPosts", new ListPost(dbCred));
             actionMap.put("OnePost", new OnePost(dbCred));
             actionMap.put("UserPanel", UserPanel.getInstance(dbCred));
+            actionMap.put("Logout", new Logout());
 
             //Admin Part
             actionMap.put("AdminLogin", new AdminLogin());
@@ -64,10 +65,10 @@ public class ESEOyeServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
-        if (session.getAttribute("admin") == null) {
-            session.setAttribute("admin", true);
-            session.setAttribute("idUser", "1");
-        }
+
+        //session.setAttribute("admin", true);
+        session.setAttribute("idUser", "y8jJzs_MzdLT0NHW");
+        request.setAttribute("adminState", session.getAttribute("admin"));
 
         String id = request.getParameter("id");
         System.out.println("doGet : "+id);
@@ -93,10 +94,10 @@ public class ESEOyeServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
-        if (session.getAttribute("admin") == null) {
-            session.setAttribute("admin", true);
-            session.setAttribute("idUser", "1");
-        }
+
+        //session.setAttribute("admin", true);
+        session.setAttribute("idUser", "y8jJzs_MzdLT0NHW");
+        request.setAttribute("adminState", session.getAttribute("admin"));
 
         String id = request.getParameter("id");
         System.out.println("doPost : "+id);

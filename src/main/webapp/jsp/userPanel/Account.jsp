@@ -10,8 +10,8 @@
     <h1>Information Personnel</h1>
     <form action="" method="post">
         <div>
-            <input type="text" name="name" placeholder="Nom" value="Jean" required>
-            <input type="text" name="surname" placeholder="Prénom" value="Eude" required>
+            <input type="text" name="name" placeholder="Nom" value="" required>
+            <input type="text" name="surname" placeholder="Prénom" value="" required>
         </div>
         <input type="submit" class="btn fill" value="Enregistrer" disabled>
     </form>
@@ -27,7 +27,7 @@
     <h1>Numéro de téléphone</h1>
     <form action="" method="post">
         <div>
-            <input type="tel" name="phone" maxlength="14" placeholder="Téléphone" value="1" required>
+            <input type="tel" name="phone" maxlength="14" placeholder="Téléphone" value="" required>
         </div>
         <input type="submit" class="btn fill" value="Enregistrer" disabled>
     </form>
@@ -40,7 +40,7 @@
         <input type="submit" class="btn fill" value="Enregistrer" disabled>
     </form>
     <hr>
-    <h1>Mot de passe</h1>
+    <h1>Nouveau mot de passe</h1>
     <form action="" method="post">
         <div>
             <input type="password" name="password" placeholder="Mot de passe" value="" required>

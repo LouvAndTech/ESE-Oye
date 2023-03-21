@@ -38,7 +38,7 @@
       </c:otherwise>
     </c:choose>
     <hr>
-    <a href="" class="deco_btn"><span class="material-symbols-outlined">logout</span> Deconnexion</a>
+    <a href="?id=Logout" class="deco_btn"><span class="material-symbols-outlined">logout</span> Deconnexion</a>
 
 
   </nav>

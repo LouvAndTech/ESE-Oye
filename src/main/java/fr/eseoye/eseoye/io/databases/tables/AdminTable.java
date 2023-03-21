@@ -63,21 +63,22 @@ public class AdminTable implements ITable {
 	}
 	
 	public String checkAdminConnection(String login, String password) {
+		System.out.println(login);
 		try {
-			String[] loginParsed = login.split(".");
+			String[] loginParsed = login.split("[.]");
 			if(loginParsed.length != 2) return null;
-			
+			System.out.println(loginParsed[0]+" "+loginParsed[1]);
 			ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("name","surname","password","secure_id"), "name=? AND surname=?", Arrays.asList(new Tuple<>(loginParsed[0], Types.VARCHAR), new Tuple<>(loginParsed[1], Types.VARCHAR)));
 			boolean isFound = false;
-			while(!isFound && res.next()) 
+			while(!isFound && res.next()) {
 				isFound = BCrypt.checkpw(password, res.getString("password"));
-				
+			}
 			return isFound ? res.getString("secure_id") : null;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return null;
 			//TODO Handle exception correctly
 		}
-		return null;
 	}
 
 	public List<SimplifiedEntity> getAdminList() {

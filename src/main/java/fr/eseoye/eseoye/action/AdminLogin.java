@@ -10,6 +10,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class AdminLogin implements Action {
@@ -18,10 +19,14 @@ public class AdminLogin implements Action {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("Admin Login : execute");
         //todo : Has no use for now but mey never as any ... ?
-        String admin = DatabaseFactory.getInstance().getTable(AdminTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).checkAdminConnection(request.getParameter("pseudo"), BCrypt.hashpw(request.getParameter("password"), BCrypt.gensalt()));
-        System.out.println(request.getParameter("pseudo") + " -- "+ BCrypt.hashpw(request.getParameter("password"), BCrypt.gensalt()));
-        System.out.println(admin);
-        //response.sendRedirect(request.getContextPath()+"/ese-oye?id=Account");
+        String admin = DatabaseFactory.getInstance().getTable(AdminTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).checkAdminConnection(request.getParameter("pseudo"), request.getParameter("password"));
+        if(admin != null) {
+            HttpSession session = request.getSession();
+            session.setAttribute("admin", true);
+            session.setAttribute("idUser", admin);
+        }
+        response.sendRedirect(request.getContextPath()+"/ese-oye?id=UserPanel&contentPage=AdminListUser");
+        //request.getRequestDispatcher("/jsp/AdminLogin.jsp").forward(request,response);
     }
 
     @Override
