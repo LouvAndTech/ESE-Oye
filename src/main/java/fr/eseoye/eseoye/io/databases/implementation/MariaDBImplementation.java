@@ -23,7 +23,7 @@ public class MariaDBImplementation extends DatabaseImplementation {
 	@Override
 	public void insertValues(Connection connection, String table, List<String> fields, List<Object> values) throws SQLException {
 		PreparedStatement preparedStatement = connection
-				.prepareStatement("INSERT INTO "+table+"("+convertListToDatabaseFields(fields)+") VALUES("+this.generateRequestEmptyValues(values.size())+");");
+				.prepareStatement("INSERT INTO "+table+" ("+convertListToDatabaseFields(fields)+") VALUES("+this.generateRequestEmptyValues(values.size())+");");
 			for(int i = 0; i < values.size(); i++) preparedStatement.setObject(i+1, values.get(i));
 		preparedStatement.executeUpdate();
 	}
@@ -83,13 +83,13 @@ public class MariaDBImplementation extends DatabaseImplementation {
 	@Override
 	public int getValuesCount(Connection connection, String table, List<String> columnsName) throws SQLException {
 		Statement statement = connection.createStatement();
-		ResultSet res = statement.executeQuery("SELECT COUNT("+convertListToDatabaseFields(columnsName)+") AS cnt FROM "+table+";");
+		ResultSet res = statement.executeQuery("SELECT COUNT('"+convertListToDatabaseFields(columnsName)+"') AS cnt FROM "+table+";");
 		return res.next() ? res.getInt("cnt") : 0;
 	}
 	
 	@Override
 	public int getValuesCount(Connection connection, String table, List<String> columnsName, String condition, List<Object> valuesCondition) throws SQLException {
-		PreparedStatement statement = connection.prepareStatement("SELECT COUNT("+convertListToDatabaseFields(columnsName)+") AS cnt FROM "+table+" WHERE "+condition+";");
+		PreparedStatement statement = connection.prepareStatement("SELECT COUNT('"+convertListToDatabaseFields(columnsName)+"') AS cnt FROM "+table+" WHERE "+condition+";");
 		for(int i = 0; i < valuesCondition.size(); i++) statement.setObject(i+1, valuesCondition.get(i));
 		ResultSet res = statement.executeQuery();
 		return res.next() ? res.getInt("cnt") : 0;
