@@ -41,7 +41,7 @@ public abstract class DatabaseImplementation {
 	protected String convertListToDatabaseFields(List<String> values) {
 		if(values.size() == 1) return values.get(0);
 		final StringBuilder sb = new StringBuilder();
-		values.forEach(v -> sb.append(v+", "));
+		values.forEach(v -> sb.append("`"+v+"`, "));
 		sb.setLength(sb.length()-2);
 		return sb.toString();
 	}
