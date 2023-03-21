@@ -85,7 +85,7 @@ public class AdminTable implements ITable {
 		try {
 			final ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("secure_id","name","surname"));
 			while(res.next())
-				list.add(new SimplifiedEntity(res.getString("secure_id"), res.getString("name"), res.getString("surname")));
+				list.add(new SimplifiedEntity(res.getString("secure_id"), res.getString("name"), res.getString("surname"), null, null));
 		}catch(SQLException e) {
 			return null;
 		}

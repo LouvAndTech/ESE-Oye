@@ -5,15 +5,18 @@ public class SimplifiedEntity {
 	private String secureID;
 	
 	private String name, surname;
+	private String phone, mail;
 	
-	public SimplifiedEntity(String secureID, String name, String surname) {
+	public SimplifiedEntity(String secureID, String name, String surname, String phone, String mail) {
 		this.secureID = secureID;
 		this.name = name;
 		this.surname = surname;
+		this.phone = phone;
+		this.mail = mail;
 	}
 	
-	public SimplifiedEntity(String name, String surname) {
-		this(null, name, surname);
+	public SimplifiedEntity(String name, String surname, String phone, String mail) {
+		this(null, name, surname, phone, mail);
 	}
 	
 	public boolean isSecureIDPresent() {
@@ -30,6 +33,14 @@ public class SimplifiedEntity {
 	
 	public String getSurname() {
 		return surname;
+	}
+	
+	public String getPhone() {
+		return phone;
+	}
+	
+	public String getMail() {
+		return mail;
 	}
 	
 }
