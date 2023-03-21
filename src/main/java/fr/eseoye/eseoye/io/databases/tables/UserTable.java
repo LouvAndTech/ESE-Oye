@@ -128,10 +128,12 @@ public class UserTable implements ITable {
 		
 		try {
 			request = new DatabaseRequest(factory, credentials);
-			final int userDatabaseId = request.getValues(getTableName(), Arrays.asList("id"), "secure_id = ?", Arrays.asList(new Tuple<>(userSecureID, Types.VARCHAR))).getInt("id"); //Get the id of the user and store it for the creation of the image
+			final ResultSetWrappingSqlRowSet requestUserDatabaseId = request.getValues(getTableName(), Arrays.asList("id"), "secure_id = ?", Arrays.asList(new Tuple<>(userSecureID, Types.VARCHAR))); //Get the id of the user and store it for the creation of the image
+			if(!requestUserDatabaseId.next()) throw new SQLException();
+			final int userDatabaseID = requestUserDatabaseId.getInt("id");
 			
 			String existingPicSecureID = null;
-			ResultSetWrappingSqlRowSet requestExistingPic = request.getValues(USER_IMAGE_TABLE_NAME, Arrays.asList("id", "secure_id", "user"), "user=?", Arrays.asList(new Tuple<>(userDatabaseId, Types.INTEGER)));
+			ResultSetWrappingSqlRowSet requestExistingPic = request.getValues(USER_IMAGE_TABLE_NAME, Arrays.asList("id", "secure_id", "user"), "user=?", Arrays.asList(new Tuple<>(userDatabaseID, Types.INTEGER)));
 			if(requestExistingPic.next()) {
 				existingPicSecureID = requestExistingPic.getString("secure_id");	
 				request.deleteValues(USER_IMAGE_TABLE_NAME, "secure_id=?", Arrays.asList(new Tuple<>(existingPicSecureID, Types.VARCHAR)));
@@ -141,7 +143,7 @@ public class UserTable implements ITable {
 			
 			if(existingPicSecureID != null) ftpConnection.removeUserImage(userSecureID, existingPicSecureID);
 			String imageID = ftpConnection.addNewUserImage(userSecureID, lastId, inputstream);
-			request.insertValues("User_IMG",Arrays.asList("user, secure_id"), Arrays.asList(userDatabaseId, imageID));
+			request.insertValues("User_IMG",Arrays.asList("user, secure_id"), Arrays.asList(userDatabaseID, imageID));
 			
 		}catch(SQLException e) {
 			throw new DataCreationException(getClass(), CreationExceptionReason.FAILED_DB_CREATION);

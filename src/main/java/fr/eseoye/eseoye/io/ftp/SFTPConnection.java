@@ -100,6 +100,27 @@ public class SFTPConnection {
 		}
 	}
 	
+	public void removePostImageFolder(String postSecureID) throws IOException {
+		SSHClient client = null;
+		SFTPClient sftp = null;
+		
+		try {
+			client= factory.createSSHClient();
+			sftp = client.newSFTPClient();
+			
+			sftp.rmdir(SEPARATOR+ROOT_DIRECTORY+SEPARATOR+POST_DIRECTORY+SEPARATOR+postSecureID);
+			
+		}catch(IOException e) {
+			System.err.println(e);
+		}finally {
+			if(sftp != null) sftp.close();
+			if(client != null) {
+				client.disconnect();
+				client.close();
+			}
+		}
+	}
+	
 	/**
 	 * Add a new image for a user 
 	 * @param userID
