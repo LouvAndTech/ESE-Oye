@@ -5,24 +5,29 @@ public class SimplifiedEntity {
 	private String secureID;
 	
 	private String name, surname;
+	private String phone, mail;
+
 	private Boolean isAdmin, isLocked;
-	
-	public SimplifiedEntity(String secureID, String name, String surname) {
+
+	public SimplifiedEntity(String secureID, String name, String surname, String phone, String mail) {
 		this.secureID = secureID;
 		this.name = name;
 		this.surname = surname;
+		this.phone = phone;
+		this.mail = mail;
 	}
 	
-	public SimplifiedEntity(String name, String surname) {
-		this(null, name, surname);
+	public SimplifiedEntity(String name, String surname, String phone, String mail) {
+		this(null, name, surname, phone, mail);
 	}
 
-	public SimplifiedEntity(String name, String surname, String secureID, Boolean isAdmin, Boolean isLocked) {
-		this(secureID, name, surname);
+	public SimplifiedEntity(String name, String surname, String secureID, Boolean isAdmin, Boolean isLocked, String phone, String mail) {
+		this(secureID, name, surname , phone, mail);
 		this.isAdmin = isAdmin;
 		this.isLocked = isLocked;
 	}
-	
+
+
 	public boolean isSecureIDPresent() {
 		return secureID != null;
 	}
@@ -54,5 +59,13 @@ public class SimplifiedEntity {
 	public void setIsLocked(Boolean isLocked) {
 		this.isLocked = isLocked;
 	}
-	
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public String getMail() {
+		return mail;
+	}
+
 }

@@ -70,6 +70,8 @@
             <img class="imgPP" src="http://eseoye.elouan-lerissel.fr/blankPP.png" alt="">
             <div class="info">
                 <p>${post.author.name} ${post.author.surname}</p>
+                <p>${post.author.mail}</p>
+                <p>${post.author.phone}</p>
             </div>
             <a href="ese-oye?id=UserProfile&targetUser=${post.author.secureID}" class="aBtn">Voir le profil</a>
         </div>

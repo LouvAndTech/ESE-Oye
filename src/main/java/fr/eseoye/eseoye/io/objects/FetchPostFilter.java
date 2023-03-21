@@ -136,7 +136,7 @@ public class FetchPostFilter {
 		}
 		
 		public Builder keyWords(String... words) {
-			for(String v : words) this.keyWords.add(v);
+			if(words != null) for(String v : words) this.keyWords.add(v);
 			return this;
 		}
 		

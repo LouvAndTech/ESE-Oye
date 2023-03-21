@@ -158,9 +158,9 @@ public class UserTable implements ITable {
 		final List<SimplifiedEntity> list = new ArrayList<>();
 		
 		try {
-			final ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("secure_id","name","surname"));
+			final ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(getTableName(), Arrays.asList("secure_id","name","surname","phone","mail"));
 			while(res.next())
-				list.add(new SimplifiedEntity(res.getString("secure_id"), res.getString("name"), res.getString("surname")));
+				list.add(new SimplifiedEntity(res.getString("secure_id"), res.getString("name"), res.getString("surname"), res.getString("phone"), res.getString("mail")));
 		}catch(SQLException e) {
 			return null;
 		}
