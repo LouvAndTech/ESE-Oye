@@ -2,6 +2,7 @@ package fr.eseoye.eseoye;
 
 //Actions
 import fr.eseoye.eseoye.action.*;
+import fr.eseoye.eseoye.helpers.ConnectionHelper;
 import fr.eseoye.eseoye.io.DatabaseFactory;
 import fr.eseoye.eseoye.io.IOHandler;
 import fr.eseoye.eseoye.io.SFTPFactory;
@@ -40,6 +41,8 @@ public class ESEOyeServlet extends HttpServlet {
             actionMap.put("UserProfile", new UserProfile(dbCred));
             actionMap.put("UserPanel", UserPanel.getInstance(dbCred));
             actionMap.put("Logout", new Logout());
+            actionMap.put("Inscription", new Inscription(dbCred));
+            actionMap.put("Connection", new Connection(dbCred));
 
             //Admin Part
             actionMap.put("AdminLogin", new AdminLogin());
@@ -65,18 +68,20 @@ public class ESEOyeServlet extends HttpServlet {
      */
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        HttpSession session = request.getSession();
+        if(ConnectionHelper.isConnected(request, response)) {
+            HttpSession session = request.getSession();
 
-        //session.setAttribute("admin", true);
-        session.setAttribute("idUser", "1");
-        request.setAttribute("adminState", session.getAttribute("admin"));
+            //session.setAttribute("admin", true);
+            //session.setAttribute("idUser", "1");
+            request.setAttribute("adminState", session.getAttribute("admin"));
 
-        String id = request.getParameter("id");
-        System.out.println("doGet : "+id);
-        if(id == null || !actionMap.containsKey(id)) {
-            id="Index";
+            String id = request.getParameter("id");
+            System.out.println("doGet : " + id);
+            if (id == null || !actionMap.containsKey(id)) {
+                id = "Index";
+            }
+            actionMap.get(id).forward(request, response, "/jsp/" + id + ".jsp");
         }
-        actionMap.get(id).forward(request,response,"/jsp/"+id+".jsp");
     }
 
 
@@ -94,21 +99,23 @@ public class ESEOyeServlet extends HttpServlet {
      */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        HttpSession session = request.getSession();
+        if(ConnectionHelper.isConnected(request, response)) {
+            HttpSession session = request.getSession();
 
-        //session.setAttribute("admin", true);
-        session.setAttribute("idUser", "1");
-        request.setAttribute("adminState", session.getAttribute("admin"));
+            //session.setAttribute("admin", true);
+            //session.setAttribute("idUser", "1");
+            request.setAttribute("adminState", session.getAttribute("admin"));
 
-        String id = request.getParameter("id");
-        System.out.println("doPost : "+id);
-        if(id == null || !actionMap.containsKey(id)) {
-            id="Index";
-        }
-        try {
-            actionMap.get(id).execute(request,response);
-        } catch (ParseException | SQLException e) {
-            throw new RuntimeException(e);
+            String id = request.getParameter("id");
+            System.out.println("doPost : " + id);
+            if (id == null || !actionMap.containsKey(id)) {
+                id = "Index";
+            }
+            try {
+                actionMap.get(id).execute(request, response);
+            } catch (ParseException | SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }
