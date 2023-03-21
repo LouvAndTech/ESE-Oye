@@ -1,6 +1,7 @@
 package fr.eseoye.eseoye.action.User;
 
 import fr.eseoye.eseoye.action.Action;
+import fr.eseoye.eseoye.helpers.ConnectionHelper;
 import fr.eseoye.eseoye.io.DatabaseFactory;
 import fr.eseoye.eseoye.io.IOHandler;
 import fr.eseoye.eseoye.io.databases.DatabaseCredentials;
@@ -22,26 +23,29 @@ public class AdminEditPost extends AbstractNewPost implements Action {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ParseException {
-        System.out.println("Admin add user : execute");
-        try{
-            analysePost p = new analysePost(request);
-            p.isComplete(); // throws exception if not complete
+        if(ConnectionHelper.isLockAdmin(request, response)) {
+            System.out.println("Admin add user : execute");
+            try {
+                analysePost p = new analysePost(request);
+                p.isComplete(); // throws exception if not complete
 
-            //todo : Push the changes into the DB
+                //todo : Push the changes into the DB
+            } catch (Exception e) {
+                request.setAttribute("error", e.getMessage());
+                e.printStackTrace();
+                forward(request, response, "/jsp/UserPanel.jsp");
+                return;
+            }
+            request.getRequestDispatcher("/jsp/UserPanel.jsp").forward(request, response);
         }
-        catch (Exception e){
-            request.setAttribute("error", e.getMessage());
-            e.printStackTrace();
-            forward(request, response, "/jsp/UserPanel.jsp");
-            return;
-        }
-        request.getRequestDispatcher("/jsp/UserPanel.jsp").forward(request,response);
     }
 
     @Override
     public void forward(HttpServletRequest request, HttpServletResponse response, String target) throws ServletException, IOException {
-        System.out.println("Admin add user : forward");
-        fillCategoriesStates(request);
-        request.getRequestDispatcher("/jsp/UserPanel.jsp").forward(request,response);
+        if(ConnectionHelper.isLockAdmin(request, response)) {
+            System.out.println("Admin add user : forward");
+            fillCategoriesStates(request);
+            request.getRequestDispatcher("/jsp/UserPanel.jsp").forward(request, response);
+        }
     }
 }
