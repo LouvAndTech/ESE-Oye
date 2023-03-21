@@ -14,6 +14,7 @@ import org.springframework.jdbc.support.rowset.ResultSetWrappingSqlRowSet;
 import com.hierynomus.sshj.userauth.keyprovider.bcrypt.BCrypt;
 
 import fr.eseoye.eseoye.beans.SimplifiedEntity;
+import fr.eseoye.eseoye.beans.User;
 import fr.eseoye.eseoye.exceptions.DataCreationException;
 import fr.eseoye.eseoye.exceptions.DataCreationException.CreationExceptionReason;
 import fr.eseoye.eseoye.helpers.SFTPHelper;
@@ -121,6 +122,24 @@ public class UserTable implements ITable {
 			return null;
 		}
 		return list;
+	}
+	
+	public User getUser(String userSecureID) {
+		
+		try {			
+			ResultSetWrappingSqlRowSet res = new DatabaseRequest(factory, credentials, true).getValues(
+					getTableName(), 
+					Arrays.asList("secure_id","name","surname","birth","address","phone","mail"), 
+					"secure_id=?", 
+					Arrays.asList(new Tuple<>(userSecureID, Types.VARCHAR)));
+			
+			if(!res.next()) throw new SQLException();
+			
+			return new User(res.getString("secure_id"), res.getString("name"), res.getString("surname"), null, res.getDate("birth"), res.getString("address"), res.getString("phone"), res.getString("mail"), -1);
+		}catch(SQLException e) {
+			return null;
+		}
+		
 	}
 	
 	public void setImage(SFTPConnection ftpConnection, String userSecureID, InputStream inputstream) {

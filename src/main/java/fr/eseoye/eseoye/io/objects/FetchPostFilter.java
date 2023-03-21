@@ -1,5 +1,6 @@
 package fr.eseoye.eseoye.io.objects;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -52,7 +53,9 @@ public class FetchPostFilter {
 		return maxPrice;
 	}
 	
-	public FetchOrderEnum getOrder() {
+	public FetchOrderEnum getOrder()
+	{
+		System.out.println("Order then: " + order);
 		return order;
 	}
 	
@@ -122,6 +125,7 @@ public class FetchPostFilter {
 		}
 		
 		public Builder order(FetchOrderEnum o) {
+			System.out.println("Order set to " + o.name());
 			this.order = o;
 			return this;
 		}
@@ -161,6 +165,10 @@ public class FetchPostFilter {
 		private String name;
 		private FetchOrderEnum(String name) {
 			this.name = name;
+		}
+		
+		public static FetchOrderEnum of(String objname) {
+			return Arrays.asList(FetchOrderEnum.values()).stream().filter(o -> o.name().equalsIgnoreCase(objname)).findFirst().get();
 		}
 		
 		public FetchOrder getObject() {

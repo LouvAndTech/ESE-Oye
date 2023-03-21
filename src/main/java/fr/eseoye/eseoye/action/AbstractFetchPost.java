@@ -220,12 +220,20 @@ public abstract class AbstractFetchPost {
         String userId = null;
         FetchPostFilter.FetchOrderEnum order = FetchPostFilter.FetchOrderEnum.DATE_DESCENDING;
         try {
-            idCategory = Integer.parseInt(request.getParameter("cat"));
-            idState = Integer.parseInt(request.getParameter("state"));
-            price = Integer.parseInt(request.getParameter("price"));
-            order = FetchPostFilter.FetchOrderEnum.valueOf(request.getParameter("order"));
+            if(request.getParameter("cat") != null && !request.getParameter("cat").equals(""))
+                idCategory = Integer.parseInt(request.getParameter("cat"));
+            if(request.getParameter("state") != null && !request.getParameter("state").equals(""))
+                idState = Integer.parseInt(request.getParameter("state"));
+            if(request.getParameter("price") != null && !request.getParameter("price").equals(""))
+                price = Integer.parseInt(request.getParameter("price"));
+            if (request.getParameter("tri") != null && !request.getParameter("tri").equals("")){
+                System.out.println("tri : " + request.getParameter("tri"));
+                order = FetchPostFilter.FetchOrderEnum.of(request.getParameter("tri"));
+            }
             userId = request.getParameter("userId");
-        }catch (Exception ignored){}
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return FetchPostFilter.builder().category(idCategory).state(idState).maxPrice(price).order(order).user(userId).build();
     }
 

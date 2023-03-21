@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.jdbc.support.rowset.ResultSetWrappingSqlRowSet;
+import org.springframework.lang.Nullable;
 
 import fr.eseoye.eseoye.beans.Category;
 import fr.eseoye.eseoye.beans.Post;
@@ -29,9 +30,13 @@ import fr.eseoye.eseoye.io.objects.FetchPostFilter;
 import fr.eseoye.eseoye.io.objects.FetchPostFilter.FetchOrderEnum;
 import fr.eseoye.eseoye.utils.Tuple;
 
+/**
+ * Class handling all functions needed to interact with the Table <strong>Post</strong>
+ * @author 278deco
+ *
+ */
 public class PostTable implements ITable {
-	
-	
+
 	//TODO Make the table name not hardcoded
 	private static final String USER_TABLE_NAME = "User";
 	private static final String CATEGORY_TABLE_NAME = "Post_Category";
@@ -116,14 +121,19 @@ public class PostTable implements ITable {
 			return false;
 		}
 	}
+	
+	public boolean modifyPost(String postSecureID, @Nullable String newTitle, @Nullable String newContent) {
+		try {
+			List<String> fields = new ArrayList<>(); List<Object> values = new ArrayList<>();
+			if(newTitle != null) { fields.add("title"); values.add(newTitle); }
+			if(newContent != null) { fields.add("content"); values.add(newContent); }
 
-//	public String modifyPost(String postSecureID, @Nullable String newTitle, @Nullable String newContent) {
-//		try {
-//
-//		}catch(SQLException e) {
-//
-//		}
-//	}
+			new DatabaseRequest(factory, credentials, true).updateValues(getTableName(), fields, values, "secure_id=?", Arrays.asList(new Tuple<>(postSecureID, Types.VARCHAR)));
+		}catch(SQLException e) {
+			return false;
+		}
+		return true;
+	}
 	
 	public Tuple<List<Post>, Integer> fetchShortPost(int postNumber, int pageNumber, FetchPostFilter parameters) {
 		final List<Post> post = new ArrayList<>();
@@ -133,24 +143,23 @@ public class PostTable implements ITable {
 			request = new DatabaseRequest(factory, credentials);
 			
 			final Tuple<String, List<Tuple<Object, Integer>>> whereClause = generateWhereClausePost(parameters);
-			final String orderClause = generateOrderClausePost(parameters.getOrder());
-			
+
 			final String sqlRequestBody = "INNER JOIN "+USER_TABLE_NAME+" ON "+getTableName()+".user = "+USER_TABLE_NAME+".id "+
 					"INNER JOIN "+CATEGORY_TABLE_NAME+" ON "+getTableName()+".category = "+CATEGORY_TABLE_NAME+".id "+
 					"INNER JOIN "+POST_STATE_TABLE_NAME+" ON "+getTableName()+".state = "+POST_STATE_TABLE_NAME+".id "+
 					(whereClause.getValueB().isEmpty() ? "" : "WHERE "+whereClause.getValueA()+" ");
-
+					
 			final ResultSetWrappingSqlRowSet res = request.getValuesWithCondition("SELECT "+getTableName()+".id AS post_id, "+getTableName()+".secure_id AS post_sid, "+getTableName()+".title AS post_title, "+getTableName()+".lock AS post_lock, "+USER_TABLE_NAME+".secure_id AS userpost_sid, "+USER_TABLE_NAME+".name AS userpost_name, "+USER_TABLE_NAME+".surname AS userpost_surname, "+getTableName()+".price AS post_price, "+CATEGORY_TABLE_NAME+".name AS category_name, "+POST_STATE_TABLE_NAME+".name AS poststate_name, "+getTableName()+".date AS post_date FROM "+getTableName()+" "+
 							sqlRequestBody+" "+
-							orderClause+" "+
+							generateOrderClausePost(parameters.getOrder())+" "+
 							"LIMIT "+postNumber+" OFFSET "+(pageNumber*postNumber)+";", whereClause.getValueB());
-
+			
 			final ResultSetWrappingSqlRowSet requestTotalPostNumber = request.getValuesWithCondition("SELECT COUNT(Post.id) AS count FROM Post "
 							+sqlRequestBody, whereClause.getValueB());
 			if(!requestTotalPostNumber.next()) throw new SQLException();
 			final int totalPostNumber = requestTotalPostNumber.getInt("count");
-
-			while(res.next()) {
+			
+			while(res.next()) {				
 				final SimplifiedEntity u = new SimplifiedEntity(res.getString("userpost_name"), res.getString("userpost_surname"));
 				final Category c = new Category(res.getString("category_name"));
 				final PostState ps = new PostState(res.getString("poststate_name"));
@@ -180,13 +189,13 @@ public class PostTable implements ITable {
 	private String generateOrderClausePost(FetchOrderEnum order) {
 		switch (order) {
 			case DATE_ASCENDING: 
-				return "ORDER BY "+getTableName()+".date ASC";
+				return "ORDER BY "+getTableName()+".id ASC";
 			case PRICE_ASCENDING: 
 				return "ORDER BY "+getTableName()+".price ASC";
 			case PRICE_DESCENDING: 
 				return "ORDER BY "+getTableName()+".price DESC";
 			default:
-				return "ORDER BY "+getTableName()+".date DESC";
+				return "ORDER BY "+getTableName()+".id DESC";
 		}
 	}
 
