@@ -12,7 +12,7 @@
             </c:if>
             <div class="header">
                 <input type="text" name="title" placeholder="Titre" value="" required>
-                <input type="number" name="price" placeholder="Prix" value="" required>
+                <input type="number" name="price" placeholder="Prix" max="9999" value="" required>
             </div>
             <div class="carrousel">
                 <div class="addImg">
