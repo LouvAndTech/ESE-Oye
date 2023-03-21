@@ -9,8 +9,10 @@ import fr.eseoye.eseoye.utils.Ternary;
 import org.mindrot.jbcrypt.BCrypt;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.ParseException;
@@ -38,23 +40,39 @@ public class Inscription implements Action{
          * Check if the mail is already used
          */
 
-        Ternary resultMail = DatabaseFactory.getInstance().getTable(UserTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).isAccoundCreationPossible(request.getParameter("mail"), request.getParameter("password"));
-        if(resultMail == Ternary.TRUE) {
+        Ternary resultMail = DatabaseFactory.getInstance().getTable(UserTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).isAccoundCreationPossible(request.getParameter("mail"), request.getParameter("phone"));
+        if(resultMail == Ternary.FALSE) {
             request.setAttribute("error", "Mail already used");
             request.getRequestDispatcher("/jsp/Inscription.jsp").forward(request,response);
 
-        }else if(resultMail == Ternary.FALSE) {
+        }else if(resultMail == Ternary.TRUE) {
             SimpleDateFormat sf = new SimpleDateFormat("dd-MM-yyyy;HH:mm:ss");
             java.util.Date date = sf.parse(request.getParameter("date"));
             java.sql.Date dateSql = new java.sql.Date(date.getTime());
-            DatabaseFactory.getInstance().getTable(UserTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).createUserAccount(request.getParameter("name"),
+            String userID = DatabaseFactory.getInstance().getTable(UserTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).createUserAccount(request.getParameter("name"),
                   request.getParameter("surname"),
                   request.getParameter( BCrypt.hashpw(request.getParameter("password"), BCrypt.gensalt())),
+                    request.getParameter("address"),
                   dateSql,
                   request.getParameter("mail"),
                   request.getParameter("phone"));
+            if(userID != null) {
+
+                HttpSession session = request.getSession();
+                session.setAttribute("idUser", userID);
+                //setting session to expiry in 30 mins
+                session.setMaxInactiveInterval(50*60);
+            }else{
+                request.setAttribute("error", "une erreur est survenue, veuillez réessayer");
+                request.getRequestDispatcher("/jsp/Inscription.jsp").forward(request,response);
+            }
+
+
+
 
         }else if(resultMail == Ternary.UNDEFINED) {
+            request.setAttribute("error", "une erreur est survenue, veuillez réessayer");
+            request.getRequestDispatcher("/jsp/Inscription.jsp").forward(request,response);
 
 
         }

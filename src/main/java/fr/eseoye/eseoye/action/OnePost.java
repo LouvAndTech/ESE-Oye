@@ -82,7 +82,7 @@ public class OnePost implements Action{
      */
     private PostComplete fetchPost(String postId){
         PostComplete p = DatabaseFactory.getInstance().getTable(PostTable.class, dbCred).fetchEntirePost(postId);
-        System.out.println("postcomplete author secure ID : "+p.getAuthor().getSecureID());
+        System.out.println("postcomplete author secure ID : "+p.getAuthor().getSecureId());
         p.setContent(p.getContent().replace("\n", "<br>"));
         return p;
     }
