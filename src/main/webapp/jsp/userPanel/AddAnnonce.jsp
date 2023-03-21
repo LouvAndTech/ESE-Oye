@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Post.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/AddAnnonce.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/AddImage.css">
 
 <div class="container">
     <form action="ese-oye?id=UserPanel&contentPage=AddAnnonce" method="post" enctype='multipart/form-data'>
