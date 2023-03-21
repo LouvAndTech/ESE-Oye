@@ -43,7 +43,12 @@ textboxs.forEach(textbox => {
             }
         }
     });
-
+    //add detection file
+    if(textbox.type == "file"){
+        textbox.addEventListener("change", (e) => {
+            document.querySelector("#btnImgPP").disabled = 0;
+        });
+    }
     //add space to the phone number
     if(textbox.type == "tel"){
         textbox.addEventListener('keyup', (e) => {

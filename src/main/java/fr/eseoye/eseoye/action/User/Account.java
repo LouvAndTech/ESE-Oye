@@ -6,6 +6,7 @@ import fr.eseoye.eseoye.io.DatabaseFactory;
 import fr.eseoye.eseoye.io.IOHandler;
 import fr.eseoye.eseoye.io.databases.DatabaseCredentials;
 import fr.eseoye.eseoye.io.databases.tables.UserTable;
+import org.mindrot.jbcrypt.BCrypt;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -24,16 +25,36 @@ public class Account implements Action {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //todo : Has no use for now but mey never as any ... ?
         System.out.println("Account : execute");
+        HttpSession session = request.getSession();
+        if(request.getParameter("nameSurnameBtn") != null){
+            DatabaseFactory.getInstance().getTable(UserTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).setNameSurname(session.getAttribute("idUser").toString(), request.getParameter("name"), request.getParameter("surname"));
+        }else if (request.getParameter("imageBtn") != null) {
+
+        }else if (request.getParameter("mailBtn") != null) {
+            DatabaseFactory.getInstance().getTable(UserTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).setMail(session.getAttribute("idUser").toString(), request.getParameter("mail"));
+        }else if (request.getParameter("phoneBtn") != null) {
+            DatabaseFactory.getInstance().getTable(UserTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).setPhoneNumber(session.getAttribute("idUser").toString(), request.getParameter("phone"));
+        }else if (request.getParameter("birthBtn") != null) {
+            DatabaseFactory.getInstance().getTable(UserTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).setBirthDate(session.getAttribute("idUser").toString(), request.getParameter("birth"));
+        }else if (request.getParameter("passwordBtn") != null) {
+            DatabaseFactory.getInstance().getTable(UserTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).setPassword(session.getAttribute("idUser").toString(), BCrypt.hashpw(request.getParameter("password"), BCrypt.gensalt()));
+        }else if (request.getParameter("deleteBtn") != null) {
+            DatabaseFactory.getInstance().getTable(UserTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).deleteUserAccount(session.getAttribute("idUser").toString());
+        }
+        request.setAttribute("user", getUserInformation(session));
+        request.getRequestDispatcher("/jsp/UserPanel.jsp").forward(request,response);
     }
 
     @Override
     public void forward(HttpServletRequest request, HttpServletResponse response, String target) throws ServletException, IOException {
         System.out.println("Account : forward");
         HttpSession session = request.getSession();
-        User user = DatabaseFactory.getInstance().getTable(UserTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).getUser(session.getAttribute("idUser").toString());
-        request.setAttribute("user", user);
+        request.setAttribute("user", getUserInformation(session));
         request.getRequestDispatcher("/jsp/UserPanel.jsp").forward(request,response);
+    }
+
+    private User getUserInformation(HttpSession session){
+        return DatabaseFactory.getInstance().getTable(UserTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).getUser(session.getAttribute("idUser").toString());
     }
 }
