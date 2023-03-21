@@ -15,10 +15,22 @@ import java.io.IOException;
 
 public class AdminLogin implements Action {
 
+    /**
+     * Try if the admin exist and if the password is correct before set the session for the admin
+     * @param request   an {@link HttpServletRequest} object that
+     *                  contains the request the client has made
+     *                  of the servlet
+     *
+     * @param response  an {@link HttpServletResponse} object that
+     *                  contains the response the servlet sends
+     *                  to the client
+     *
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("Admin Login : execute");
-        //todo : Has no use for now but mey never as any ... ?
         String admin = DatabaseFactory.getInstance().getTable(AdminTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).checkAdminConnection(request.getParameter("pseudo"), request.getParameter("password"));
         if(admin != null) {
             HttpSession session = request.getSession();
@@ -29,6 +41,21 @@ public class AdminLogin implements Action {
         //request.getRequestDispatcher("/jsp/AdminLogin.jsp").forward(request,response);
     }
 
+    /**
+     * Forward to the admin login page
+     * @param request   an {@link HttpServletRequest} object that
+     *                  contains the request the client has made
+     *                  of the servlet
+     *
+     * @param response  an {@link HttpServletResponse} object that
+     *                  contains the response the servlet sends
+     *                  to the client
+     *
+     * @param target    a string to define the view to forward
+     *
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     public void forward(HttpServletRequest request, HttpServletResponse response, String target) throws ServletException, IOException {
         System.out.println("Admin Login : forward");

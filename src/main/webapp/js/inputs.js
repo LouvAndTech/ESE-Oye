@@ -3,6 +3,10 @@ const btns = document.querySelectorAll("input[type='submit']");
 const passSecu = document.getElementsByClassName("passSecu")[0];
 const listText = [];
 
+/**
+ * Get all the input text and add event listener to them
+ * to execute scpecific function for the different input
+ */
 textboxs.forEach(textbox => {
     //active or disable the save button
     listText.push(textbox.value);
@@ -57,6 +61,10 @@ textboxs.forEach(textbox => {
     }
 });
 
+/**
+ * Add event listener to the textarea to limit the number of charactere
+ * @type {NodeListOf<Element>}
+ */
 //textarea
 var textareas = document.querySelectorAll(".textAreaCont");
 
@@ -69,6 +77,9 @@ textareas.forEach(textarea => {
     })
 });
 
+/**
+ * Generate custom select
+ */
 //custom select
 var selectElem;
 var selectContainers = document.querySelectorAll('.custom_select');

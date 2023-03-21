@@ -25,15 +25,28 @@ public class AdminAddUser implements Action {
     }
 
 
-
+    /**
+     * Verify if the user already exist and create it if not
+     * @param request   an {@link HttpServletRequest} object that
+     *                  contains the request the client has made
+     *                  of the servlet
+     *
+     * @param response  an {@link HttpServletResponse} object that
+     *                  contains the response the servlet sends
+     *                  to the client
+     *
+     * @throws ServletException
+     * @throws IOException
+     * @throws ParseException
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ParseException {
         Ternary resultMail = DatabaseFactory.getInstance().getTable(UserTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).isAccoundCreationPossible(request.getParameter("mail"), request.getParameter("phone"));
-        if(resultMail == Ternary.TRUE) {
+        if(resultMail == Ternary.FALSE) {
             request.setAttribute("error", "Mail or phone already used");
             request.getRequestDispatcher("/jsp/Inscription.jsp").forward(request,response);
 
-        }else if(resultMail == Ternary.FALSE) {
+        }else if(resultMail == Ternary.TRUE) {
             java.sql.Date dateSql = java.sql.Date.valueOf(request.getParameter("bday"));
             DatabaseFactory.getInstance().getTable(UserTable.class, IOHandler.getInstance().getConfiguration().getDatabaseCredentials()).createUserAccount(request.getParameter("name"),
                     request.getParameter("surname"),
@@ -49,6 +62,21 @@ public class AdminAddUser implements Action {
         request.getRequestDispatcher("/jsp/UserPanel.jsp").forward(request,response);
     }
 
+    /**
+     * Forward the request to the view
+     * @param request   an {@link HttpServletRequest} object that
+     *                  contains the request the client has made
+     *                  of the servlet
+     *
+     * @param response  an {@link HttpServletResponse} object that
+     *                  contains the response the servlet sends
+     *                  to the client
+     *
+     * @param target    a string to define the view to forward
+     *
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     public void forward(HttpServletRequest request, HttpServletResponse response, String target) throws ServletException, IOException {
         System.out.println("Admin add user : forward");
