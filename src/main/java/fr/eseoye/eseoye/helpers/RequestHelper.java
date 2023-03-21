@@ -12,7 +12,7 @@ public class RequestHelper {
 	}
 	
 	public static String convertListToDatabaseFields(List<String> values) {
-		if(values.size() == 1) return values.get(0);
+		if(values.size() == 1) return "`"+values.get(0)+"`";
 		final StringBuilder sb = new StringBuilder();
 		values.forEach(v -> sb.append("`"+v+"`, "));
 		sb.setLength(sb.length()-2);
