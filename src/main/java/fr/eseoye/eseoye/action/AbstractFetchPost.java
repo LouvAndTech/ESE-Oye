@@ -12,6 +12,7 @@ import fr.eseoye.eseoye.utils.Tuple;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class AbstractFetchPost {
@@ -50,6 +51,7 @@ public abstract class AbstractFetchPost {
             request.setAttribute("state",   filters.getStateID());
             request.setAttribute("price",   filters.getMaxPrice());
             request.setAttribute("order",   filters.getOrder());
+            request.setAttribute("keywords",   filters.getOrder());
             System.out.println("Filters Order: " + filters.getOrder());
         }else if(type == TypePost.USER){
             filters = FetchPostFilter.builder().user(request.getParameter("targetUserId")).build();
@@ -218,6 +220,7 @@ public abstract class AbstractFetchPost {
         int idCategory, idState , price ;
         idCategory = idState = price = -1;
         String userId = null;
+        String[] keywords =  null;
         FetchPostFilter.FetchOrderEnum order = FetchPostFilter.FetchOrderEnum.DATE_DESCENDING;
         try {
             if(request.getParameter("cat") != null && !request.getParameter("cat").equals(""))
@@ -226,15 +229,17 @@ public abstract class AbstractFetchPost {
                 idState = Integer.parseInt(request.getParameter("state"));
             if(request.getParameter("price") != null && !request.getParameter("price").equals(""))
                 price = Integer.parseInt(request.getParameter("price"));
-            if (request.getParameter("tri") != null && !request.getParameter("tri").equals("")){
-                System.out.println("tri : " + request.getParameter("tri"));
+            if (request.getParameter("tri") != null && !request.getParameter("tri").equals(""))
                 order = FetchPostFilter.FetchOrderEnum.of(request.getParameter("tri"));
+            if (request.getParameter("keywords") != null && !request.getParameter("keywords").equals("")) {
+                String rep = request.getParameter("keywords");
+                keywords = rep.split(" ");
             }
             userId = request.getParameter("userId");
         }catch (Exception e){
             e.printStackTrace();
         }
-        return FetchPostFilter.builder().category(idCategory).state(idState).maxPrice(price).order(order).user(userId).build();
+        return FetchPostFilter.builder().category(idCategory).state(idState).maxPrice(price).order(order).user(userId).keyWords(keywords).build();
     }
 
     protected boolean oneFilterExist(HttpServletRequest request){

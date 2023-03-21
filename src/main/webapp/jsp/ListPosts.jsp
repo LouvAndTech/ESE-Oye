@@ -24,6 +24,13 @@
 <section>
     <nav>
         <form action="ese-oye?id=ListPosts" method="post">
+            <h1>Mots clées :</h1>
+            <hr>
+            <div class="searchBar">
+                <div class="cont">
+                    <input name="keywords" type="text" placeholder="Rechercher ...">
+                </div>
+            </div>
             <h1>Filtres :</h1>
             <hr>
             <p>Order :</p>
@@ -99,15 +106,15 @@
     </div>
 </section>
 <div class="buttonContainer">
-    <button class="btn" onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${postPage-1}&cat=${cat}&state=${state}&price=${price}&order=${order}&newPage=1')"><span class="material-symbols-outlined">navigate_before</span></button>
+    <button class="btn" onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${postPage-1}&cat=${cat}&state=${state}&price=${price}&order=${order}&keywords=${keywords}&newPage=1')"><span class="material-symbols-outlined">navigate_before</span></button>
     <c:forEach var="page" items="${nbPage}">
         <button <c:choose>
             <c:when test="${postPage+1 == page}">class="actual" style="cursor: default" </c:when>
-            <c:otherwise>onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${page-1}&cat=${cat}&state=${state}&price=${price}&order=${order}&newPage=1')"</c:otherwise>
+            <c:otherwise>onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${page-1}&cat=${cat}&state=${state}&price=${price}&order=${order}&keywords=${keywords}&newPage=1')"</c:otherwise>
         </c:choose>
         >${page}</button>
     </c:forEach>
-    <button class="btn" onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${postPage+1}&cat=${cat}&state=${state}&price=${price}&order=${order}&newPage=1')"><span class="material-symbols-outlined">navigate_next</span></button>
+    <button class="btn" onclick="window.Request.sendPost('ese-oye?id=ListPosts&postPage=${postPage+1}&cat=${cat}&state=${state}&price=${price}&order=${order}&keywords=${keywords}&newPage=1')"><span class="material-symbols-outlined">navigate_next</span></button>
 </div>
 <%@include file="theme/Footer.jsp" %>
 

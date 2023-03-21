@@ -10,12 +10,6 @@
 <header>
   <div class="container">
     <h1 onclick="window.Request.sendGet('ese-oye?id=ListPosts')" style="cursor: pointer">ESE OYE</h1>
-    <div class="searchBar">
-      <form action="" method="post">
-        <input name="search" type="text" placeholder="Rechercher ...">
-        <button type="submit"><span class="material-symbols-outlined">search</span></button>
-      </form>
-    </div>
     <div class="rightBtn">
       <a href="?id=UserPanel&contentPage=AddAnnonce" class="aBtn">Ajouter une annonce</a>
       <c:choose>

@@ -6,12 +6,33 @@ section {
     display: flex;
     width: fit-content;
     flex-direction: column;
-    padding: 0 1em;
+    padding: 0 2em;
+
+    .searchBar{
+
+      .cont{
+        display: flex;
+        flex-direction: row;
+
+        input{
+          padding: 3px;
+          padding-left: 10px;
+          margin-right: 0;
+          vertical-align: middle;
+          width: 20em;
+          border: 0;
+          border-radius: 5px ;
+
+          &:focus{
+            outline: none;
+          }
+        }
+      }
+    }
 
     form {
       display: flex;
       flex-direction: column;
-      padding: 0 1em;
 
       select {
         width: 100%;

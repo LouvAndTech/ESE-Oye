@@ -20,49 +20,13 @@ header{
     .container{
         display: flex;
         flex-direction: row;
+        justify-content: space-between;
         line-height: 30px;
         padding: 1em;
 
         h1{
             margin: auto 0;
             height: fit-content;
-        }
-
-        .searchBar{
-            margin: auto;
-
-            form{
-                display: flex;
-                margin: auto;
-
-                input{
-                    padding: 3px;
-                    padding-left: 10px;
-                    vertical-align: middle;
-                    width: 20em;
-                    border: 0;
-                    border-radius: 5px 0 0 5px;
-                    background-color: var(--ligthcolor);
-
-                    &:focus{
-                        outline: none;
-                    }
-                }
-                button{
-                    margin: auto;
-                    padding: 0;
-                    height: 2.3em;
-                    width: 2.3em;
-                    vertical-align: middle;
-                    border: 0;
-                    border-radius: 0 5px 5px 0;
-                    background-color: var(--ligthcolor);
-
-                    &:hover{
-                        cursor: pointer;
-                    }
-                }
-            }
         }
 
         .rightBtn{
