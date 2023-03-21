@@ -10,6 +10,7 @@ import fr.eseoye.eseoye.io.databases.tables.PostTable;
 
 //Libraries
 import java.io.*;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.ServletException;
@@ -63,7 +64,7 @@ public class ESEOyeServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
         if (session.getAttribute("admin") == null) {
-            session.setAttribute("admin", false);
+            session.setAttribute("admin", true);
             session.setAttribute("idUser", "1");
         }
 
@@ -92,7 +93,7 @@ public class ESEOyeServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
         if (session.getAttribute("admin") == null) {
-            session.setAttribute("admin", false);
+            session.setAttribute("admin", true);
             session.setAttribute("idUser", "1");
         }
 
@@ -101,6 +102,10 @@ public class ESEOyeServlet extends HttpServlet {
         if(id == null || !actionMap.containsKey(id)) {
             id="Index";
         }
-        actionMap.get(id).execute(request,response);
+        try {
+            actionMap.get(id).execute(request,response);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Login.css">
 <h2>Ajouter un nouvelle utilisateur</h2>
 <br/>
-<form method="post" action="ese-oye">
+<form method="post" action="ese-oye?id=UserPanel&contentPage=AdminAddUser">
   <label class="textBox">
     <input type="text" name="name" placeholder="prénom" required>
   </label>

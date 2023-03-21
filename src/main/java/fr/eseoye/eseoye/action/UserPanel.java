@@ -1,8 +1,6 @@
 package fr.eseoye.eseoye.action;
 
-import fr.eseoye.eseoye.action.User.Account;
-import fr.eseoye.eseoye.action.User.AddPosts;
-import fr.eseoye.eseoye.action.User.Posts;
+import fr.eseoye.eseoye.action.User.*;
 import fr.eseoye.eseoye.io.databases.DatabaseCredentials;
 
 import javax.servlet.ServletException;
@@ -10,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,7 +39,7 @@ public class UserPanel implements Action{
     }
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ParseException {
         HttpSession session = request.getSession();
         request.setAttribute("adminState", session.getAttribute("admin"));
 
