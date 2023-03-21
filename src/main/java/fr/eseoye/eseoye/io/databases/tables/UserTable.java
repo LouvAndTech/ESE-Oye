@@ -51,7 +51,7 @@ public class UserTable implements ITable {
 			
 			request.insertValues(getTableName(), 
 					Arrays.asList("name","surname", "birth", "address", "phone", "mail", "password", "state", "secure_id"), 
-					Arrays.asList(name, surname, birth, address, phone, mail, password, 1, secureId));
+					Arrays.asList(name, surname, birth, address, phone.replaceAll(" ", ""), mail, password, 1, secureId));
 			
 			return secureId;
 		} catch (SQLException e) {
@@ -280,7 +280,7 @@ public class UserTable implements ITable {
 	public Ternary isAccoundCreationPossible(String mail, String phone) {
 		try {
 			phone = phone.replace(" ", "");
-			return (new DatabaseRequest(factory, credentials, true).getValuesCount(getTableName(), Arrays.asList("mail","phone"), "(mail=? AND phone=?)", Arrays.asList(mail, phone)) != 0 ? Ternary.TRUE : Ternary.FALSE);
+			return (new DatabaseRequest(factory, credentials, true).getValuesCount(getTableName(), Arrays.asList("mail","phone"), "(mail=? OR phone=?)", Arrays.asList(mail, phone)) != 0 ? Ternary.TRUE : Ternary.FALSE);
 		} catch (SQLException e) {
 			//TODO Handle exception correctly
 		}
