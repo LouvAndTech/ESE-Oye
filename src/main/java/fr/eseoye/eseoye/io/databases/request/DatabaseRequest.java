@@ -9,6 +9,7 @@ import org.springframework.jdbc.support.rowset.ResultSetWrappingSqlRowSet;
 import fr.eseoye.eseoye.io.DatabaseFactory;
 import fr.eseoye.eseoye.io.databases.DatabaseCredentials;
 import fr.eseoye.eseoye.io.databases.implementation.DatabaseImplementation;
+import fr.eseoye.eseoye.utils.Tuple;
 
 public class DatabaseRequest {
 	
@@ -53,7 +54,7 @@ public class DatabaseRequest {
 		if(instantClose) this.dbConnection.close();
 	}
 	
-	public void updateValues(String table, List<String> fields, List<Object> values, String condition, List<Object> valuesCondition) throws SQLException {
+	public void updateValues(String table, List<String> fields, List<Object> values, String condition, List<Tuple<Object, Integer>> valuesCondition) throws SQLException {
 		if(this.dbConnection.isClosed()) throw new SQLException("Couldn't execute the method because no connection to the database was found.");
 		this.dbImplementation.updateValues(dbConnection, table, fields, values, condition, valuesCondition);
 		
@@ -76,7 +77,7 @@ public class DatabaseRequest {
 		return result;
 	}
 	
-	public ResultSetWrappingSqlRowSet getValues(String table, List<String> fields, String condition, List<Object> valuesCondition) throws SQLException {
+	public ResultSetWrappingSqlRowSet getValues(String table, List<String> fields, String condition, List<Tuple<Object, Integer>> valuesCondition) throws SQLException {
 		if(this.dbConnection.isClosed()) throw new SQLException("Couldn't execute the method because no connection to the database was found.");
 		final ResultSetWrappingSqlRowSet result = new ResultSetWrappingSqlRowSet(this.dbImplementation.getValues(dbConnection, table, fields, condition, valuesCondition));
 		
@@ -94,7 +95,7 @@ public class DatabaseRequest {
 		return result;
 	}
 	
-	public ResultSetWrappingSqlRowSet getValuesWithCondition(String sqlRequest, List<Object> valuesCondition) throws SQLException {
+	public ResultSetWrappingSqlRowSet getValuesWithCondition(String sqlRequest, List<Tuple<Object, Integer>> valuesCondition) throws SQLException {
 		if(this.dbConnection.isClosed()) throw new SQLException("Couldn't execute the method because no connection to the database was found.");
 		final ResultSetWrappingSqlRowSet result = new ResultSetWrappingSqlRowSet(this.dbImplementation.getValuesWithCondition(dbConnection, sqlRequest, valuesCondition));
 		
@@ -112,7 +113,7 @@ public class DatabaseRequest {
 		return result;
 	}
 
-	public int getValuesCount(String table, List<String> values, String condition, List<Object> conditionValues) throws SQLException {
+	public int getValuesCount(String table, List<String> values, String condition, List<Tuple<Object, Integer>> conditionValues) throws SQLException {
 		if(this.dbConnection.isClosed()) throw new SQLException("Couldn't execute the method because no connection to the database was found.");
 		int result =  this.dbImplementation.getValuesCount(dbConnection, table, values, condition, conditionValues);
 		
@@ -121,7 +122,7 @@ public class DatabaseRequest {
 		return result;
 	}
 	
-	public void deleteValues(String table, String condition, List<Object> valuesCondition) throws SQLException {
+	public void deleteValues(String table, String condition, List<Tuple<Object, Integer>> valuesCondition) throws SQLException {
 		if(this.dbConnection.isClosed()) throw new SQLException("Couldn't execute the method because no connection to the database was found.");
 		this.dbImplementation.deleteValues(dbConnection, table, condition, valuesCondition);
 		
