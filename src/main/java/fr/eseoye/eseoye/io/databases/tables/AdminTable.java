@@ -12,7 +12,6 @@ import com.hierynomus.sshj.userauth.keyprovider.bcrypt.BCrypt;
 import fr.eseoye.eseoye.beans.SimplifiedEntity;
 import fr.eseoye.eseoye.exceptions.DataCreationException;
 import fr.eseoye.eseoye.exceptions.DataCreationException.CreationExceptionReason;
-import fr.eseoye.eseoye.helpers.SecurityHelper;
 import fr.eseoye.eseoye.io.DatabaseFactory;
 import fr.eseoye.eseoye.io.databases.DatabaseCredentials;
 import fr.eseoye.eseoye.io.databases.request.DatabaseRequest;
@@ -28,22 +27,17 @@ public class AdminTable implements ITable {
 		this.credentials = credentials;
 	}
 	
-	public String createAdminAccount(String name, String surname, String password) throws DataCreationException {
+	public String createAdminAccount(String secureID, String name, String surname, String password) throws DataCreationException {
 		DatabaseRequest request = null;
 		
 		try {
 			request = new DatabaseRequest(factory, credentials);
-			
-			final int lastId = request.getValues("SELECT id FROM "+getTableName()+" ORDER BY id DESC LIMIT 1;").getInt("id");
-			
-			
-			final String secureId = SecurityHelper.generateSecureID(System.currentTimeMillis(), lastId, SecurityHelper.SECURE_ID_LENGTH);
-			
+						
 			request.insertValues(getTableName(), 
 					Arrays.asList("name","surname", "rank", "password", "secure_id"), 
-					Arrays.asList(name, surname, /*ADMIN SIMPLE*/0, password, secureId));
+					Arrays.asList(name, surname, /*ADMIN SIMPLE*/0, password, secureID));
 			
-			return secureId;
+			return secureID;
 		} catch (SQLException e) {
 			throw new DataCreationException(getClass(), CreationExceptionReason.FAILED_DB_CREATION);
 		}finally {
