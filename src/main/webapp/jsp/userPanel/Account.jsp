@@ -10,8 +10,10 @@
     <h1>Information Personnel</h1>
     <form action="" method="post">
         <div>
-            <input type="text" name="name" placeholder="Nom" value="" required>
-            <input type="text" name="surname" placeholder="Prénom" value="" required>
+            <label class="textBox">
+                <input type="text" name="name" placeholder="Prénom" value="${user.name}" required>
+                <input type="text" name="surname" placeholder="Nom" value="${user.surname}" required>
+            </label>
         </div>
         <input type="submit" class="btn fill" value="Enregistrer" disabled>
     </form>
@@ -19,7 +21,9 @@
     <h1>Email</h1>
     <form action="" method="post">
         <div>
-            <input type="email" name="mail" placeholder="Email" value="" required>
+            <label class="textBox">
+                <input type="email" name="mail" placeholder="Email" value="${user.mail}" required>
+            </label>
         </div>
         <input type="submit" class="btn fill" value="Enregistrer" disabled>
     </form>
@@ -27,7 +31,9 @@
     <h1>Numéro de téléphone</h1>
     <form action="" method="post">
         <div>
-            <input type="tel" name="phone" maxlength="14" placeholder="Téléphone" value="" required>
+            <label class="textBox">
+                <input type="tel" name="phone" maxlength="14" placeholder="Téléphone" value="${user.phone}" required>
+            </label>
         </div>
         <input type="submit" class="btn fill" value="Enregistrer" disabled>
     </form>
@@ -35,7 +41,9 @@
     <h1>Date de naissance</h1>
     <form action="" method="post">
         <div>
-            <input type="date" name="birth" placeholder="" value="" required>
+            <label class="textBox">
+                <input type="date" name="birth" placeholder="" value="${user.birth}" required>
+            </label>
         </div>
         <input type="submit" class="btn fill" value="Enregistrer" disabled>
     </form>
@@ -43,8 +51,10 @@
     <h1>Nouveau mot de passe</h1>
     <form action="" method="post">
         <div>
-            <input type="password" name="password" placeholder="Mot de passe" value="" required>
-            <p class="passSecu">Votre mot de passe est trop faible</p>
+            <label class="textBox">
+                <input type="password" name="password" placeholder="Mot de passe" value="" required>
+                <p class="passSecu">Votre mot de passe est trop faible</p>
+            </label>
         </div>
         <input type="submit" class="btn fill" value="Enregistrer" disabled>
     </form>
